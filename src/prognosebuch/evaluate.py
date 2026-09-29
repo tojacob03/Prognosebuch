@@ -15,6 +15,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from prognosebuch.forecast import DEADLINE
 from prognosebuch.metrics import diebold_mariano, mae, mean_pinball, rmse, skill
 from prognosebuch.registry import HORIZONS, LIVE_MODELS, REFERENCE_MODEL_KEY, LiveModel
 from prognosebuch.smard import PRICE_DE_LU, SmardClient
@@ -102,6 +103,13 @@ def day_is_complete(actuals: pd.Series, d: date) -> bool:
 
 
 # --------------------------------------------------------------------------- scoring
+
+
+def deadlines_passed(target: date, now_utc: datetime) -> bool:
+    """True once no forecast for ``target`` can be issued any more (deadline on D-1)."""
+    last_issue = target - timedelta(days=min(HORIZONS))
+    deadline = datetime.combine(last_issue, DEADLINE, tzinfo=TZ)
+    return now_utc >= deadline
 
 
 def load_forecast(root: Path, lm: LiveModel, issue_date: date) -> pd.DataFrame | None:
@@ -195,7 +203,7 @@ def run_evaluate(
     while d <= last_target:
         path = score_path(root, d)
         if not path.exists():
-            if day_is_complete(actuals, d):
+            if day_is_complete(actuals, d) and deadlines_passed(d, now_utc):
                 df = score_target_day(root, d, actuals, scored_at, models)
                 if df is not None:
                     write_once(path, to_parquet_bytes(df, SCORE_SCHEMA))

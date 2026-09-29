@@ -71,3 +71,11 @@ def test_actuals_archive_roundtrip(tmp_path: Path) -> None:
     expected = ALL[(ALL.index >= a.index.min()) & (ALL.index <= a.index.max())]
     assert (a - expected).abs().max() < 1e-9
     assert a.index.min() >= day_bounds_utc(date(2026, 10, 7) - timedelta(days=21))[0]
+
+
+def test_no_scoring_before_the_last_deadline(tmp_path: Path) -> None:
+    issue(tmp_path, date(2026, 10, 7))
+    # prices for 2026-10-08 visible (e.g. a manual run with odd data), but it is 11:30 CEST
+    # on 2026-10-07: the D+1 forecast could still be issued, so nothing may be marked missed
+    evaluate(tmp_path, date(2026, 10, 8), datetime(2026, 10, 7, 9, 30, tzinfo=UTC))
+    assert not score_path(tmp_path, date(2026, 10, 8)).exists()
