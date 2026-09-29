@@ -16,6 +16,8 @@ from typing import Any
 import httpx
 import pandas as pd
 
+from prognosebuch.timeutil import TIME_UNIT
+
 BASE_URL = "https://www.smard.de/app/chart_data"
 ATTRIBUTION = "Bundesnetzagentur | SMARD.de"
 
@@ -82,7 +84,7 @@ class SmardClient:
         if not rows:
             return _empty()
         ms, vals = zip(*rows, strict=True)
-        idx = pd.to_datetime(list(ms), unit="ms", utc=True)
+        idx = pd.DatetimeIndex(pd.to_datetime(list(ms), unit="ms", utc=True)).as_unit(TIME_UNIT)
         return pd.Series(
             vals, index=pd.DatetimeIndex(idx, name="delivery_start_utc"), dtype="float64"
         )

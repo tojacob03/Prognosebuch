@@ -16,14 +16,13 @@ import numpy as np
 import pandas as pd
 
 from prognosebuch.forecast import DEADLINE
+from prognosebuch.history import day_is_complete, load_actuals, update_actuals
 from prognosebuch.metrics import diebold_mariano, mae, mean_pinball, rmse, skill
 from prognosebuch.registry import HORIZONS, LIVE_MODELS, REFERENCE_MODEL_KEY, LiveModel
-from prognosebuch.smard import PRICE_DE_LU, SmardClient
+from prognosebuch.smard import SmardClient
 from prognosebuch.storage import (
-    ACTUALS_SCHEMA,
     SCORE_SCHEMA,
     SCORE_SCHEMA_VERSION,
-    actuals_path,
     dump_json,
     forecast_paths,
     read_parquet,
@@ -31,75 +30,10 @@ from prognosebuch.storage import (
     to_parquet_bytes,
     write_once,
 )
-from prognosebuch.timeutil import TZ, day_bounds_utc, day_slots_utc, local_date, local_iso
+from prognosebuch.timeutil import TZ, day_slots_utc, local_date, local_iso
 
-ACTUALS_LOOKBACK_DAYS = 21
 WINDOWS: dict[str, int | None] = {"7d": 7, "30d": 30, "90d": 90, "all": None}
 MIN_DM_DAYS = 10
-
-
-# --------------------------------------------------------------------------- actuals
-
-
-def update_actuals(root: Path, client: SmardClient, now_utc: datetime) -> list[Path]:
-    """Merge the latest SMARD prices into the monthly actuals files (newer values win)."""
-    today = local_date(pd.Timestamp(now_utc))
-    start = day_bounds_utc(today - timedelta(days=ACTUALS_LOOKBACK_DAYS))[0]
-    end = day_bounds_utc(today + timedelta(days=2))[1]
-    fresh = client.fetch(PRICE_DE_LU, start, end)
-    if fresh.empty:
-        return []
-    months = pd.Series(
-        pd.DatetimeIndex(fresh.index).tz_convert(TZ).strftime("%Y-%m"), index=fresh.index
-    )
-    changed: list[Path] = []
-    for month, idx in fresh.groupby(months).groups.items():
-        path = actuals_path(root, str(month))
-        new = fresh.loc[idx]
-        old = load_actuals_file(path)
-        merged = pd.concat([old, new])
-        merged = merged[~merged.index.duplicated(keep="last")].sort_index()
-        if old.equals(merged):
-            continue
-        df = pd.DataFrame(
-            {
-                "delivery_start_utc": merged.index,
-                "delivery_start_local": local_iso(pd.DatetimeIndex(merged.index)),
-                "price_eur_mwh": merged.to_numpy(),
-            }
-        )
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(to_parquet_bytes(df, ACTUALS_SCHEMA))
-        changed.append(path)
-    return changed
-
-
-def load_actuals_file(path: Path) -> pd.Series:
-    if not path.exists():
-        return pd.Series(
-            [], index=pd.DatetimeIndex([], tz="UTC", name="delivery_start_utc"), dtype="float64"
-        )
-    df = read_parquet(path)
-    s = pd.Series(
-        df["price_eur_mwh"].to_numpy(dtype=float),
-        index=pd.DatetimeIndex(df["delivery_start_utc"], name="delivery_start_utc"),
-    )
-    s.index = pd.DatetimeIndex(s.index).as_unit("ns")
-    return s
-
-
-def load_actuals(root: Path) -> pd.Series:
-    files = sorted((root / "actuals" / "day_ahead_price_de_lu").glob("*.parquet"))
-    parts = [load_actuals_file(f) for f in files]
-    if not parts:
-        return load_actuals_file(Path("/nonexistent"))
-    s = pd.concat(parts).sort_index()
-    return s[~s.index.duplicated(keep="last")]
-
-
-def day_is_complete(actuals: pd.Series, d: date) -> bool:
-    slots = day_slots_utc(d)
-    return bool(actuals.reindex(slots).notna().all())
 
 
 # --------------------------------------------------------------------------- scoring

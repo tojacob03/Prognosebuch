@@ -8,12 +8,14 @@ autumn DST switch.
 from __future__ import annotations
 
 from datetime import date, datetime, time, timedelta
+from typing import Final
 from zoneinfo import ZoneInfo
 
 import pandas as pd
 
 TZ = ZoneInfo("Europe/Berlin")
 SLOT_FREQ = "15min"
+TIME_UNIT: Final = "ns"
 
 
 def local_midnight_utc(d: date) -> pd.Timestamp:
@@ -29,7 +31,16 @@ def day_bounds_utc(d: date) -> tuple[pd.Timestamp, pd.Timestamp]:
 def day_slots_utc(d: date) -> pd.DatetimeIndex:
     """Start instants (UTC) of all quarter-hours of local delivery day ``d``."""
     start, end = day_bounds_utc(d)
-    return pd.date_range(start, end, freq=SLOT_FREQ, inclusive="left", name="delivery_start_utc")
+    idx = pd.date_range(start, end, freq=SLOT_FREQ, inclusive="left", name="delivery_start_utc")
+    return idx.as_unit(TIME_UNIT)
+
+
+def normalize_index(s: pd.Series) -> pd.Series:
+    """Use one datetime unit everywhere: mixing units makes pandas 3 lookups very slow."""
+    idx = pd.DatetimeIndex(s.index)
+    if idx.unit == TIME_UNIT:
+        return s
+    return s.set_axis(idx.as_unit(TIME_UNIT))
 
 
 def to_local(ts: pd.Timestamp | datetime) -> datetime:

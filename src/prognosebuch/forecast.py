@@ -21,6 +21,7 @@ from typing import Any
 import pandas as pd
 
 from prognosebuch import __version__
+from prognosebuch.history import load_actuals, price_history
 from prognosebuch.models.base import InfoSet
 from prognosebuch.registry import HORIZONS, LIVE_MODELS, LiveModel
 from prognosebuch.smard import ATTRIBUTION, PRICE_DE_LU, SmardClient
@@ -37,7 +38,7 @@ from prognosebuch.timeutil import TZ, day_bounds_utc, local_iso
 
 EARLIEST_ISSUE = time(8, 45)
 DEADLINE = time(12, 0)
-HISTORY_DAYS = 110
+HISTORY_DAYS = 110  # fetched fresh from SMARD; older history comes from actuals/
 
 
 class TooEarlyError(RuntimeError):
@@ -142,14 +143,15 @@ def run_forecast(
     fetch_start = day_bounds_utc(issue_date - timedelta(days=HISTORY_DAYS))[0]
     fetch_end = day_bounds_utc(issue_date + timedelta(days=3))[1]
     fetched_at = pd.Timestamp(now_utc).floor("s")
-    prices = client.fetch(PRICE_DE_LU, fetch_start, fetch_end)
+    fresh = client.fetch(PRICE_DE_LU, fetch_start, fetch_end)
 
     next_day_start = day_bounds_utc(issue_date)[1]
-    if (prices.index >= next_day_start).any():
+    if (fresh.index >= next_day_start).any():
         raise PricesAlreadyPublishedError(
             f"SMARD already has prices for {issue_date + timedelta(days=1)}; refusing to issue"
         )
-    info = InfoSet.cut(issue_date, prices)
+    archive = load_actuals(root)
+    info = InfoSet.cut(issue_date, price_history(archive, fresh))
     issued_at = pd.Timestamp(now_utc).floor("s")
 
     written: list[Path] = []
@@ -162,7 +164,7 @@ def run_forecast(
             continue
         pq_path, js_path = forecast_paths(root, issue_date, lm.model.name, lm.model.version)
         data = to_parquet_bytes(df, FORECAST_SCHEMA)
-        manifest = build_manifest(lm, df, info, issued_at, fetched_at, prices, run, data)
+        manifest = build_manifest(lm, df, info, issued_at, fetched_at, fresh, archive, run, data)
         write_once(pq_path, data)
         write_once(js_path, dump_json(manifest))
         written += [pq_path, js_path]
@@ -175,12 +177,15 @@ def build_manifest(
     info: InfoSet,
     issued_at: pd.Timestamp,
     fetched_at: pd.Timestamp,
-    raw_prices: pd.Series,
+    fresh: pd.Series,
+    archive: pd.Series,
     run: RunInfo,
     parquet_bytes: bytes,
 ) -> dict[str, Any]:
     last_used = info.prices.index.max() if len(info.prices) else None
-    last_seen = raw_prices.index.max() if len(raw_prices) else None
+    first_used = info.prices.index.min() if len(info.prices) else None
+    last_seen = fresh.index.max() if len(fresh) else None
+    archive_last = archive.index.max() if len(archive) else None
     return {
         "schema_version": FORECAST_SCHEMA_VERSION,
         "model": lm.model.name,
@@ -200,7 +205,11 @@ def build_manifest(
                 "last_value_available_utc": last_seen.isoformat()
                 if last_seen is not None
                 else None,
+                "first_value_used_utc": first_used.isoformat() if first_used is not None else None,
                 "n_values_used": len(info.prices),
+                "archive_last_value_utc": archive_last.isoformat()
+                if archive_last is not None
+                else None,
                 "attribution": ATTRIBUTION,
             }
         },

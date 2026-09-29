@@ -8,7 +8,7 @@ from typing import Protocol
 
 import pandas as pd
 
-from prognosebuch.timeutil import day_bounds_utc
+from prognosebuch.timeutil import day_bounds_utc, normalize_index
 
 QUANTILES: tuple[float, ...] = (0.1, 0.5, 0.9)
 QUANTILE_COLUMNS: tuple[str, ...] = ("q10", "q50", "q90")
@@ -48,6 +48,7 @@ class InfoSet:
     def cut(cls, issue_date: date, prices: pd.Series) -> InfoSet:
         """Build the information set by hard-filtering everything after the cutoff."""
         end = day_bounds_utc(issue_date)[1]
+        prices = normalize_index(prices)
         return cls(issue_date=issue_date, prices=prices[prices.index < end])
 
 
