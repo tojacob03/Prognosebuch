@@ -39,7 +39,8 @@ The answer has to be checkable by someone who does not trust the author.
 - *Benchmarks first.* Three rules of thumb (same hour on the last known day, one week before,
   and the "similar day" rule from Lago et al. 2021, which is the reference for skill scores).
 - *Models.* LEAR, a lasso-regularised autoregression per hour (implemented from the paper), and
-  gradient boosting with quantile loss on weather forecasts, lagged prices and calendar. New
+  gradient boosting with quantile loss on weather forecasts, lagged prices and calendar, with
+  conformally calibrated bands. New
   models run as new versions in parallel; nothing is replaced silently.
 - *Uncertainty.* Every forecast has a P10–P90 band. The site also turns the forecast into one
   user-facing answer, the cheapest 3-hour window, with probabilities that are themselves
@@ -59,18 +60,26 @@ SMARD (Bundesnetzagentur, CC BY 4.0) and Open-Meteo (CC BY 4.0). Running cost: 0
 Rolling backtest over 363 target days (2025-10-01 to 2026-09-28), the same code with only the
 data known on each day; a test checks that it reproduces the live forecast exactly.
 
-| Model | MAE D+1 | Skill D+1 | MAE D+2 | Skill D+2 | 80 % band coverage D+1 |
-|---|---|---|---|---|---|
-| `lear.v1` | 22.0 | +0.33 | 29.2 | +0.23 | 0.76 |
-| `naive_similar_day.v1` (reference) | 32.7 | 0 | 37.9 | 0 | 0.76 |
-| `naive_last_day.v1` | 30.2 | +0.07 | 38.5 | −0.02 | 0.77 |
-| `naive_weekly.v1` | 37.8 | −0.16 | 37.8 | 0.00 | 0.77 |
+| Model | MAE D+1 | Skill D+1 | Pinball D+1 | MAE D+2 | Skill D+2 | 80 % band coverage (D+1 / D+2) |
+|---|---|---|---|---|---|---|
+| `gbm.v1` | 19.3 | +0.41 | 6.4 | 21.8 | +0.43 | 0.78 / 0.78 |
+| `lear.v1` | 22.0 | +0.33 | 7.6 | 29.2 | +0.23 | 0.76 / 0.76 |
+| `naive_last_day.v1` | 30.2 | +0.07 | 11.0 | 38.5 | −0.02 | 0.77 / 0.77 |
+| `naive_similar_day.v1` (reference) | 32.7 | 0 | 12.0 | 37.9 | 0 | 0.76 / 0.76 |
+| `naive_weekly.v1` | 37.8 | −0.16 | 13.5 | 37.8 | 0.00 | 0.77 / 0.76 |
 
-MAE in EUR/MWh per quarter-hour (10 EUR/MWh = 1 ct/kWh). Diebold-Mariano: LEAR better than
-every rule of thumb at both horizons (p < 0.001). What the backtest also shows:
+MAE and pinball in EUR/MWh per quarter-hour (10 EUR/MWh = 1 ct/kWh). Diebold-Mariano on daily
+MAE: gbm.v1 better than LEAR and LEAR better than every rule of thumb, at both horizons
+(p < 0.0001). What the backtest also shows:
 
-- The bands of all models are too narrow (0.76 instead of 0.80). The band is estimated from the
-  previous 60–90 days and lags behind when volatility rises.
+- Weather matters most for the day after tomorrow: gbm.v1's error grows only from 19.3 to 21.8
+  from D+1 to D+2, LEAR's from 22.0 to 29.2, because gbm.v1 sees a 72-hour weather forecast while
+  LEAR only sees prices that are one day older.
+- Raw quantile trees were overconfident: their 80 % band covered only 58 % of prices. After
+  conformal calibration on the previous 60 days it covers 78 %. All bands are still slightly
+  too narrow because they are estimated from the recent past and lag behind rising volatility.
+- The last 30 days of the period (September 2026) were much harder: gbm.v1 MAE D+1 35.3, band
+  coverage 0.68.
 - Negative prices and spikes are where all models are worst; a model that only sees prices
   cannot know that tomorrow is sunny and windy.
 

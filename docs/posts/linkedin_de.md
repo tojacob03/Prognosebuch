@@ -1,7 +1,7 @@
 <!--
 ENTWURF. Erst veröffentlichen, wenn mindestens vier Wochen Live-Bilanz vorliegen.
 Alle Werte in [[…]] aus `uv run prognosebuch headline` übernehmen (nur Live-Zahlen, keine
-Backtest-Zahlen). Wenn LEAR live NICHT besser ist als die Faustregel, den zweiten Absatz
+Backtest-Zahlen). Wenn das beste Modell live NICHT besser ist als die Faustregel, den zweiten Absatz
 entsprechend umschreiben: Das ist dann das Ergebnis.
 -->
 
@@ -10,7 +10,7 @@ Kann man den Strompreis von morgen vorhersagen? Und woher weiß man, ob die Vorh
 Seit dem 30. September lege ich jeden Morgen vor 12 Uhr eine Prognose der Day-Ahead-Preise für Deutschland ab, für jede Viertelstunde der nächsten zwei Tage, mit Unsicherheitsband. Jede Prognose wird als unveränderliche Datei öffentlich gespeichert, bevor die Börse die Preise veröffentlicht, und am Nachmittag automatisch bewertet. Verpasste Tage zählen mit.
 
 Nach [[TAGE]] Tagen:
-• Mein bestes Modell (LEAR, eine regularisierte Autoregression) lag im Mittel [[MAE_LEAR_D1]] €/MWh daneben, die einfache Faustregel „wie gestern bzw. wie letzte Woche" [[MAE_REF_D1]] €/MWh.
+• Mein bestes Modell ([[MODELL]], z. B. Gradient Boosting mit Wetterprognosen) lag im Mittel [[MAE_BEST_D1]] €/MWh daneben, die einfache Faustregel „wie gestern bzw. wie letzte Woche" [[MAE_REF_D1]] €/MWh.
 • Das sind [[SKILL_PROZENT]] % weniger Fehler. Der Diebold-Mariano-Test sagt: [[DM_SATZ]].
 • Verpasst: [[VERPASST]] Prognosen.
 • Am schlechtesten sind alle Modelle bei negativen Preisen und Preisspitzen. Warum, steht auf der Seite „Wo das Modell versagt".
