@@ -369,10 +369,11 @@ T: dict[str, dict[str, str]] = {
     "imprint_links": {
         "de": "Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte ich "
         "keinen Einfluss habe. Für diese fremden Inhalte ist stets der jeweilige Anbieter oder "
-        "Betreiber der Seiten verantwortlich. Bei Bekanntwerden von Rechtsverletzungen werde ich derartige Links "
-        "umgehend entfernen.",
+        "Betreiber der Seiten verantwortlich. Bei Bekanntwerden von Rechtsverletzungen werde ich "
+        "derartige Links umgehend entfernen.",
         "en": "This website links to external third-party websites whose content I cannot "
-        "influence. The respective provider or operator is always responsible for that content. If I become "
+        "influence. The respective provider or operator is always responsible for that content. "
+        "If I become "
         "aware of legal violations, I will remove such links immediately.",
     },
     "privacy_title": {"de": "Datenschutz", "en": "Privacy"},
