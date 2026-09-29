@@ -6,7 +6,7 @@ The code in this repository is MIT-licensed (see `LICENSE`). The data in `foreca
 
 Please attribute as:
 
-> Prognosebuch (github.com/tojacob03/prognosebuch), CC BY 4.0.
+> Prognosebuch (github.com/tojacob03/Prognosebuch), CC BY 4.0.
 > Price data: Bundesnetzagentur | SMARD.de, CC BY 4.0.
 
 `actuals/` contains day-ahead prices republished from SMARD.de unchanged except for

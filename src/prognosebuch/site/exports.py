@@ -13,7 +13,7 @@ from prognosebuch.site.data import SiteData
 from prognosebuch.smard import ATTRIBUTION
 from prognosebuch.timeutil import TZ
 
-REPO_URL = "https://github.com/tojacob03/prognosebuch"
+REPO_URL = "https://github.com/tojacob03/Prognosebuch"
 CSV_ACTUALS_SINCE = pd.Timestamp("2025-10-01", tz=TZ)
 
 

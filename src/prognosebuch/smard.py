@@ -59,7 +59,7 @@ def http_get_json(url: str, retries: int = 4) -> Any:
             r = httpx.get(
                 url,
                 timeout=30.0,
-                headers={"User-Agent": "prognosebuch (github.com/tojacob03/prognosebuch)"},
+                headers={"User-Agent": "prognosebuch (github.com/tojacob03/Prognosebuch)"},
             )
             r.raise_for_status()
             return r.json()
