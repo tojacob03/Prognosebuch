@@ -18,6 +18,11 @@ The target is the price minus the mean of the last seven known days, so the tree
 shape and weather effect while the level comes from recent prices (trees cannot
 extrapolate beyond the price range seen in training).
 
+Band: quantile trees fit their quantiles in-sample and are overconfident out of sample (in
+the backtest the raw 80 % band covered only 58 %). The published q10/q90 are therefore
+conformally calibrated on the model's own out-of-sample forecasts for the previous
+``error_days`` target days (see ``conformalize``); the median is not changed.
+
 Training: all target days from ``train_from`` up to the most recent Sunday on or before the
 issue date (weekly re-estimation). Every training row only uses information that existed
 at its own issue time, and the Sunday cutoff is before the issue date, so the fitted model
@@ -42,6 +47,8 @@ from prognosebuch.weather import FEATURES as WEATHER_FEATURES
 
 _CACHE: dict[tuple[Any, ...], list[HistGradientBoostingRegressor]] = {}
 _CACHE_MAX = 64
+_RAW: dict[tuple[Any, ...], pd.DataFrame] = {}
+_RAW_MAX = 512
 
 
 def weather_matrix(weather: pd.DataFrame, lead: int, feature: str) -> pd.DataFrame:
@@ -140,12 +147,7 @@ class GbmModel:
 
     def _models(self, inputs: Inputs, h: int, anchor: date) -> list[HistGradientBoostingRegressor]:
         known = inputs.known_at(anchor)
-        w = known.weather
-        key = (
-            self.name, self.version, h, anchor, len(known.prices),
-            known.prices.index.max() if len(known.prices) else None,
-            0 if w is None else len(w),
-        )  # fmt: skip
+        key = (self, h, anchor, *_fingerprint(known))
         if key in _CACHE:
             return _CACHE[key]
         X, y = self.design(known, h, until=anchor)
@@ -175,11 +177,14 @@ class GbmModel:
 
     # ------------------------------------------------------------ prediction
 
-    def quantiles_for(self, inputs: Inputs, issue: date, target: date) -> pd.DataFrame:
-        """Quarter-hourly q10/q50/q90 for ``target`` using only inputs known on ``issue``."""
+    def raw_quantiles_for(self, inputs: Inputs, issue: date, target: date) -> pd.DataFrame:
+        """Uncalibrated quarter-hourly q10/q50/q90 using only inputs known on ``issue``."""
         h = (target - issue).days
         if h < 1:
             raise ValueError("target date must be after the issue date")
+        key = (self, issue, target, *_fingerprint(inputs.known_at(issue)))
+        if key in _RAW:
+            return _RAW[key]
         known = inputs.known_at(issue)
         models = self._models(inputs, h, sunday_on_or_before(issue))
         X, _ = self.design(known, h, until=target)
@@ -201,13 +206,81 @@ class GbmModel:
             name: LearModel.to_quarter_hours(preds[:, k], target, shape)
             for k, name in enumerate(("q10", "q50", "q90"))
         }
-        return pd.DataFrame(cols)
+        out = pd.DataFrame(cols)
+        if len(_RAW) >= _RAW_MAX:
+            _RAW.pop(next(iter(_RAW)))
+        _RAW[key] = out
+        return out
+
+    def calibration_set(
+        self, inputs: Inputs, issue: date, h: int
+    ) -> list[tuple[pd.DataFrame, pd.Series]]:
+        """Raw forecasts and actual prices of the previous target days known at ``issue``."""
+        out = []
+        for k in range(self.error_days):
+            past_target = issue - timedelta(days=k)
+            try:
+                raw = self.raw_quantiles_for(inputs, past_target - timedelta(days=h), past_target)
+            except InsufficientDataError:
+                continue
+            actual = inputs.prices.reindex(raw.index)
+            if actual.notna().mean() >= 0.9:
+                out.append((raw, actual))
+        return out
+
+    def quantiles_for(self, inputs: Inputs, issue: date, target: date) -> pd.DataFrame:
+        """Calibrated q10/q50/q90: raw quantile regression plus conformal adjustment."""
+        h = (target - issue).days
+        raw = self.raw_quantiles_for(inputs, issue, target)
+        calib = self.calibration_set(inputs.known_at(issue), issue, h)
+        if len(calib) < self.min_error_days:
+            raise InsufficientDataError(
+                f"{self.name}: only {len(calib)} days to calibrate the band"
+            )
+        return self.calibrate(raw, calib)
+
+    def calibrate(
+        self, raw: pd.DataFrame, calib: list[tuple[pd.DataFrame, pd.Series]]
+    ) -> pd.DataFrame:
+        return conformalize(raw, calib)
 
     def point_for(self, inputs: Inputs, issue: date, target: date) -> pd.Series:
-        return self.quantiles_for(inputs, issue, target)["q50"]
+        return self.raw_quantiles_for(inputs, issue, target)["q50"]
 
     def predict(self, info: Any, target_date: date) -> pd.DataFrame:
         return self.quantiles_for(info.inputs, info.issue_date, target_date)
+
+
+def conformalize(
+    raw: pd.DataFrame, calib: list[tuple[pd.DataFrame, pd.Series]], tail: float = 0.1
+) -> pd.DataFrame:
+    """Shift q10 and q90 so that each tail held ``tail`` of the calibration prices.
+
+    Conformalized quantile regression (Romano, Patterson and Candès, 2019), per side: the
+    lower edge moves by the (1 - tail) quantile of (q10 - actual), the upper edge by that of
+    (actual - q90). Negative shifts narrow a band that was too wide. q50 is unchanged.
+    """
+    lo = np.concatenate([(r["q10"] - a).dropna().to_numpy() for r, a in calib])
+    hi = np.concatenate([(a - r["q90"]).dropna().to_numpy() for r, a in calib])
+    c_lo = float(np.quantile(lo, 1 - tail))
+    c_hi = float(np.quantile(hi, 1 - tail))
+    out = raw.copy()
+    out["q10"] = np.minimum(raw["q10"] - c_lo, raw["q50"])
+    out["q90"] = np.maximum(raw["q90"] + c_hi, raw["q50"])
+    return out
+
+
+def _fingerprint(inputs: Inputs) -> tuple[Any, ...]:
+    """Cheap identity of the data a cached fit or forecast was computed from."""
+    w = inputs.weather
+    p = inputs.prices
+    return (
+        len(p),
+        p.index.max() if len(p) else None,
+        round(float(np.nansum(p.to_numpy(dtype=float))), 6),
+        0 if w is None else len(w),
+        None if w is None else round(float(np.nansum(w[list(WEATHER_FEATURES)].to_numpy())), 6),
+    )
 
 
 GBM_V1 = GbmModel()

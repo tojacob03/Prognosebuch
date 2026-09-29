@@ -70,6 +70,7 @@ Push-Zeit auf GitHub und die Logs schon.
 | `naive_weekly.v1` | Gleicher Wochentag eine Woche vor dem Zieltag |
 | `naive_similar_day.v1` | **Referenz.** Standard aus der Literatur (Lago et al. 2021): Mo/Sa/So wie vor einer Woche, Di–Fr wie der Vortag (bei D+2 der letzte bekannte Tag) |
 | `lear.v1` | Lasso-geschätzte Autoregression (siehe unten) |
+| `gbm.v1` | Gradient Boosting mit Quantilverlust auf Wetterprognosen, verzögerten Preisen und Kalender (siehe unten) |
 
 Kopiert wird nach Uhrzeit, deshalb funktionieren Tage mit Zeitumstellung.
 
@@ -83,7 +84,28 @@ Kopiert wird nach Uhrzeit, deshalb funktionieren Tage mit Zeitumstellung.
 - Mittel aus drei Kalibrierungsfenstern (182, 364, 728 Tage), täglich neu geschätzt.
 - Viertelstunden: Stundenprognose plus das mittlere Profil innerhalb der Stunde der letzten 28 Tage.
 
-**Unsicherheitsband (alle Modelle).** P10 und P90 sind die Punktprognose plus das 10- bzw.
+**Gradient Boosting** (`gbm.v1`): histogrammbasiertes Gradient Boosting aus scikit-learn
+(dieselbe Verfahrensfamilie wie LightGBM, gewählt, weil es ohne native OpenMP-Bibliothek
+auskommt) mit Quantilverlust, je ein Modell für P10, P50 und P90 und je Horizont, über alle
+24 Stunden gemeinsam.
+
+- Wetter: Open-Meteo Previous Runs des DWD-Modells ICON an 12 Punkten (Wind in 100 m Höhe in
+  Wind-Regionen an Land und auf See, Sonneneinstrahlung, Temperatur), zusammengefasst zu einem
+  Windleistungs-Näherungswert, mittlerer Windgeschwindigkeit, Einstrahlung und Temperatur.
+  D+1 nutzt Werte, die 48 h vor dem Zeitpunkt vorhergesagt wurden, D+2 72 h. Ein Wert gilt 6 h
+  nach seinem Modelllauf als verfügbar; das Informationspaket weist alles zurück, was am
+  Ausgabetag um 08:45 noch nicht verfügbar war.
+- Dazu: Tagesmittel des Zieltags und des letzten bekannten Tags und ihre Differenz; verzögerte
+  Preise (letzter bekannter Tag, ein Tag davor, eine Woche vor dem Zieltag; Mittel, Minimum,
+  Maximum des letzten bekannten Tags; Sieben-Tage-Mittel); Stunde, Wochentag, Wochenende,
+  Feiertag, Jahreszeit.
+- Zielgröße ist der Preis minus Sieben-Tage-Mittel: Die Bäume lernen Form und Wettereffekt,
+  das Niveau kommt aus den jüngsten Preisen.
+- Wöchentlich neu geschätzt auf allen Tagen bis zum letzten Sonntag; Training ab März 2024
+  (das Archiv der Previous Runs beginnt im Februar 2024).
+- P10 und P90 kommen direkt aus den Quantilmodellen; überkreuzen sie sich, werden sie sortiert.
+
+**Unsicherheitsband (Faustregeln und LEAR).** P10 und P90 sind die Punktprognose plus das 10- bzw.
 90-%-Quantil der eigenen Fehler des Modells an den letzten 60 (LEAR) bzw. 90 (Faustregeln)
 Zieltagen, je Stunde und Horizont. Jede frühere Prognose wird dabei genau so neu berechnet, wie
 sie an ihrem Ausgabetag entstanden wäre. Das Band nimmt an, dass die jüngste Fehlerverteilung
@@ -141,9 +163,11 @@ stehen getrennt und sind gekennzeichnet. Als Nachweis zählt nur die Live-Bilanz
 - **Noch keine Last- und Erneuerbaren-Prognosen der Netzbetreiber.** SMARD speichert keine alten
   Stände; unbekannt ist, was an vergangenen Tagen um 09:00 vorlag. Ein stündlicher Probe misst
   das. Solche Eingaben kommen erst hinzu, wenn sie nachweislich vor dem Prognosezeitpunkt vorliegen.
-- Wetterprognosen (Open-Meteo, geplant) werden mit der Previous-Runs-API trainiert, mit so viel
-  Vorlauf, dass die Daten zum Prognosezeitpunkt existierten (D+1: 48 h, D+2: 72 h). Die
-  Historical-Forecast-API liegt nah an gemessenem Wetter und würde ein Datenleck erzeugen.
+- Wetterprognosen kommen aus der Previous-Runs-API, mit so viel Vorlauf, dass die Daten zum
+  Prognosezeitpunkt existierten (D+1: 48 h, D+2: 72 h). Die Historical-Forecast-API liegt nah
+  an gemessenem Wetter und würde ein Datenleck erzeugen. Der Preis dieser Vorsicht: Live gäbe
+  es einen frischeren Wetterlauf; das Modell nutzt ihn absichtlich nicht, damit Training und
+  Live-Betrieb denselben Vorlauf haben.
 - Die Bänder sind unbedingt (siehe oben), und Fehler innerhalb eines Tages hängen stark
   zusammen: Ein schlechter Tag ist meist über viele Stunden schlecht.
 - Seltene Ereignisse (extreme Spitzen, Ausfälle, Störungen der Marktkopplung) lassen sich aus

@@ -43,6 +43,9 @@ def _point(
 ) -> pd.Series | pd.DataFrame | None:
     """Point forecast, or the full quantile frame for models with native quantiles."""
     try:
+        raw = getattr(model, "raw_quantiles_for", None)
+        if raw is not None:  # calibrated in the main process, see backtest_model
+            return raw(inputs, issue, target)
         native = getattr(model, "quantiles_for", None)
         if native is not None:
             return native(inputs, issue, target)
@@ -89,11 +92,29 @@ def backtest_model(
                 if (f := err_by_target.get(issue - timedelta(days=k))) is not None
             ]
             if t in by_target and len(frames) >= model.min_error_days:
-                if t in native:
+                calibrate = getattr(model, "calibrate", None)
+                if t in native and calibrate is not None:
+                    calib = []
+                    for k in range(model.error_days):
+                        past = issue - timedelta(days=k)
+                        if past in native:
+                            actual = prices.reindex(native[past].index)
+                            if actual.notna().mean() >= 0.9:
+                                calib.append((native[past], actual))
+                    if len(calib) < model.min_error_days:
+                        calib = []
+                    q = (
+                        calibrate(native[t], calib)[["q10", "q50", "q90"]].to_numpy()
+                        if calib
+                        else np.full((len(slots), 3), np.nan)
+                    )
+                    status = "scored" if calib else "missed"
+                elif t in native:
                     q = native[t][["q10", "q50", "q90"]].to_numpy()
+                    status = "scored"
                 else:
                     q = apply_bands(by_target[t], hourly_error_quantiles(frames)).to_numpy()
-                status = "scored"
+                    status = "scored"
             err = y - q[:, 1]
             rows.append(
                 pd.DataFrame(

@@ -154,6 +154,41 @@ def cmd_release_notes(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_headline(args: argparse.Namespace) -> int:
+    """Print the live numbers for README, case study and posts (never backtest numbers)."""
+    root = Path(args.root)
+    path = root / "scores" / "summary.json"
+    if not path.exists():
+        print("No live scores yet.")
+        return 0
+    s = json.loads(path.read_text())
+    w = s["windows"]["all"]
+    print(f"Live period: {w['from']} to {w['to']} (target days)")
+    print(f"Missed forecasts (model x horizon x day): {len(s.get('missed', []))}")
+    for r in sorted(w["models"], key=lambda r: (r["horizon_days"], r["all"]["mae"] or 1e9)):
+        a = r["all"]
+        print(
+            f"  D+{r['horizon_days']} {r['model']:<22} days {r['days_forecast']}/{r['days_due']}"
+            f"  MAE {a['mae']}  RMSE {a['rmse']}  skill {a['skill_mae']}"
+            f"  pinball {a['pinball']}  coverage80 {a['coverage_80']}"
+        )
+    for d in w.get("dm_tests", []):
+        if "p_value" in d and s["reference_model"] in (d["model_a"], d["model_b"]):
+            print(
+                f"  DM D+{d['horizon_days']} {d['model_a']} vs {d['model_b']}: "
+                f"stat {d['statistic']}, p {d['p_value']}, n {d['n_days']}"
+            )
+    for r in s.get("cheapest_windows", {}).get("windows", {}).get("all", []):
+        if r.get("days_scored"):
+            print(
+                f"  cheapest 3h D+{r['horizon_days']} {r['model']}: hit {r['hit_rate']} "
+                f"(stated {r['mean_p_cheapest']}), within 0.5 ct {r['near_rate']} "
+                f"(stated {r['mean_p_near']}), saving vs day mean "
+                f"{r['saving_vs_day_mean_eur_mwh']} EUR/MWh"
+            )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="prognosebuch")
     p.add_argument("--root", default=".", help="repository root (default: .)")
@@ -185,6 +220,8 @@ def main(argv: list[str] | None = None) -> int:
     st = sub.add_parser("site", help="build the static website and data exports")
     st.add_argument("--out", default="_site")
     st.set_defaults(func=cmd_site)
+    hl = sub.add_parser("headline", help="print live headline numbers (for README and posts)")
+    hl.set_defaults(func=cmd_headline)
     rn = sub.add_parser("release-notes", help="print markdown notes for the weekly release")
     rn.set_defaults(func=cmd_release_notes)
     args = p.parse_args(argv)

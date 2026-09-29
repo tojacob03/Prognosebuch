@@ -4,6 +4,8 @@
 the day after — and how reliable is a model compared with simple rules of thumb, measured
 on real days?**
 
+**Live:** https://tojacob03.github.io/Prognosebuch/ (Deutsch) · https://tojacob03.github.io/Prognosebuch/en/ (English)
+
 Prognosebuch ("forecast ledger") publishes a probabilistic forecast (P10/P50/P90, 15-minute
 resolution) every morning, **before** the auction results are published. Each forecast is
 committed as an immutable file, scored automatically against the real prices, and added to a
@@ -54,10 +56,11 @@ code commit, workflow run and the SHA-256 of the forecast file.
 | `naive_weekly.v1` | Same quarter-hour one week before the target day |
 | `naive_similar_day.v1` | Reference for skill scores (Lago et al. 2021): Mon/Sat/Sun from one week before, Tue–Fri from the last known day |
 | `lear.v1` | Lasso-estimated autoregression per hour (after Lago et al. 2021) on lagged prices and calendar, three calibration windows, re-estimated daily |
+| `gbm.v1` | Gradient boosting with quantile loss (P10/P50/P90) on weather forecasts (Open-Meteo, lead 2–3 days), lagged prices and calendar, re-estimated weekly |
 
-Bands come from each model's own errors over the previous 60–90 days, per local hour and
-horizon. Planned: gradient boosting with quantile loss and weather forecasts, added as a new
-model version running in parallel. Full details: [`METHODOLOGY.md`](METHODOLOGY.md).
+Bands of the naive models and LEAR come from each model's own errors over the previous 60–90
+days, per local hour and horizon; `gbm.v1` has its own quantile models. Full details:
+[`METHODOLOGY.md`](METHODOLOGY.md). The story behind it: [`CASE_STUDY.md`](CASE_STUDY.md).
 
 ## Data
 

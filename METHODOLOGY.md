@@ -69,6 +69,7 @@ and the workflow logs are.
 | `naive_weekly.v1` | Copy the same weekday one week before the target day |
 | `naive_similar_day.v1` | **Reference.** Standard benchmark from Lago et al. (2021): Mon/Sat/Sun from one week before, Tue–Fri from the day before (for D+2 the last known day) |
 | `lear.v1` | Lasso-estimated autoregression (see below) |
+| `gbm.v1` | Gradient boosting with quantile loss on weather forecasts, lagged prices and calendar (see below) |
 
 Copying uses local wall-clock time, so DST days work (a repeated hour takes the single hour's
 value; a doubled source hour is averaged; a missing hour is filled from the previous one).
@@ -83,7 +84,25 @@ value; a doubled source hour is averaged; a missing hour is filled from the prev
 - Average of three calibration windows: 182, 364 and 728 days, re-estimated every day.
 - Quarter-hours: hourly forecast plus the mean intra-hour profile of the last 28 days.
 
-**Uncertainty bands (all models).** The 10 % and 90 % quantiles are the point forecast plus the
+**Gradient boosting** (`gbm.v1`): scikit-learn's histogram gradient boosting (the algorithm
+family of LightGBM, chosen because it needs no native OpenMP library) with quantile loss, one
+model per quantile (P10, P50, P90) and horizon, pooled over the 24 hours.
+
+- Weather: Open-Meteo Previous Runs of the DWD ICON model at 12 points (wind at 100 m for
+  onshore/offshore wind areas, solar radiation, temperature), aggregated to a wind power proxy,
+  mean wind speed, mean irradiance and mean temperature. D+1 uses values forecast 48 h before the
+  valid time, D+2 72 h. A value counts as available 6 h after the run it comes from; the
+  information set rejects anything that was not available at 08:45 on the issue day.
+- Also: daily means of the target day and of the last known day and their difference; lagged
+  prices (last known day, one day before, one week before; mean/min/max of the last known day;
+  seven-day mean); hour, weekday, weekend, holiday, season.
+- The target is the price minus the seven-day mean, so trees learn shape and weather effects
+  while the level comes from recent prices.
+- Re-estimated weekly on all days up to the most recent Sunday; training starts in March 2024
+  (the Previous Runs archive begins in February 2024).
+- Its P10/P90 come from the quantile models themselves; quantiles are sorted if they cross.
+
+**Uncertainty bands (naive models and LEAR).** The 10 % and 90 % quantiles are the point forecast plus the
 10 %/90 % quantiles of the model's own errors on the previous 60 (LEAR) or 90 (naive) target days,
 per local hour and horizon, where each past forecast is recomputed exactly as it would have been
 issued on its own issue date. This is simple and honest, but it assumes the recent error
@@ -140,9 +159,11 @@ shown separately and labelled as such. Only the live book counts as evidence.
 - **No grid-operator load or renewable forecasts yet.** SMARD does not keep vintages, so it is
   unknown what was available at 09:00 on past days. An hourly probe is measuring this; such inputs
   are only added once they are demonstrably available before issue time.
-- Weather forecasts (Open-Meteo, planned) will be trained on the Previous Runs API with a lead
-  time long enough that the data existed at issue time (D+1: 48 h, D+2: 72 h), not on the
-  Historical Forecast API, which is close to observed weather and would leak information.
+- Weather forecasts come from the Previous Runs API with a lead time long enough that the data
+  existed at issue time (D+1: 48 h, D+2: 72 h), not from the Historical Forecast API, which is
+  close to observed weather and would leak information. The price of this caution: live, a
+  fresher weather run would be available; the model deliberately does not use it, so that
+  training and live use the same lead time.
 - Bands are unconditional (see above) and quarter-hour errors within a day are strongly
   correlated; a day with a bad forecast is usually bad for many hours at once.
 - Rare events (extreme spikes, outages, market coupling incidents) are not predictable from these
