@@ -64,6 +64,12 @@ Missing forecasts are kept as rows with `status = missed`.
 | in_band | bool | actual within [q10, q90] |
 | scored_at_utc | timestamp (UTC) | When the row was computed |
 
+## `backtest/<first>_<last>/`
+
+Rolling backtest output (not part of the book): `summary.json` (same structure as
+`scores/summary.json`, plus `kind: backtest` and a warning) and `daily.csv` (per model version,
+horizon and target day: `mae`, `rmse`, `pinball`, `coverage_80`, `n_slots`).
+
 ## `scores/summary.json`
 
 Regenerated on every evaluation: rolling windows (7, 30, 90 days, all) per model and

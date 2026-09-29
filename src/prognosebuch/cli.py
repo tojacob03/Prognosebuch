@@ -8,10 +8,11 @@ from __future__ import annotations
 
 import argparse
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 from prognosebuch.audit import run_audit
+from prognosebuch.backtest import run_backtest, write_backtest
 from prognosebuch.evaluate import run_evaluate
 from prognosebuch.forecast import (
     DeadlinePassedError,
@@ -20,7 +21,9 @@ from prognosebuch.forecast import (
     TooEarlyError,
     run_forecast,
 )
+from prognosebuch.history import backfill_actuals, load_actuals
 from prognosebuch.probe import run_probe
+from prognosebuch.registry import CATALOG
 from prognosebuch.smard import SmardClient
 from prognosebuch.timeutil import utc_now
 
@@ -80,6 +83,31 @@ def cmd_probe(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_backfill(args: argparse.Namespace) -> int:
+    root = Path(args.root)
+    changed = backfill_actuals(
+        root, SmardClient(), date.fromisoformat(args.since), date.fromisoformat(args.until)
+    )
+    print(f"updated {len(changed)} archive file(s)")
+    return 0
+
+
+def cmd_backtest(args: argparse.Namespace) -> int:
+    root = Path(args.root)
+    keys = args.models.split(",") if args.models else list(CATALOG)
+    unknown = [k for k in keys if k not in CATALOG]
+    if unknown:
+        raise SystemExit(f"unknown model(s): {unknown}; known: {list(CATALOG)}")
+    first, last = date.fromisoformat(args.first), date.fromisoformat(args.last)
+    res = run_backtest(
+        [CATALOG[k] for k in keys], load_actuals(root), first, last, utc_now(), args.jobs
+    )
+    out = Path(args.out) if args.out else root / "backtest" / f"{first}_{last}"
+    for p in write_backtest(res, out):
+        print(f"wrote {p}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="prognosebuch")
     p.add_argument("--root", default=".", help="repository root (default: .)")
@@ -97,6 +125,17 @@ def main(argv: list[str] | None = None) -> int:
     pr.add_argument("--out", required=True)
     pr.add_argument("--now")
     pr.set_defaults(func=cmd_probe)
+    b = sub.add_parser("backfill", help="load past prices from SMARD into actuals/")
+    b.add_argument("--since", required=True)
+    b.add_argument("--until", required=True)
+    b.set_defaults(func=cmd_backfill)
+    bt = sub.add_parser("backtest", help="rolling-origin backtest on the price archive")
+    bt.add_argument("--first", required=True, help="first target date")
+    bt.add_argument("--last", required=True, help="last target date")
+    bt.add_argument("--models", help="comma-separated model keys (default: all)")
+    bt.add_argument("--out", help="output directory (default: backtest/<first>_<last>)")
+    bt.add_argument("--jobs", type=int, default=-1, help="parallel workers (default: all cores)")
+    bt.set_defaults(func=cmd_backtest)
     args = p.parse_args(argv)
     rc: int = args.func(args)
     return rc

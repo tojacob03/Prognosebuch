@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use these forecasts, scores or code, please cite them as below."
+title: "Prognosebuch: day-ahead electricity price forecasts for DE-LU with a public, pre-registered track record"
+type: software
+authors:
+  - family-names: Jacob
+    given-names: Till Oscar
+    alias: tojacob03
+repository-code: "https://github.com/tojacob03/prognosebuch"
+license: MIT
+version: 0.1.0
+date-released: 2026-09-30
+keywords:
+  - electricity price forecasting
+  - day-ahead market
+  - probabilistic forecasting
+  - forecast evaluation
+  - Germany
+references:
+  - type: article
+    title: "Forecasting day-ahead electricity prices: A review of state-of-the-art algorithms, best practices and an open-access benchmark"
+    authors:
+      - family-names: Lago
+        given-names: Jesus
+      - family-names: Marcjasz
+        given-names: Grzegorz
+      - family-names: De Schutter
+        given-names: Bart
+      - family-names: Weron
+        given-names: Rafał
+    journal: "Applied Energy"
+    volume: 293
+    start: 116983
+    year: 2021
+    doi: "10.1016/j.apenergy.2021.116983"
+  - type: data
+    title: "SMARD Strommarktdaten"
+    authors:
+      - name: "Bundesnetzagentur | SMARD.de"
+    url: "https://www.smard.de"
+    license: CC-BY-4.0

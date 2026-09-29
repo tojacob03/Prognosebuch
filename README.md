@@ -9,9 +9,25 @@ resolution) every morning, **before** the auction results are published. Each fo
 committed as an immutable file, scored automatically against the real prices, and added to a
 public track record. Missed days count and stay visible.
 
-> Status: live since 2026-09-30 with the benchmark models only. There are no results yet —
-> accuracy numbers will appear here once they exist. No model is praised before the record
-> supports it.
+> Status: live since 2026-09-30. There are no live results yet — accuracy numbers will appear
+> here once they exist. No model is praised before the live record supports it.
+
+## Backtest (not the track record)
+
+A rolling backtest over 363 past target days (2025-10-01 to 2026-09-28), re-running the same
+code with only the data known on each day. **It is not pre-registered and therefore optimistic;
+it is shown only to explain why a model runs live.**
+
+| Model | MAE D+1 | Skill D+1 | MAE D+2 | Skill D+2 | 80 % band coverage (D+1) |
+|---|---|---|---|---|---|
+| `lear.v1` | 22.0 | +0.33 | 29.2 | +0.23 | 0.76 |
+| `naive_similar_day.v1` (reference) | 32.7 | 0 | 37.9 | 0 | 0.76 |
+| `naive_last_day.v1` | 30.2 | +0.07 | 38.5 | −0.02 | 0.77 |
+| `naive_weekly.v1` | 37.8 | −0.16 | 37.8 | 0.00 | 0.77 |
+
+MAE in EUR/MWh per quarter-hour; skill = 1 − MAE/MAE(reference). Bands of all models are somewhat
+too narrow (coverage 0.76 instead of 0.80). Details: [`backtest/2025-10-01_2026-09-28/`](backtest/2025-10-01_2026-09-28/).
+Reproduce with `uv run prognosebuch backtest --first 2025-10-01 --last 2026-09-28`.
 
 ## How it works
 
@@ -37,10 +53,11 @@ code commit, workflow run and the SHA-256 of the forecast file.
 | `naive_last_day.v1` | Same quarter-hour on the last known day (D) |
 | `naive_weekly.v1` | Same quarter-hour one week before the target day |
 | `naive_similar_day.v1` | Reference for skill scores (Lago et al. 2021): Mon/Sat/Sun from one week before, Tue–Fri from the last known day |
+| `lear.v1` | Lasso-estimated autoregression per hour (after Lago et al. 2021) on lagged prices and calendar, three calibration windows, re-estimated daily |
 
-Bands of the benchmarks come from their own empirical errors over the previous 90 days,
-per local hour and horizon. Planned: LEAR (lasso-estimated autoregression) and gradient
-boosting with quantile loss, each added as a new model version running in parallel.
+Bands come from each model's own errors over the previous 60–90 days, per local hour and
+horizon. Planned: gradient boosting with quantile loss and weather forecasts, added as a new
+model version running in parallel. Full details: [`METHODOLOGY.md`](METHODOLOGY.md).
 
 ## Data
 
