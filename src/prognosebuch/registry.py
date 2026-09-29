@@ -42,6 +42,7 @@ LIVE_MODELS: tuple[LiveModel, ...] = (
     LiveModel(NAIVE_WEEKLY, live_since=date(2026, 9, 30)),
     LiveModel(NAIVE_SIMILAR_DAY, live_since=date(2026, 9, 30)),
     LiveModel(LEAR_V1, live_since=date(2026, 9, 30)),
+    LiveModel(GBM_V1, live_since=date(2026, 9, 30)),
 )
 
 # Skill scores are reported relative to this model.

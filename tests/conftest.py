@@ -137,3 +137,10 @@ def weather_driven_prices(weather: pd.DataFrame, seed: int = 0) -> pd.Series:
     values = base - 120 * wq["wind_power"].to_numpy() - 0.12 * wq["solar"].to_numpy()
     values = values + rng.normal(0, 8, len(qh))
     return pd.Series(values, index=pd.DatetimeIndex(qh, name="delivery_start_utc").as_unit("ns"))
+
+
+@pytest.fixture(autouse=True)
+def offline_weather(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The forecast job gets synthetic weather instead of calling Open-Meteo."""
+    weather = synthetic_weather(date(2026, 1, 1), date(2026, 12, 31), seed=42)
+    monkeypatch.setattr("prognosebuch.forecast._live_weather", lambda root, issue: weather)
