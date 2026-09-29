@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% from "_macros.html" import metrics_table, segments_table %}
+{% block title %}{{ T.record_title }}: {{ T.site_title }}{% endblock %}
+{% block main %}
+<section class="page-head">
+  <h1>{{ T.record_title }}</h1>
+  <p class="lede">{{ T.record_lede }}</p>
+</section>
+{% if tables %}
+<div class="tabs" role="tablist" aria-label="{{ T.window }}">
+  {% for w, tab in tables.items() %}
+  <button role="tab" type="button" id="tab-{{ w }}" aria-controls="panel-{{ w }}" aria-selected="{{ 'true' if w == '30d' or (loop.first and '30d' not in tables) else 'false' }}">{{ tab.label }}</button>
+  {% endfor %}
+</div>
+{% for w, tab in tables.items() %}
+<div class="panel" role="tabpanel" id="panel-{{ w }}" aria-labelledby="tab-{{ w }}"{% if not (w == '30d' or (loop.first and '30d' not in tables)) %} data-hidden{% endif %}>
+  <h2 class="panel-title">{{ tab.label }}</h2>
+  <p class="range">{{ tab.from }} – {{ tab.to }}</p>
+  {% for h, rows in tab.horizons.items() %}{% if rows %}
+  {{ metrics_table(rows, T, T['horizon_' ~ h]) }}
+  {% endif %}{% endfor %}
+  <p class="note">{{ T.units_note }}</p>
+  <h3>{{ T.segments_title }}</h3>
+  {% for h, rows in tab.segments.items() %}{% if rows %}
+  {{ segments_table(rows, T, T['horizon_' ~ h] ~ ', MAE') }}
+  {% endif %}{% endfor %}
+  <p class="note">{{ T.spike_def.format(x=tab.spike) }}</p>
+  <h3>{{ T.dm_title }}</h3>
+  <p class="section-lede">{{ T.dm_lede }}</p>
+  <div class="table-wrap"><table class="ledger dm-table">
+    <thead><tr><th scope="col">A</th><th scope="col">B</th><th scope="col">D+</th><th scope="col" class="num">n</th><th scope="col" class="num">p</th><th scope="col"></th></tr></thead>
+    <tbody>{% for d in tab.dm %}<tr><td>{{ d.a }}</td><td>{{ d.b }}</td><td>{{ d.h }}</td><td class="num">{{ d.n }}</td><td class="num">{{ d.p }}</td><td>{{ d.verdict }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</div>
+{% endfor %}
+{% if mae_chart %}
+<section class="chart-block">
+  <h2>{{ T.chart_mae_title }}</h2>
+  <figure class="line">{{ mae_chart|safe }}</figure>
+</section>
+{% endif %}
+{% else %}
+<p class="empty-note">{{ T.record_empty.format(date=first_target) }}</p>
+{% endif %}
+
+<section aria-labelledby="cheap-rec">
+  <h2 id="cheap-rec">{{ T.cheap_record_title }}</h2>
+  {% if cheap_rows %}
+  {% include "_cheap_table.html" %}
+  {% else %}<p class="empty-note">{{ T.record_empty.format(date=first_target) }}</p>{% endif %}
+</section>
+
+<section aria-labelledby="missed">
+  <h2 id="missed">{{ T.missed_title }}</h2>
+  {% if missed %}
+  <ul class="missed-list">{% for m in missed %}<li class="red">{{ m.day }}: {{ m.model }}, D+{{ m.horizon_days }}</li>{% endfor %}</ul>
+  {% else %}<p>{{ T.missed_none }}</p>{% endif %}
+</section>
+
+{% if backtest and backtest.all %}
+<section class="backtest" aria-labelledby="bt">
+  <h2 id="bt">{{ T.backtest_title }}</h2>
+  <p class="section-lede">{{ backtest.lede }}</p>
+  {% for h, rows in backtest.all.horizons.items() %}{% if rows %}
+  {{ metrics_table(rows, T, T['horizon_' ~ h]) }}
+  {% endif %}{% endfor %}
+  <p class="note">{{ T.units_note }} <a href="{{ backtest.link }}">GitHub</a></p>
+</section>
+{% endif %}
+{% endblock %}

@@ -7,6 +7,7 @@ check failed, 2 partial failure (some models written, some failed).
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from datetime import date, datetime
 from pathlib import Path
@@ -108,6 +109,44 @@ def cmd_backtest(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_site(args: argparse.Namespace) -> int:
+    from prognosebuch.site.build import build_site
+
+    written = build_site(Path(args.root), Path(args.out), utc_now())
+    print(f"wrote {len(written)} pages to {args.out}")
+    return 0
+
+
+def cmd_release_notes(args: argparse.Namespace) -> int:
+    root = Path(args.root)
+    files = sorted((root / "forecasts").rglob("*.parquet"))
+    issues = sorted({f.parent.name for f in files})
+    lines = [
+        "Weekly snapshot of the Prognosebuch book: every forecast file as committed before the",
+        "auction, the scores and the actual prices, plus SHA-256 checksums of all forecast files.",
+        "",
+        f"- Forecast files: {len(files)}",
+        f"- Issue days: {len(issues)}" + (f" ({issues[0]} to {issues[-1]})" if issues else ""),
+    ]
+    summary_path = root / "scores" / "summary.json"
+    if summary_path.exists():
+        s = json.loads(summary_path.read_text())
+        lines += [f"- Missed forecasts (model x horizon x day): {len(s.get('missed', []))}", ""]
+        lines += [
+            "| Model | Horizon | Days due / forecast | MAE | Skill vs. reference |",
+            "|---|---|---|---|---|",
+        ]
+        for r in s["windows"]["all"]["models"]:
+            a = r["all"]
+            lines.append(
+                f"| {r['model']} | D+{r['horizon_days']} | {r['days_due']} / {r['days_forecast']} "
+                f"| {a['mae']} | {a['skill_mae']} |"
+            )
+    lines += ["", "Data: CC BY 4.0. Prices: Bundesnetzagentur | SMARD.de. Not investment advice."]
+    print("\n".join(lines))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="prognosebuch")
     p.add_argument("--root", default=".", help="repository root (default: .)")
@@ -136,6 +175,11 @@ def main(argv: list[str] | None = None) -> int:
     bt.add_argument("--out", help="output directory (default: backtest/<first>_<last>)")
     bt.add_argument("--jobs", type=int, default=-1, help="parallel workers (default: all cores)")
     bt.set_defaults(func=cmd_backtest)
+    st = sub.add_parser("site", help="build the static website and data exports")
+    st.add_argument("--out", default="_site")
+    st.set_defaults(func=cmd_site)
+    rn = sub.add_parser("release-notes", help="print markdown notes for the weekly release")
+    rn.set_defaults(func=cmd_release_notes)
     args = p.parse_args(argv)
     rc: int = args.func(args)
     return rc

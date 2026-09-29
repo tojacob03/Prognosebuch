@@ -1,0 +1,6 @@
+<article class="fail-card">
+  <h3>{{ c.date }}</h3>
+  <p class="card-head">{{ c.head }}</p>
+  <figure class="mini">{{ c.svg|safe }}</figure>
+  <ul class="hints">{% for h in c.hints %}<li>{{ h }}</li>{% endfor %}</ul>
+</article>

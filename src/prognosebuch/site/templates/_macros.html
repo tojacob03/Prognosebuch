@@ -1,0 +1,65 @@
+{% macro ladder(p, T, wide=True) %}
+<figure class="ladder" data-tooltip='{{ p.tooltip }}' data-unit="€/MWh">
+  {% if wide %}<div class="svg-wide">{{ p.svgs[0]|safe }}</div><div class="svg-narrow">{{ p.svgs[1]|safe }}</div>
+  {% else %}<div>{{ p.svgs[0]|safe }}</div>{% endif %}
+  <figcaption class="legend">
+    <span class="key key-band"></span>{{ T.band }}
+    <span class="key key-med"></span>{{ T.median }}
+    <span class="key key-act"></span>{{ T.actual }}
+    {% if p.window %}<span class="key key-mark"></span>{{ T.cheapest_3h }}{% endif %}
+    <span class="unit">€/MWh</span>
+  </figcaption>
+  <div class="tip" role="status" hidden></div>
+</figure>
+{% endmacro %}
+
+{% macro values_table(p, T) %}
+<details class="values">
+  <summary>{{ T.values_table }}</summary>
+  <table class="num-table compact">
+    <thead><tr><th scope="col">{{ T.time }}</th><th scope="col">P10</th><th scope="col">{{ T.median }}</th><th scope="col">P90</th></tr></thead>
+    <tbody>
+    {% for row in p.table %}<tr><th scope="row">{{ row[0] }}</th><td>{{ row[1] }}</td><td>{{ row[2] }}</td><td>{{ row[3] }}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</details>
+{% endmacro %}
+
+{% macro metrics_table(rows, T, caption) %}
+<div class="table-wrap">
+<table class="num-table ledger">
+  <caption>{{ caption }}</caption>
+  <thead><tr>
+    <th scope="col">{{ T.model }}</th><th scope="col">{{ T.col_days }}</th><th scope="col">{{ T.col_mae }}</th>
+    <th scope="col">{{ T.col_rmse }}</th><th scope="col">{{ T.col_skill }}</th><th scope="col">{{ T.col_pinball }}</th><th scope="col">{{ T.col_cov }}</th>
+  </tr></thead>
+  <tbody>
+  {% for r in rows %}
+  <tr{% if r.is_ref %} class="ref"{% endif %}>
+    <th scope="row">{{ r.model }}{% if r.is_ref %} <span class="tag">{{ T.reference }}</span>{% endif %}</th>
+    <td{% if r.missed %} class="red"{% endif %}>{{ r.days }}</td><td>{{ r.mae }}</td><td>{{ r.rmse }}</td>
+    <td{% if r.skill_neg %} class="red"{% endif %}>{{ r.skill }}</td><td>{{ r.pinball }}</td><td>{{ r.cov }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endmacro %}
+
+{% macro segments_table(rows, T, caption) %}
+<div class="table-wrap">
+<table class="num-table ledger">
+  <caption>{{ caption }}</caption>
+  <thead><tr><th scope="col">{{ T.model }}</th>
+    <th scope="col">{{ T.seg_all }}</th><th scope="col">{{ T.seg_weekday }}</th><th scope="col">{{ T.seg_weekend }}</th>
+    <th scope="col">{{ T.seg_negative_price }}</th><th scope="col">{{ T.seg_price_spike }}</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+  <tr{% if r.is_ref %} class="ref"{% endif %}><th scope="row">{{ r.model }}</th>
+    {% for mae, n in r.cells %}<td>{{ mae }}{% if n %}<span class="n">{{ n }}</span>{% endif %}</td>{% endfor %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endmacro %}

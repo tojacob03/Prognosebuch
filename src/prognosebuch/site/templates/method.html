@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ T.method_title }}: {{ T.site_title }}{% endblock %}
+{% block main %}
+<section class="page-head"><h1>{{ T.method_title }}</h1></section>
+<article class="prose">{{ method_html|safe }}</article>
+{% endblock %}

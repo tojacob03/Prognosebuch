@@ -1,0 +1,46 @@
+name: release
+
+# Weekly snapshot of the book as a GitHub release: all forecast files, scores and actuals
+# with a SHA-256 list. Connecting the repository to Zenodo archives every release with a DOI.
+on:
+  schedule:
+    - cron: "15 14 * * 1" # Mondays, after the evaluate run
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --locked --no-dev
+      - name: Audit before publishing
+        run: uv run --no-dev prognosebuch audit
+      - name: Build archive and notes
+        run: |
+          tag="book-$(date -u +%Y-%m-%d)"
+          echo "TAG=$tag" >> "$GITHUB_ENV"
+          mkdir -p dist
+          find forecasts -type f | sort | xargs sha256sum > dist/SHA256SUMS.txt
+          zip -qr "dist/$tag.zip" forecasts scores actuals dist/SHA256SUMS.txt LICENSE LICENSE-DATA.md DATA_SOURCES.md docs/DATA_FORMAT.md
+          uv run --no-dev prognosebuch release-notes > dist/notes.md
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$TAG" "dist/$TAG.zip" dist/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "Book snapshot $TAG" --notes-file dist/notes.md
+      - name: Open issue on failure
+        if: failure()
+        uses: ./.github/actions/failure-issue
+        with:
+          title: "Weekly release failed"
+          token: ${{ github.token }}

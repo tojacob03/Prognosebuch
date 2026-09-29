@@ -1,0 +1,68 @@
+name: site
+
+# Builds the website and data exports and deploys them to GitHub Pages.
+# Bot commits (forecast, evaluate) do not trigger push events, so the site also rebuilds
+# when those workflows finish, plus once a day as a fallback.
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: [forecast, evaluate]
+    types: [completed]
+  schedule:
+    - cron: "30 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main # workflow_run would otherwise check out the triggering commit
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --locked --no-dev
+      - name: Build site
+        run: uv run --no-dev prognosebuch site --out _site
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
+  report:
+    needs: [build, deploy]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Open issue on failure
+        if: contains(needs.*.result, 'failure')
+        uses: ./.github/actions/failure-issue
+        with:
+          title: "Site build or deploy failed"
+          token: ${{ github.token }}
+      - name: Close failure issue after a successful run
+        if: needs.build.result == 'success' && needs.deploy.result == 'success'
+        uses: ./.github/actions/failure-issue
+        with:
+          title: "Site build or deploy failed"
+          token: ${{ github.token }}
+          resolve: "true"

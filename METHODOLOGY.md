@@ -109,14 +109,31 @@ above the 90th percentile of the window).
 of daily MAEs of two models, paired by target day, two-sided. Reported from 10 paired days on;
 with few days the test has little power and "no significant difference" is the expected result.
 
-## 6. Backtest vs. live
+## 6. Cheapest 3 hours
+
+For households on dynamic tariffs the forecast is turned into one recommendation per day: the
+3-hour window (12 consecutive quarter-hours within the delivery day) with the lowest mean
+median forecast. Its probabilities come from scenarios: the median forecast plus each of the
+model's own error curves from the previous 60–90 days (the same curves the bands are built from),
+aligned by local clock time, so the within-day shape of real errors is kept.
+
+- `p_cheapest`: share of scenarios in which the recommended window is the cheapest window.
+- `p_near`: share of scenarios in which it costs at most 5 EUR/MWh (0.5 ct/kWh) more than the
+  cheapest window.
+
+Both are written into the forecast manifest before the auction and scored afterwards: hit rate
+and "near" rate against the stated probabilities (calibration), Brier score, the extra cost versus
+the best window, and the saving versus the day mean. The recommendation uses exchange prices;
+taxes, levies and grid fees are added per kWh and do not change the order of the hours.
+
+## 7. Backtest vs. live
 
 The backtest (`prognosebuch backtest`) re-runs the same code for every past day with only the data
 known then; a test checks that it reproduces the live forecast exactly. It is still **not** a test
 of the future: the model design was chosen by someone who had seen the past. Backtest numbers are
 shown separately and labelled as such. Only the live book counts as evidence.
 
-## 7. Limitations
+## 8. Limitations
 
 - **No gas or CO₂ prices.** They drive the price level but no openly licensed source exists.
   Level shifts caused by fuel prices are learned only through lagged prices.

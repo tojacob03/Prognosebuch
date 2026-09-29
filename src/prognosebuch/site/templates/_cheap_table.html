@@ -1,0 +1,9 @@
+<div class="table-wrap"><table class="num-table ledger">
+  <thead><tr><th scope="col">{{ T.model }}</th><th scope="col">D+</th><th scope="col">n</th>
+    <th scope="col">{{ T.col_hit }}</th><th scope="col">{{ T.col_p_stated }}</th>
+    <th scope="col">{{ T.col_near }}</th><th scope="col">{{ T.col_p_stated }}</th>
+    <th scope="col">{{ T.col_regret }}</th><th scope="col">{{ T.col_saving }}</th></tr></thead>
+  <tbody>{% for r in cheap_rows %}<tr><th scope="row">{{ r.model }}</th><td>{{ r.h }}</td><td>{{ r.days }}</td>
+    <td>{{ r.hit }}</td><td class="muted">{{ r.p_stated }}</td><td>{{ r.near }}</td><td class="muted">{{ r.pn_stated }}</td>
+    <td>{{ r.regret }} ct</td><td>{{ r.saving }} ct</td></tr>{% endfor %}</tbody>
+</table></div>

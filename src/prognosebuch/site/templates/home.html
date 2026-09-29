@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "_macros.html" import ladder, values_table %}
+{% block main %}
+{% if panels %}
+<section class="hero" aria-labelledby="day-title">
+  <h1 id="day-title" class="day-title">{{ panels[0].target_long }}</h1>
+  <p class="lede">{{ T.home_lede.format(issued=issued) }}</p>
+  {% if panels|length > 1 %}
+  <div class="tabs" role="tablist" aria-label="{{ T.delivery_day }}">
+    {% for p in panels %}
+    <button role="tab" type="button" id="tab-{{ p.h }}" aria-controls="panel-{{ p.h }}" aria-selected="{{ 'true' if loop.first else 'false' }}" data-title="{{ p.target_long }}">{{ T.tab_d1 if p.h == 1 else T.tab_d2 }}<span>{{ p.target_short }}</span></button>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% for p in panels %}
+  <div class="panel" role="tabpanel" id="panel-{{ p.h }}" aria-labelledby="tab-{{ p.h }}"{% if not loop.first %} data-hidden{% endif %}>
+    <h2 class="panel-title">{{ p.target_long }}</h2>
+    {{ ladder(p, T) }}
+    <dl class="facts">
+      {% if p.window %}
+      <div class="fact fact-mark"><dt>{{ T.cheapest_3h }}</dt><dd><a href="{{ url('cheapest') }}">{{ p.window.start }}–{{ p.window.end }}</a></dd><dd class="sub">{{ T.prob_cheapest.format(p=p.window.p_cheapest) }}</dd></div>
+      {% endif %}
+      <div class="fact"><dt>{{ T.day_mean }}</dt><dd>{{ p.day_mean }} <small>€/MWh</small></dd><dd class="sub">{{ p.day_mean_ct }} ct/kWh</dd></div>
+      <div class="fact"><dt>Min / Max</dt><dd>{{ p.min }} / {{ p.max }}</dd><dd class="sub">{{ p.min_at }} / {{ p.max_at }}</dd></div>
+      {% if p.mae %}<div class="fact"><dt>{{ T.mae_day }}</dt><dd>{{ p.mae }} <small>€/MWh</small></dd></div>{% endif %}
+      <div class="fact"><dt>{{ T.model }}</dt><dd>{{ shown_model }}</dd><dd class="sub">{{ featured_rule }}</dd></div>
+    </dl>
+    {{ values_table(p, T) }}
+  </div>
+  {% endfor %}
+</section>
+{% else %}
+<section class="hero empty">
+  <h1 class="day-title">{{ T.home_empty_title.format(date=first_issue) }}</h1>
+  <p class="lede">{{ T.home_empty.format(date=first_issue) }}</p>
+</section>
+{% endif %}
+
+<section class="book" aria-labelledby="book-title">
+  <h2 id="book-title">{{ T.book_title }}</h2>
+  <p class="section-lede">{{ T.book_lede }} <a href="{{ url('record') }}">{{ T.nav_record }}</a></p>
+  {% if book %}
+  <div class="table-wrap">
+  <table class="num-table ledger book-table">
+    <caption class="sr-only">{{ T.book_title }}: MAE D+1, €/MWh</caption>
+    <thead><tr><th scope="col" class="entry">#</th><th scope="col" class="l">{{ T.delivery_day }}</th><th scope="col">{{ T.issued_at }}</th>
+      {% for k in book_keys %}<th scope="col">{{ k }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for r in book %}
+    <tr><td class="entry">{{ r.entry }}</td><th scope="row">{{ r.day }}</th>
+      <td>{% if r.issue_link %}<a href="{{ r.issue_link }}">{{ r.issued }}</a>{% else %}{{ r.issued }}{% endif %}</td>
+      {% for c in r.cells %}<td class="{{ c.cls }}">{{ c.text }}</td>{% endfor %}</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <p class="note">MAE D+1, €/MWh.</p>
+  {% endif %}
+</section>
+
+<section class="check" aria-labelledby="check-title">
+  <h2 id="check-title">{{ T.check_title }}</h2>
+  <p>{{ T.check_body }} <a href="{{ issue_link or repo ~ '/tree/main/forecasts' }}">{{ T.check_links }}</a></p>
+</section>
+{% endblock %}

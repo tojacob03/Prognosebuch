@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ T.data_title }}: {{ T.site_title }}{% endblock %}
+{% block main %}
+<section class="page-head">
+  <h1>{{ T.data_title }}</h1>
+  <p class="lede">{{ T.data_lede }}</p>
+</section>
+<div class="table-wrap"><table class="ledger files">
+  <thead><tr><th scope="col">{{ T.file }}</th><th scope="col">{{ T.content }}</th><th scope="col" class="num">{{ T.rows }}</th><th scope="col" class="num">{{ T.size }}</th></tr></thead>
+  <tbody>{% for f in files %}<tr><th scope="row"><a href="{{ f.href }}" download>{{ f.name }}</a></th><td>{{ f.content }}</td><td class="num">{{ f.rows }}</td><td class="num">{{ f.size }}</td></tr>{% endfor %}</tbody>
+</table></div>
+<section class="prose">
+  <h2>{{ T.powerbi_title }}</h2>
+  <p>{{ T.powerbi_body }}</p>
+  <h2>{{ T.latest_title }}</h2>
+  <p>{{ T.latest_body }} <a href="{{ repo }}/tree/main/forecasts">forecasts/</a></p>
+</section>
+<section>
+  <h2>{{ T.dictionary }}</h2>
+  <div class="table-wrap"><table class="ledger dict">
+    <thead><tr><th scope="col">{{ T.dict_table }}</th><th scope="col">{{ T.dict_column }}</th><th scope="col">{{ T.dict_type }}</th><th scope="col">{{ T.dict_unit }}</th><th scope="col">{{ T.dict_desc }}</th></tr></thead>
+    <tbody>{% for tbl, col, typ, unit, desc in dictionary %}<tr><td>{{ tbl }}</td><td><code>{{ col }}</code></td><td>{{ typ }}</td><td>{{ unit }}</td><td>{{ desc }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+{% endblock %}

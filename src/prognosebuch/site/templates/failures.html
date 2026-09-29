@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ T.fail_title }}: {{ T.site_title }}{% endblock %}
+{% block main %}
+<section class="page-head">
+  <h1>{{ T.fail_title }}</h1>
+  <p class="lede">{{ T.fail_lede }}</p>
+</section>
+<section aria-labelledby="live">
+  <h2 id="live">{{ T.fail_live.format(model=featured) }}</h2>
+  <p class="section-lede">{{ featured_rule }}</p>
+  {% if live_cards %}
+  <div class="cards">{% for c in live_cards %}{% include "_fail_card.html" %}{% endfor %}</div>
+  {% else %}<p class="empty-note">{{ T.fail_live_empty }}</p>{% endif %}
+</section>
+{% if bt_cards %}
+<section class="backtest" aria-labelledby="bt">
+  <h2 id="bt">{{ T.fail_backtest }}</h2>
+  <div class="cards">{% for c in bt_cards %}{% include "_fail_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+{% endblock %}

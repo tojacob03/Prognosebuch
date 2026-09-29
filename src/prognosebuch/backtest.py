@@ -149,4 +149,23 @@ def write_backtest(res: BacktestResult, out_dir: Path) -> list[Path]:
     summary_path.write_bytes(dump_json(res.summary))
     daily_path = out_dir / "daily.csv"
     res.daily.to_csv(daily_path, index=False, float_format="%.4f")
-    return [summary_path, daily_path]
+    worst_path = out_dir / "worst_days.parquet"
+    worst_days(res, WORST_DAYS_PER_MODEL).to_parquet(worst_path, index=False)
+    return [summary_path, daily_path, worst_path]
+
+
+WORST_DAYS_PER_MODEL = 12
+
+
+def worst_days(res: BacktestResult, n: int) -> pd.DataFrame:
+    """Quarter-hour rows of the ``n`` days with the largest MAE per model and horizon."""
+    keys = (
+        res.daily.sort_values("mae", ascending=False)
+        .groupby(["model", "model_version", "horizon_days"])
+        .head(n)[["model", "model_version", "horizon_days", "target_date"]]
+    )
+    cols = ["model", "model_version", "horizon_days", "target_date", "delivery_start_utc",
+            "actual", "q10", "q50", "q90"]  # fmt: skip
+    return res.scores.merge(keys, on=["model", "model_version", "horizon_days", "target_date"])[
+        cols
+    ]
