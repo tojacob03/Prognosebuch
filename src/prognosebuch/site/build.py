@@ -345,7 +345,8 @@ def failure_cards(
         return []
     w = w.assign(model_key=w["model"] + ".v" + w["model_version"].astype(str))
     w["target_date"] = pd.to_datetime(w["target_date"]).dt.date
-    for key in dict.fromkeys(["lear.v1", REFERENCE_MODEL_KEY]):
+    shown = [k for k in sd.live_keys if not k.startswith("naive_")] + [REFERENCE_MODEL_KEY]
+    for key in dict.fromkeys(shown):
         sub = w[(w["model_key"] == key) & (w["horizon_days"] == 1)]
         if sub.empty:
             continue
