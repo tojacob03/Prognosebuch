@@ -23,8 +23,10 @@ dev = [
     "mypy>=1.11",
     "pandas-stubs>=2.2",
     "pytest>=8",
+    "pyyaml>=6.0.3",
     "ruff>=0.6",
     "scipy-stubs>=1.14",
+    "types-pyyaml>=6.0.12.20260906",
 ]
 
 [build-system]

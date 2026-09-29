@@ -1,5 +1,7 @@
 name: Failure issue
-description: Open a GitHub issue for a failed scheduled job, or comment on the open one.
+description: >
+  Open a GitHub issue for a failed job (or comment on the open one with the same title);
+  with resolve=true, close that issue after a successful run.
 inputs:
   title:
     description: Issue title (one open issue per title)
@@ -7,6 +9,10 @@ inputs:
   token:
     description: Token with issues:write
     required: true
+  resolve:
+    description: "true = close the open issue with this title instead of opening one"
+    required: false
+    default: "false"
 runs:
   using: composite
   steps:
@@ -14,10 +20,18 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
         TITLE: ${{ inputs.title }}
+        RESOLVE: ${{ inputs.resolve }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       run: |
         num=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 \
           --json number,title --jq '.[] | select(.title == $ENV.TITLE) | .number' | head -1)
+        if [ "$RESOLVE" = "true" ]; then
+          if [ -n "$num" ]; then
+            gh issue close "$num" --repo "$GITHUB_REPOSITORY" \
+              --comment "Resolved: successful run at $(date -u +%Y-%m-%dT%H:%M:%SZ): $RUN_URL"
+          fi
+          exit 0
+        fi
         body="Failed run at $(date -u +%Y-%m-%dT%H:%M:%SZ): $RUN_URL"
         if [ -n "$num" ]; then
           gh issue comment "$num" --repo "$GITHUB_REPOSITORY" --body "$body"

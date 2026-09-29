@@ -30,13 +30,7 @@ jobs:
         run: uv run --no-dev prognosebuch evaluate
       - name: Commit
         run: |
-          git config user.name "prognosebuch-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add actuals/ scores/
-          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -q -m "evaluate: $(TZ=Europe/Berlin date +%F)"
-          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 10; done
-          exit 1
+          scripts/commit-data.sh "evaluate: $(TZ=Europe/Berlin date +%F)" actuals scores
       - name: Audit
         run: uv run --no-dev prognosebuch audit
       - name: Open issue on failure
@@ -45,3 +39,10 @@ jobs:
         with:
           title: "Evaluate job failed"
           token: ${{ github.token }}
+      - name: Close failure issue after a successful run
+        if: success()
+        uses: ./.github/actions/failure-issue
+        with:
+          title: "Evaluate job failed"
+          token: ${{ github.token }}
+          resolve: "true"

@@ -40,16 +40,7 @@ jobs:
       - name: Commit new forecast files (additions only)
         if: always()
         run: |
-          git config user.name "prognosebuch-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add forecasts/
-          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
-          if git diff --cached --no-renames --name-status --diff-filter=MDT | grep .; then
-            echo "::error::refusing to commit a change to an existing forecast"; exit 1
-          fi
-          git commit -q -m "forecast: issue $(TZ=Europe/Berlin date +%F)"
-          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 10; done
-          exit 1
+          scripts/commit-data.sh "forecast: issue $(TZ=Europe/Berlin date +%F)" forecasts
       - name: Audit
         run: uv run --no-dev prognosebuch audit
       - name: Fail if a forecast could not be issued
@@ -61,3 +52,10 @@ jobs:
         with:
           title: "Forecast job failed"
           token: ${{ github.token }}
+      - name: Close failure issue after a successful run
+        if: success()
+        uses: ./.github/actions/failure-issue
+        with:
+          title: "Forecast job failed"
+          token: ${{ github.token }}
+          resolve: "true"
