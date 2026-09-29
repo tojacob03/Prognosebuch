@@ -6,6 +6,7 @@
 <title>{% block title %}{{ T.site_title }}{% endblock %}</title>
 <meta name="description" content="{{ T.tagline }}">
 <meta name="color-scheme" content="light dark">
+{% block head %}{% endblock %}
 <link rel="preload" href="{{ prefix }}static/fonts/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ prefix }}static/style.css">
 <link rel="icon" href="{{ prefix }}static/icon.svg" type="image/svg+xml">
@@ -32,6 +33,7 @@
   <p class="disclaimer">{{ T.footer_disclaimer }}</p>
   <p>{{ T.footer_source }} <a href="{{ repo }}">GitHub</a></p>
   <p>{{ T.footer_privacy }}</p>
+  <p><a href="{{ imprint_url }}">{{ T.nav_imprint }}</a></p>
   <p class="muted">{{ T.footer_built.format(t=built) }}</p>
 </footer>
 <script src="{{ prefix }}static/app.js" defer></script>

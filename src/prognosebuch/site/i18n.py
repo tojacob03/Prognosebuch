@@ -60,6 +60,7 @@ PAGES: dict[str, dict[str, str]] = {
     "cheapest": {"de": "guenstig/", "en": "en/cheapest-hours/"},
     "method": {"de": "methodik/", "en": "en/methodology/"},
     "data": {"de": "daten/", "en": "en/data/"},
+    "imprint": {"de": "impressum/", "en": "en/imprint/"},
 }
 
 T: dict[str, dict[str, str]] = {
@@ -351,6 +352,41 @@ T: dict[str, dict[str, str]] = {
         "the headline scores. The immutable original files are in the repository.",
     },
     "method_title": {"de": "Methodik", "en": "Methodology"},
+    "nav_imprint": {"de": "Impressum und Datenschutz", "en": "Legal notice and privacy"},
+    "imprint_title": {"de": "Impressum", "en": "Legal notice"},
+    "imprint_by": {"de": "Angaben gemäß § 5 DDG", "en": "Information according to § 5 DDG"},
+    "imprint_contact": {"de": "Kontakt", "en": "Contact"},
+    "imprint_form": {"de": "Kontaktformular", "en": "Contact form"},
+    "imprint_resp": {
+        "de": "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV",
+        "en": "Responsible for content according to § 18 (2) MStV",
+    },
+    "imprint_same": {
+        "de": "Till Oscar Jacob, Anschrift wie oben",
+        "en": "Till Oscar Jacob, address as above",
+    },
+    "imprint_links_title": {"de": "Haftung für Links", "en": "Liability for links"},
+    "imprint_links": {
+        "de": "Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte ich "
+        "keinen Einfluss habe. Für diese fremden Inhalte ist stets der jeweilige Anbieter oder "
+        "Betreiber der Seiten verantwortlich. Bei Bekanntwerden von Rechtsverletzungen werde ich derartige Links "
+        "umgehend entfernen.",
+        "en": "This website links to external third-party websites whose content I cannot "
+        "influence. The respective provider or operator is always responsible for that content. If I become "
+        "aware of legal violations, I will remove such links immediately.",
+    },
+    "privacy_title": {"de": "Datenschutz", "en": "Privacy"},
+    "privacy_body": {
+        "de": "Diese Seite setzt keine Cookies, verwendet kein Tracking und lädt keine Inhalte von "
+        "Dritten; Schriften und Skripte liegen auf demselben Server. Gehostet wird sie von GitHub "
+        "Pages (GitHub Inc.). Beim Aufruf verarbeitet GitHub technisch notwendige Daten wie die "
+        "IP-Adresse, um die Seite auszuliefern und abzusichern; Einzelheiten stehen in der "
+        "Datenschutzerklärung von GitHub. Ich selbst erhalte keine Besucherdaten.",
+        "en": "This site sets no cookies, uses no tracking and loads no third-party content; fonts "
+        "and scripts are served from the same host. It is hosted on GitHub Pages (GitHub Inc.). "
+        "When you visit, GitHub processes technically necessary data such as your IP address to "
+        "deliver and secure the site; see GitHub's privacy statement. I receive no visitor data.",
+    },
     "dict_table": {"de": "Tabelle", "en": "Table"},
     "dict_column": {"de": "Spalte", "en": "Column"},
     "dict_type": {"de": "Typ", "en": "Type"},

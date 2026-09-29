@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ T.imprint_title }}: {{ T.site_title }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex">{% endblock %}
+{% block main %}
+<section class="page-head"><h1>{{ T.imprint_title }}</h1></section>
+<article class="prose">
+  <h2>{{ T.imprint_by }}</h2>
+  <p>Till Oscar Jacob<br>Kreienweg 15<br>26197 Großenkneten<br>{{ "Deutschland" if lang == "de" else "Germany" }}</p>
+  <h2>{{ T.imprint_contact }}</h2>
+  <p>E-Mail: <a href="mailto:to_jacob@me.com">to_jacob@me.com</a><br>{{ T.imprint_form }}: <a href="https://rukawaanalytics.com/#contact">rukawaanalytics.com/#contact</a></p>
+  <h2>{{ T.imprint_resp }}</h2>
+  <p>{{ T.imprint_same }}</p>
+  <h2>{{ T.imprint_links_title }}</h2>
+  <p>{{ T.imprint_links }}</p>
+  <h2>{{ T.privacy_title }}</h2>
+  <p>{{ T.privacy_body }} <a href="https://docs.github.com/{{ 'de/' if lang == 'de' else '' }}site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a></p>
+</article>
+{% endblock %}

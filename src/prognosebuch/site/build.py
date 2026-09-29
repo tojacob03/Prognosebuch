@@ -442,7 +442,8 @@ def page_context(sd: SiteData, page: str, lang: str, files: list[ExportFile]) ->
         "page": page,
         "T": {k: v[lang] for k, v in T.items()},
         "prefix": _prefix(page, lang),
-        "nav": [(p, _rel(page, lang, p), t(f"nav_{p}", lang)) for p in PAGES],
+        "nav": [(p, _rel(page, lang, p), t(f"nav_{p}", lang)) for p in PAGES if p != "imprint"],
+        "imprint_url": _rel(page, lang, "imprint"),
         "other_lang": "en" if lang == "de" else "de",
         "other_url": _rel(page, lang, page, "en" if lang == "de" else "de"),
         "repo": REPO_URL,
@@ -528,6 +529,7 @@ TEMPLATES = {
     "cheapest": "cheapest.html",
     "method": "method.html",
     "data": "data.html",
+    "imprint": "imprint.html",
 }
 
 
