@@ -1,9 +1,0 @@
-__pycache__/
-*.pyc
-.venv/
-.mypy_cache/
-.ruff_cache/
-.pytest_cache/
-dist/
-_site/
-.DS_Store
