@@ -6,7 +6,7 @@ from prognosebuch.audit import history_violations, manifest_violations, run_audi
 from prognosebuch.forecast import RunInfo, run_forecast
 from prognosebuch.storage import forecast_paths
 from prognosebuch.timeutil import day_bounds_utc
-from tests.conftest import FakeClient, synthetic_prices
+from tests.conftest import fast_live_models, seeded_client, synthetic_prices
 
 ISSUE = date(2026, 10, 7)
 
@@ -19,11 +19,13 @@ def make_repo(root: Path) -> Path:
     git(root, "init", "-q", "-b", "main")
     git(root, "config", "user.email", "test@example.invalid")
     git(root, "config", "user.name", "test")
-    p = synthetic_prices(date(2026, 5, 1), ISSUE)
+    p = synthetic_prices(date(2026, 1, 1), ISSUE)
     known = p[p.index < day_bounds_utc(ISSUE)[1]]
-    run_forecast(
-        root, datetime(2026, 10, 7, 7, 5, tzinfo=UTC), FakeClient(known), RunInfo(None, None)
+    now = datetime(2026, 10, 7, 7, 5, tzinfo=UTC)
+    res = run_forecast(
+        root, now, seeded_client(root, known), RunInfo(None, None), fast_live_models()
     )
+    assert not res.failed
     git(root, "add", "-A")
     git(root, "commit", "-q", "-m", "forecast")
     return forecast_paths(root, ISSUE, "naive_weekly", "1")[0]

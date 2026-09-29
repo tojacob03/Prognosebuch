@@ -4,22 +4,22 @@ from pathlib import Path
 
 import pandas as pd
 
-from prognosebuch.evaluate import load_actuals, run_evaluate
+from prognosebuch.evaluate import run_evaluate
 from prognosebuch.forecast import RunInfo, run_forecast
-from prognosebuch.registry import LIVE_MODELS, LiveModel
+from prognosebuch.history import load_actuals
 from prognosebuch.storage import score_path
 from prognosebuch.timeutil import day_bounds_utc
-from tests.conftest import FakeClient, synthetic_prices
+from tests.conftest import FakeClient, fast_live_models, seeded_client, synthetic_prices
 
 LIVE = date(2026, 10, 7)
-MODELS = tuple(LiveModel(lm.model, live_since=LIVE) for lm in LIVE_MODELS)
-ALL = synthetic_prices(date(2026, 5, 1), date(2026, 10, 12), seed=3)
+MODELS = fast_live_models(live_since=LIVE)
+ALL = synthetic_prices(date(2026, 1, 1), date(2026, 10, 12), seed=3)
 
 
 def issue(root: Path, d: date) -> None:
     known = ALL[ALL.index < day_bounds_utc(d)[1]]
     now = datetime(d.year, d.month, d.day, 7, 5, tzinfo=UTC)
-    run_forecast(root, now, FakeClient(known), RunInfo(None, None), MODELS)
+    run_forecast(root, now, seeded_client(root, known), RunInfo(None, None), MODELS)
 
 
 def evaluate(root: Path, until: date, now: datetime) -> None:
@@ -34,7 +34,7 @@ def test_scores_and_missed_days(tmp_path: Path) -> None:
 
     s8 = pd.read_parquet(score_path(tmp_path, date(2026, 10, 8)))
     assert set(s8["horizon_days"]) == {1}  # the D+2 forecast was due only from 2026-10-07
-    assert (s8["status"] == "scored").all() and len(s8) == 3 * 96
+    assert (s8["status"] == "scored").all() and len(s8) == len(MODELS) * 96
 
     s9 = pd.read_parquet(score_path(tmp_path, date(2026, 10, 9)))
     st = s9.groupby("horizon_days")["status"].unique().to_dict()

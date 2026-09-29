@@ -10,16 +10,15 @@ import pandas as pd
 import pytest
 
 from prognosebuch.models.base import InfoSet
-from prognosebuch.registry import LIVE_MODELS
 from prognosebuch.timeutil import day_bounds_utc
-from tests.conftest import synthetic_prices
+from tests.conftest import fast_live_models, synthetic_prices
 
 ISSUE = date(2026, 10, 7)
 
 
-@pytest.mark.parametrize("lm", LIVE_MODELS, ids=lambda lm: lm.key)
+@pytest.mark.parametrize("lm", fast_live_models(), ids=lambda lm: lm.key)
 def test_forecast_ignores_everything_after_cutoff(lm) -> None:  # type: ignore[no-untyped-def]
-    prices = synthetic_prices(date(2026, 5, 1), ISSUE + timedelta(days=5))
+    prices = synthetic_prices(date(2026, 1, 1), ISSUE + timedelta(days=5))
     cutoff = day_bounds_utc(ISSUE)[1]
     tampered = prices.copy()
     tampered[tampered.index >= cutoff] = 9999.0
@@ -30,3 +29,9 @@ def test_forecast_ignores_everything_after_cutoff(lm) -> None:  # type: ignore[n
         b = lm.model.predict(InfoSet.cut(ISSUE, tampered), target)
         pd.testing.assert_frame_equal(a, b)
         assert (a["q90"] < 9999.0).all()
+
+
+def test_every_live_model_is_covered_by_this_test() -> None:
+    from prognosebuch.registry import LIVE_MODELS
+
+    assert [lm.key for lm in fast_live_models()] == [lm.key for lm in LIVE_MODELS]

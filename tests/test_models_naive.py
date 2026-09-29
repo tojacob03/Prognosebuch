@@ -90,7 +90,7 @@ def test_similar_day_rule() -> None:
 
 @pytest.mark.parametrize("model", [NAIVE_LAST_DAY, NAIVE_WEEKLY, NAIVE_SIMILAR_DAY])
 def test_predict_quantiles_ordered_on_real_data(model: NaiveModel, real_prices: pd.Series) -> None:
-    m = replace(model, window_days=14, min_error_days=7)
+    m = replace(model, error_days=14, min_error_days=7)
     for issue in (date(2025, 10, 25), date(2025, 10, 26), date(2026, 4, 3), date(2026, 3, 28)):
         info = InfoSet.cut(issue, real_prices)
         for h in (1, 2):

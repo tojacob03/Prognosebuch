@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import date
 from pathlib import Path
 
@@ -7,6 +8,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from prognosebuch.history import merge_into_archive
+from prognosebuch.models.lear import LearModel
+from prognosebuch.registry import LIVE_MODELS, LiveModel
 from prognosebuch.smard import Series, SmardClient
 from prognosebuch.timeutil import day_bounds_utc
 
@@ -38,7 +42,7 @@ def synthetic_prices(first: date, last: date, seed: int = 0) -> pd.Series:
     base = 80 + 40 * np.sin((hour - 6) / 24 * 2 * np.pi) - 60 * np.exp(-((hour - 13) ** 2) / 6)
     weekend = np.where(local.weekday >= 5, -25.0, 0.0)
     values = base + weekend + rng.normal(0, 12, len(idx))
-    return pd.Series(values, index=idx, dtype="float64")
+    return pd.Series(values, index=idx.as_unit("ns"), dtype="float64")
 
 
 def load_fixture() -> pd.Series:
@@ -46,9 +50,29 @@ def load_fixture() -> pd.Series:
     idx = pd.DatetimeIndex(
         pd.to_datetime(df["delivery_start_utc"], utc=True), name="delivery_start_utc"
     )
-    return pd.Series(df["price_eur_mwh"].to_numpy(dtype=float), index=idx)
+    return pd.Series(df["price_eur_mwh"].to_numpy(dtype=float), index=idx.as_unit("ns"))
 
 
 @pytest.fixture
 def real_prices() -> pd.Series:
     return load_fixture()
+
+
+def fast_live_models(live_since: date | None = None) -> tuple[LiveModel, ...]:
+    """The registered live models, with LEAR shrunk to short windows so tests stay fast.
+
+    Same classes and code paths; only calibration windows and error days are smaller.
+    """
+    out = []
+    for lm in LIVE_MODELS:
+        model = lm.model
+        if isinstance(model, LearModel):
+            model = replace(model, windows=(120,), error_days=6, min_error_days=4)
+        out.append(LiveModel(model, live_since=live_since or lm.live_since))
+    return tuple(out)
+
+
+def seeded_client(root: Path, prices: pd.Series) -> FakeClient:
+    """Write ``prices`` into the actuals archive under ``root`` and serve them as SMARD."""
+    merge_into_archive(root, prices)
+    return FakeClient(prices)

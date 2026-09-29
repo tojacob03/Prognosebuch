@@ -12,11 +12,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, timedelta
 
-import numpy as np
 import pandas as pd
 
+from prognosebuch.models.bands import predict_with_bands
 from prognosebuch.models.base import InfoSet, InsufficientDataError, LeakError
-from prognosebuch.timeutil import TZ, day_slots_utc, wall_clock
+from prognosebuch.timeutil import day_slots_utc, wall_clock
 
 MIN_SOURCE_COVERAGE = 0.9
 
@@ -44,7 +44,7 @@ class NaiveModel:
     version: str
     description: str
     rule: str  # "last_day" | "weekly" | "similar_day"
-    window_days: int = 90
+    error_days: int = 90
     min_error_days: int = 30
 
     def source_day(self, issue_date: date, target_date: date) -> date:
@@ -65,58 +65,11 @@ class NaiveModel:
             raise LeakError(f"{self.name}: source day {src} is after issue day {issue_date}")
         return src
 
-    def point(self, prices: pd.Series, issue_date: date, target_date: date) -> pd.Series:
-        return profile_forecast(prices, self.source_day(issue_date, target_date), target_date)
-
-    def error_quantiles(self, info: InfoSet, horizon: int) -> pd.DataFrame:
-        """Empirical 10 %/90 % error quantiles of this rule by local hour.
-
-        Uses only past (issue, target) pairs whose target day is fully known at the
-        current issue date, i.e. target <= issue_date.
-        """
-        rows: list[pd.DataFrame] = []
-        for k in range(self.window_days):
-            past_target = info.issue_date - timedelta(days=k)
-            past_issue = past_target - timedelta(days=horizon)
-            try:
-                fc = self.point(info.prices, past_issue, past_target)
-            except InsufficientDataError:
-                continue
-            actual = info.prices.reindex(fc.index)
-            err = (actual - fc).dropna()
-            if len(err) < MIN_SOURCE_COVERAGE * len(fc):
-                continue
-            hours = pd.DatetimeIndex(err.index).tz_convert(TZ).hour
-            rows.append(pd.DataFrame({"hour": hours, "err": err.to_numpy()}))
-        if len(rows) < self.min_error_days:
-            raise InsufficientDataError(
-                f"{self.name}: only {len(rows)} days to estimate error quantiles "
-                f"(need {self.min_error_days})"
-            )
-        errs = pd.concat(rows, ignore_index=True)
-        g = errs.groupby("hour")["err"]
-        q = pd.DataFrame({"e10": g.quantile(0.1), "e90": g.quantile(0.9)})
-        return q.reindex(range(24)).ffill().bfill()
+    def point_for(self, prices: pd.Series, issue: date, target: date) -> pd.Series:
+        return profile_forecast(prices, self.source_day(issue, target), target)
 
     def predict(self, info: InfoSet, target_date: date) -> pd.DataFrame:
-        horizon = (target_date - info.issue_date).days
-        if horizon < 1:
-            raise ValueError("target date must be after the issue date")
-        q50 = self.point(info.prices, info.issue_date, target_date)
-        eq = self.error_quantiles(info, horizon)
-        hours = pd.DatetimeIndex(q50.index).tz_convert(TZ).hour
-        e10 = eq["e10"].reindex(hours).to_numpy()
-        e90 = eq["e90"].reindex(hours).to_numpy()
-        base = q50.to_numpy()
-        out = pd.DataFrame(
-            {
-                "q10": np.minimum(base + e10, base),
-                "q50": base,
-                "q90": np.maximum(base + e90, base),
-            },
-            index=q50.index,
-        )
-        return out
+        return predict_with_bands(self, info, target_date)
 
 
 NAIVE_LAST_DAY = NaiveModel(
