@@ -14,7 +14,7 @@ from typing import Protocol
 import numpy as np
 import pandas as pd
 
-from prognosebuch.models.base import InfoSet, InsufficientDataError
+from prognosebuch.models.base import InfoSet, Inputs, InsufficientDataError
 from prognosebuch.timeutil import TZ
 
 MIN_COVERAGE = 0.9
@@ -62,14 +62,14 @@ class PointModel(Protocol):
     @property
     def min_error_days(self) -> int: ...
 
-    def point_for(self, prices: pd.Series, issue: date, target: date) -> pd.Series:
-        """Quarter-hourly point forecast for ``target`` using only prices known on ``issue``."""
+    def point_for(self, inputs: Inputs, issue: date, target: date) -> pd.Series:
+        """Quarter-hourly point forecast for ``target`` using only inputs known on ``issue``."""
         ...
 
     def predict(self, info: InfoSet, target_date: date) -> pd.DataFrame: ...
 
 
-def past_errors(model: PointModel, prices: pd.Series, issue: date, horizon: int) -> list[pd.Series]:
+def past_errors(model: PointModel, inputs: Inputs, issue: date, horizon: int) -> list[pd.Series]:
     """Errors (actual - point) of the model for the previous target days known at ``issue``.
 
     Each past forecast is recomputed exactly as it would have been issued on its own issue
@@ -79,10 +79,10 @@ def past_errors(model: PointModel, prices: pd.Series, issue: date, horizon: int)
     for k in range(model.error_days):
         past_target = issue - timedelta(days=k)
         try:
-            fc = model.point_for(prices, past_target - timedelta(days=horizon), past_target)
+            fc = model.point_for(inputs, past_target - timedelta(days=horizon), past_target)
         except InsufficientDataError:
             continue
-        err = (prices.reindex(fc.index) - fc).dropna()
+        err = (inputs.prices.reindex(fc.index) - fc).dropna()
         if len(err) >= MIN_COVERAGE * len(fc):
             out.append(err)
     return out
@@ -100,13 +100,16 @@ def predict_with_errors(
     horizon = (target - info.issue_date).days
     if horizon < 1:
         raise ValueError("target date must be after the issue date")
-    point = model.point_for(info.prices, info.issue_date, target)
-    errors = past_errors(model, info.prices, info.issue_date, horizon)
+    point = model.point_for(info.inputs, info.issue_date, target)
+    errors = past_errors(model, info.inputs, info.issue_date, horizon)
     if len(errors) < model.min_error_days:
         raise InsufficientDataError(
             f"{model.name}: only {len(errors)} days to estimate error quantiles "
             f"(need {model.min_error_days})"
         )
+    native = getattr(model, "quantiles_for", None)
+    if native is not None:  # models with their own quantile regression
+        return native(info.inputs, info.issue_date, target), errors
     frames = [hour_frame(e) for e in errors]
     return apply_bands(point, hourly_error_quantiles(frames)), errors
 

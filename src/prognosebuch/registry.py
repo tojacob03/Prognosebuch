@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from datetime import date
 
 from prognosebuch.models.bands import PointModel
+from prognosebuch.models.gbm import GBM_V1
 from prognosebuch.models.lear import LEAR_V1
 from prognosebuch.models.naive import NAIVE_LAST_DAY, NAIVE_SIMILAR_DAY, NAIVE_WEEKLY
 
@@ -48,5 +49,6 @@ REFERENCE_MODEL_KEY = "naive_similar_day.v1"
 
 # Every model version that exists (live or not), for backtests.
 CATALOG: dict[str, PointModel] = {
-    f"{m.name}.v{m.version}": m for m in (NAIVE_LAST_DAY, NAIVE_WEEKLY, NAIVE_SIMILAR_DAY, LEAR_V1)
+    f"{m.name}.v{m.version}": m
+    for m in (NAIVE_LAST_DAY, NAIVE_WEEKLY, NAIVE_SIMILAR_DAY, LEAR_V1, GBM_V1)
 }

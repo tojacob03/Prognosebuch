@@ -13,6 +13,7 @@ Honesty guards (all enforced here, not only in the scheduler):
 from __future__ import annotations
 
 import os
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
@@ -25,7 +26,7 @@ from prognosebuch.cheapest import METHOD as CHEAPEST_METHOD
 from prognosebuch.cheapest import NEAR_EUR_MWH, WINDOW_HOURS, cheapest_window
 from prognosebuch.history import load_actuals, price_history
 from prognosebuch.models.bands import predict_with_errors
-from prognosebuch.models.base import InfoSet
+from prognosebuch.models.base import EARLIEST_ISSUE, InfoSet, weather_cutoff_utc
 from prognosebuch.registry import HORIZONS, LIVE_MODELS, LiveModel
 from prognosebuch.smard import ATTRIBUTION, PRICE_DE_LU, SmardClient
 from prognosebuch.storage import (
@@ -38,8 +39,11 @@ from prognosebuch.storage import (
     write_once,
 )
 from prognosebuch.timeutil import TZ, day_bounds_utc, local_iso
+from prognosebuch.weather import ATTRIBUTION as WEATHER_ATTRIBUTION
+from prognosebuch.weather import MODEL as WEATHER_MODEL
+from prognosebuch.weather import POINTS as WEATHER_POINTS
+from prognosebuch.weather import live_weather
 
-EARLIEST_ISSUE = time(8, 45)
 DEADLINE = time(12, 0)
 HISTORY_DAYS = 110  # fetched fresh from SMARD; older history comes from actuals/
 
@@ -135,6 +139,7 @@ def run_forecast(
     client: SmardClient,
     run: RunInfo,
     models: tuple[LiveModel, ...] = LIVE_MODELS,
+    weather_source: WeatherSource | None = None,
 ) -> ForecastResult:
     issue_date = now_utc.astimezone(TZ).date()
     todo = [
@@ -159,7 +164,13 @@ def run_forecast(
             f"SMARD already has prices for {issue_date + timedelta(days=1)}; refusing to issue"
         )
     archive = load_actuals(root)
-    info = InfoSet.cut(issue_date, price_history(archive, fresh))
+    weather, weather_error = None, None
+    if any(getattr(lm.model, "needs_weather", False) for lm in todo):
+        try:
+            weather = (weather_source or _live_weather)(root, issue_date)
+        except Exception as exc:  # models that need weather fail; the others still run
+            weather_error = f"{type(exc).__name__}: {exc}"
+    info = InfoSet.cut(issue_date, price_history(archive, fresh), weather)
     issued_at = pd.Timestamp(now_utc).floor("s")
 
     written: list[Path] = []
@@ -169,10 +180,14 @@ def run_forecast(
             df, cheapest = build_forecast_frame(lm, info, issued_at)
         except Exception as exc:  # one failing model must not block the others
             failed[lm.key] = f"{type(exc).__name__}: {exc}"
+            if weather_error and getattr(lm.model, "needs_weather", False):
+                failed[lm.key] += f" (weather fetch failed: {weather_error})"
             continue
         pq_path, js_path = forecast_paths(root, issue_date, lm.model.name, lm.model.version)
         data = to_parquet_bytes(df, FORECAST_SCHEMA)
         manifest = build_manifest(lm, df, info, issued_at, fetched_at, fresh, archive, run, data)
+        if getattr(lm.model, "needs_weather", False) and info.weather is not None:
+            manifest["data_cutoffs"][WEATHER_KEY] = weather_cutoff_meta(info, fetched_at)
         manifest["cheapest_windows"] = {
             "method": CHEAPEST_METHOD,
             "window_hours": WINDOW_HOURS,
@@ -183,6 +198,33 @@ def run_forecast(
         write_once(js_path, dump_json(manifest))
         written += [pq_path, js_path]
     return ForecastResult(issue_date, written, done, failed)
+
+
+WeatherSource = Callable[[Path, date], pd.DataFrame]
+WEATHER_KEY = f"open-meteo:{WEATHER_MODEL}:previous-runs"
+
+
+def _live_weather(root: Path, issue_date: date) -> pd.DataFrame:
+    return live_weather(root, issue_date)[0]
+
+
+def weather_cutoff_meta(info: InfoSet, fetched_at: pd.Timestamp) -> dict[str, Any]:
+    w = info.weather
+    assert w is not None
+    per_lead = {
+        f"lead_{lead}_days_last_valid_utc": pd.Timestamp(g["valid_utc"].max()).isoformat()
+        for lead, g in w.groupby("lead_days")
+    }
+    return {
+        "description": "Weather forecasts (wind, solar, temperature), aggregated over "
+        f"{len(WEATHER_POINTS)} points; D+1 uses lead 2 days, D+2 lead 3 days",
+        "fetched_at_utc": fetched_at.isoformat(),
+        "information_cutoff_utc": weather_cutoff_utc(info.issue_date).isoformat(),
+        "last_available_at_utc": pd.Timestamp(w["available_at_utc"].max()).isoformat(),
+        **per_lead,
+        "n_values_used": len(w),
+        "attribution": WEATHER_ATTRIBUTION,
+    }
 
 
 def build_manifest(

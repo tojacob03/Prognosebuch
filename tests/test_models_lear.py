@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from prognosebuch.models.base import InfoSet, InsufficientDataError
+from prognosebuch.models.base import InfoSet, Inputs, InsufficientDataError
 from prognosebuch.models.lear import LEAR_V1, design, hourly_matrix, is_holiday
 from prognosebuch.timeutil import day_bounds_utc, day_slots_utc
 from tests.conftest import synthetic_prices
@@ -71,7 +71,8 @@ def test_lear_ignores_data_after_cutoff(prices: pd.Series) -> None:
     pd.testing.assert_frame_equal(a, b)
     # point_for must cut by itself as well, even when handed the full series
     pd.testing.assert_series_equal(
-        SMALL.point_for(prices, ISSUE, target), SMALL.point_for(tampered, ISSUE, target)
+        SMALL.point_for(Inputs(prices), ISSUE, target),
+        SMALL.point_for(Inputs(tampered), ISSUE, target),
     )
 
 

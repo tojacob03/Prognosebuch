@@ -35,6 +35,7 @@ from prognosebuch.storage import (
     write_once,
 )
 from prognosebuch.timeutil import TZ, day_slots_utc, local_date, local_iso
+from prognosebuch.weather import update_weather
 
 WINDOWS: dict[str, int | None] = {"7d": 7, "30d": 30, "90d": 90, "all": None}
 MIN_DM_DAYS = 10
@@ -130,8 +131,16 @@ def run_evaluate(
     now_utc: datetime,
     client: SmardClient | None,
     models: tuple[LiveModel, ...] = LIVE_MODELS,
+    update_weather_archive: bool = True,
 ) -> EvaluateResult:
     changed = update_actuals(root, client, now_utc) if client is not None else []
+    if client is not None and update_weather_archive:
+        try:
+            path = update_weather(root, now_utc)
+            if path is not None:
+                changed.append(path)
+        except Exception as exc:  # scoring must not depend on the weather service
+            print(f"::warning::weather archive not updated: {type(exc).__name__}: {exc}")
     actuals = load_actuals(root)
     first_target = min(lm.live_since for lm in models) + timedelta(days=min(HORIZONS))
     last_target = local_date(pd.Timestamp(now_utc)) + timedelta(days=1)

@@ -27,6 +27,7 @@ from prognosebuch.probe import run_probe
 from prognosebuch.registry import CATALOG
 from prognosebuch.smard import SmardClient
 from prognosebuch.timeutil import utc_now
+from prognosebuch.weather import load_weather
 
 
 def _now(value: str | None) -> datetime:
@@ -101,7 +102,13 @@ def cmd_backtest(args: argparse.Namespace) -> int:
         raise SystemExit(f"unknown model(s): {unknown}; known: {list(CATALOG)}")
     first, last = date.fromisoformat(args.first), date.fromisoformat(args.last)
     res = run_backtest(
-        [CATALOG[k] for k in keys], load_actuals(root), first, last, utc_now(), args.jobs
+        [CATALOG[k] for k in keys],
+        load_actuals(root),
+        first,
+        last,
+        utc_now(),
+        args.jobs,
+        weather=load_weather(root),
     )
     out = Path(args.out) if args.out else root / "backtest" / f"{first}_{last}"
     for p in write_backtest(res, out):

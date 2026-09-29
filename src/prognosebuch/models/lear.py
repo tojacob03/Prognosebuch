@@ -35,8 +35,8 @@ from sklearn.exceptions import ConvergenceWarning
 from sklearn.linear_model import LassoLarsIC
 
 from prognosebuch.models.bands import predict_with_bands
-from prognosebuch.models.base import InfoSet, InsufficientDataError
-from prognosebuch.timeutil import TZ, day_bounds_utc, day_slots_utc
+from prognosebuch.models.base import InfoSet, Inputs, InsufficientDataError
+from prognosebuch.timeutil import TZ, day_slots_utc
 
 MIN_HOURS_PER_DAY = 22
 SHAPE_DAYS = 28
@@ -194,9 +194,9 @@ class LearModel:
 
     # ---------------------------------------------------------------- Model protocol
 
-    def point_for(self, prices: pd.Series, issue: date, target: date) -> pd.Series:
+    def point_for(self, inputs: Inputs, issue: date, target: date) -> pd.Series:
         h = (target - issue).days
-        known = prices[pd.DatetimeIndex(prices.index) < day_bounds_utc(issue)[1]]
+        known = inputs.known_at(issue).prices
         X, Y = design(hourly_matrix(known), h, until=target)
         hourly = self.hourly_point(X, Y, issue, h)
         if hourly is None:

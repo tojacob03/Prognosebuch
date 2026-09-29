@@ -24,7 +24,7 @@ def issue(root: Path, d: date) -> None:
 
 def evaluate(root: Path, until: date, now: datetime) -> None:
     visible = ALL[ALL.index < day_bounds_utc(until)[1]]
-    run_evaluate(root, now, FakeClient(visible), MODELS)
+    run_evaluate(root, now, FakeClient(visible), MODELS, update_weather_archive=False)
 
 
 def test_scores_and_missed_days(tmp_path: Path) -> None:

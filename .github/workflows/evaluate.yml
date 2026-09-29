@@ -30,7 +30,7 @@ jobs:
         run: uv run --no-dev prognosebuch evaluate
       - name: Commit
         run: |
-          scripts/commit-data.sh "evaluate: $(TZ=Europe/Berlin date +%F)" actuals scores
+          scripts/commit-data.sh "evaluate: $(TZ=Europe/Berlin date +%F)" actuals scores inputs
       - name: Audit
         run: uv run --no-dev prognosebuch audit
       - name: Open issue on failure

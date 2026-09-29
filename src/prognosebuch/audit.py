@@ -13,7 +13,8 @@ import subprocess
 from datetime import date, datetime
 from pathlib import Path
 
-from prognosebuch.forecast import DEADLINE, EARLIEST_ISSUE
+from prognosebuch.forecast import DEADLINE
+from prognosebuch.models.base import EARLIEST_ISSUE
 from prognosebuch.storage import sha256_hex
 from prognosebuch.timeutil import TZ
 

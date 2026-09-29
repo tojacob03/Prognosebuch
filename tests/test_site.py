@@ -30,7 +30,13 @@ def site(tmp_path_factory: pytest.TempPathFactory) -> Path:
         now = datetime(d.year, d.month, d.day, 7, 5, tzinfo=UTC)
         run_forecast(root, now, seeded_client(root, known), RunInfo(None, None), models)
     visible = prices[prices.index < day_bounds_utc(date(2026, 10, 8))[1]]
-    run_evaluate(root, datetime(2026, 10, 7, 14, 0, tzinfo=UTC), FakeClient(visible), models)
+    run_evaluate(
+        root,
+        datetime(2026, 10, 7, 14, 0, tzinfo=UTC),
+        FakeClient(visible),
+        models,
+        update_weather_archive=False,
+    )
     out = root / "_site"
     build_site(root, out, datetime(2026, 10, 7, 15, 0, tzinfo=UTC))
     return out

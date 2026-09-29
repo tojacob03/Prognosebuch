@@ -25,7 +25,7 @@ from joblib import Parallel, delayed
 from prognosebuch.evaluate import summarize
 from prognosebuch.metrics import mean_pinball
 from prognosebuch.models.bands import PointModel, apply_bands, error_frame, hourly_error_quantiles
-from prognosebuch.models.base import InsufficientDataError
+from prognosebuch.models.base import Inputs, InsufficientDataError
 from prognosebuch.registry import HORIZONS
 from prognosebuch.storage import dump_json
 from prognosebuch.timeutil import day_slots_utc, local_iso, normalize_index
@@ -38,9 +38,15 @@ class BacktestResult:
     summary: dict[str, Any]
 
 
-def _point(model: PointModel, prices: pd.Series, issue: date, target: date) -> pd.Series | None:
+def _point(
+    model: PointModel, inputs: Inputs, issue: date, target: date
+) -> pd.Series | pd.DataFrame | None:
+    """Point forecast, or the full quantile frame for models with native quantiles."""
     try:
-        return model.point_for(prices, issue, target)
+        native = getattr(model, "quantiles_for", None)
+        if native is not None:
+            return native(inputs, issue, target)
+        return model.point_for(inputs, issue, target)
     except InsufficientDataError:
         return None
 
@@ -51,20 +57,26 @@ def _days(first: date, last: date) -> list[date]:
 
 def backtest_model(
     model: PointModel,
-    prices: pd.Series,
+    inputs: Inputs,
     first_target: date,
     last_target: date,
     n_jobs: int = 1,
 ) -> pd.DataFrame:
     """Score rows (same columns as ``scores/``) for all targets in [first, last]."""
+    prices = inputs.prices
     rows = []
     for h in HORIZONS:
         warm = first_target - timedelta(days=model.error_days + h)
         targets = _days(warm, last_target)
         points = Parallel(n_jobs=n_jobs)(
-            delayed(_point)(model, prices, t - timedelta(days=h), t) for t in targets
+            delayed(_point)(model, inputs, t - timedelta(days=h), t) for t in targets
         )
-        by_target = {t: p for t, p in zip(targets, points, strict=True) if p is not None}
+        native = {t: p for t, p in zip(targets, points, strict=True) if isinstance(p, pd.DataFrame)}
+        by_target = {
+            t: (p["q50"] if isinstance(p, pd.DataFrame) else p)
+            for t, p in zip(targets, points, strict=True)
+            if p is not None
+        }
         err_by_target = {t: error_frame(prices, p) for t, p in by_target.items()}
         for t in _days(first_target, last_target):
             issue = t - timedelta(days=h)
@@ -77,7 +89,10 @@ def backtest_model(
                 if (f := err_by_target.get(issue - timedelta(days=k))) is not None
             ]
             if t in by_target and len(frames) >= model.min_error_days:
-                q = apply_bands(by_target[t], hourly_error_quantiles(frames)).to_numpy()
+                if t in native:
+                    q = native[t][["q10", "q50", "q90"]].to_numpy()
+                else:
+                    q = apply_bands(by_target[t], hourly_error_quantiles(frames)).to_numpy()
                 status = "scored"
             err = y - q[:, 1]
             rows.append(
@@ -126,9 +141,10 @@ def run_backtest(
     last_target: date,
     now_utc: datetime,
     n_jobs: int = 1,
+    weather: pd.DataFrame | None = None,
 ) -> BacktestResult:
-    prices = normalize_index(prices)
-    parts = [backtest_model(m, prices, first_target, last_target, n_jobs) for m in models]
+    inputs = Inputs(normalize_index(prices), weather)
+    parts = [backtest_model(m, inputs, first_target, last_target, n_jobs) for m in models]
     scores = pd.concat(parts, ignore_index=True)
     summary = summarize(scores, now_utc)
     summary["kind"] = "backtest"

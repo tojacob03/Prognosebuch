@@ -15,7 +15,7 @@ from datetime import date, timedelta
 import pandas as pd
 
 from prognosebuch.models.bands import predict_with_bands
-from prognosebuch.models.base import InfoSet, InsufficientDataError, LeakError
+from prognosebuch.models.base import InfoSet, Inputs, InsufficientDataError, LeakError
 from prognosebuch.timeutil import day_slots_utc, wall_clock
 
 MIN_SOURCE_COVERAGE = 0.9
@@ -65,8 +65,8 @@ class NaiveModel:
             raise LeakError(f"{self.name}: source day {src} is after issue day {issue_date}")
         return src
 
-    def point_for(self, prices: pd.Series, issue: date, target: date) -> pd.Series:
-        return profile_forecast(prices, self.source_day(issue, target), target)
+    def point_for(self, inputs: Inputs, issue: date, target: date) -> pd.Series:
+        return profile_forecast(inputs.prices, self.source_day(issue, target), target)
 
     def predict(self, info: InfoSet, target_date: date) -> pd.DataFrame:
         return predict_with_bands(self, info, target_date)

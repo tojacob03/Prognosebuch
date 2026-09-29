@@ -9,6 +9,7 @@ import pandas as pd
 import pytest
 
 from prognosebuch.history import merge_into_archive
+from prognosebuch.models.gbm import GbmModel
 from prognosebuch.models.lear import LearModel
 from prognosebuch.registry import LIVE_MODELS, LiveModel
 from prognosebuch.smard import Series, SmardClient
@@ -68,6 +69,10 @@ def fast_live_models(live_since: date | None = None) -> tuple[LiveModel, ...]:
         model = lm.model
         if isinstance(model, LearModel):
             model = replace(model, windows=(120,), error_days=6, min_error_days=4)
+        if isinstance(model, GbmModel):
+            model = replace(
+                model, train_from=date(2026, 1, 20), max_iter=30, error_days=6, min_error_days=4
+            )
         out.append(LiveModel(model, live_since=live_since or lm.live_since))
     return tuple(out)
 
@@ -76,3 +81,59 @@ def seeded_client(root: Path, prices: pd.Series) -> FakeClient:
     """Write ``prices`` into the actuals archive under ``root`` and serve them as SMARD."""
     merge_into_archive(root, prices)
     return FakeClient(prices)
+
+
+@pytest.fixture(autouse=True)
+def no_network(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Tests run offline: any HTTP request fails loudly."""
+
+    def blocked(*args: object, **kwargs: object) -> None:
+        raise RuntimeError("network access is disabled in tests")
+
+    monkeypatch.setattr("prognosebuch.smard.httpx.get", blocked)
+
+
+def synthetic_weather(first: date, last: date, seed: int = 0) -> pd.DataFrame:
+    """Hourly weather 'forecasts' for leads 2 and 3 days, with availability times."""
+    start, _ = day_bounds_utc(first)
+    _, end = day_bounds_utc(last)
+    valid = pd.date_range(start, end, freq="1h", inclusive="left").as_unit("ns")
+    rng = np.random.default_rng(seed)
+    local = valid.tz_convert("Europe/Berlin")
+    hour = local.hour.to_numpy()
+    wind = np.clip(np.cumsum(rng.normal(0, 0.08, len(valid))) % 1.0, 0, 1)
+    solar = (
+        np.clip(np.sin((hour - 6) / 12 * np.pi), 0, None) * 600 * rng.uniform(0.3, 1, len(valid))
+    )
+    temp = 12 + 8 * np.sin((hour - 9) / 24 * 2 * np.pi) + rng.normal(0, 1, len(valid))
+    parts = []
+    for lead in (2, 3):
+        noise = rng.normal(0, 0.03 * lead, len(valid))
+        parts.append(
+            pd.DataFrame(
+                {
+                    "valid_utc": valid,
+                    "lead_days": lead,
+                    "wind_power": np.clip(wind + noise, 0, 1),
+                    "wind_speed": 3 + 10 * np.clip(wind + noise, 0, 1),
+                    "solar": solar,
+                    "temp": temp,
+                }
+            )
+        )
+    df = pd.concat(parts, ignore_index=True)
+    df["available_at_utc"] = df["valid_utc"] - pd.to_timedelta(df["lead_days"] * 24 - 6, unit="h")
+    return df
+
+
+def weather_driven_prices(weather: pd.DataFrame, seed: int = 0) -> pd.Series:
+    """Quarter-hourly prices that depend on the (lead-2) weather: wind and sun push them down."""
+    w = weather[weather["lead_days"] == 2].set_index("valid_utc")
+    qh = pd.date_range(w.index.min(), w.index.max() + pd.Timedelta(minutes=45), freq="15min")
+    wq = w.reindex(qh, method="ffill")
+    rng = np.random.default_rng(seed)
+    hour = qh.tz_convert("Europe/Berlin").hour.to_numpy()
+    base = 110 + 30 * np.sin((hour - 6) / 24 * 2 * np.pi)
+    values = base - 120 * wq["wind_power"].to_numpy() - 0.12 * wq["solar"].to_numpy()
+    values = values + rng.normal(0, 8, len(qh))
+    return pd.Series(values, index=pd.DatetimeIndex(qh, name="delivery_start_utc").as_unit("ns"))

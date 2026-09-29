@@ -90,7 +90,13 @@ def test_pre_registered_and_scored_end_to_end(tmp_path: Path) -> None:
     assert 0 <= cw["by_target"]["2026-10-08"]["p_cheapest"] <= 1
 
     visible = prices[prices.index < day_bounds_utc(date(2026, 10, 8))[1]]
-    run_evaluate(tmp_path, datetime(2026, 10, 7, 14, 0, tzinfo=UTC), FakeClient(visible), models)
+    run_evaluate(
+        tmp_path,
+        datetime(2026, 10, 7, 14, 0, tzinfo=UTC),
+        FakeClient(visible),
+        models,
+        update_weather_archive=False,
+    )
     c = pd.read_parquet(cheapest_score_path(tmp_path, date(2026, 10, 8)))
     assert set(c["status"]) == {"scored"} and len(c) == len(models)
     assert (c["regret_eur_mwh"] >= 0).all()
