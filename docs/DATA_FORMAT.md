@@ -34,6 +34,13 @@ source: fetch time, information cutoff, last value used, last value available),
 `package_version`, `code_commit`, `workflow_run_url` and `parquet_sha256` (SHA-256 of
 the parquet file, checked by `prognosebuch audit`).
 
+The manifest also holds `cheapest_windows` (from 2026-09-30): for each target day the
+3-hour window with the lowest mean median forecast (`start_utc`, `end_utc`, `start_local`,
+`end_local`, `expected_mean_eur_mwh`, `day_mean_eur_mwh`), the probability that it is the
+cheapest window (`p_cheapest`) and that it is within 5 EUR/MWh of the cheapest (`p_near`),
+the number of error scenarios used, and the three most likely cheapest windows. Method:
+`src/prognosebuch/cheapest.py`.
+
 ## `actuals/day_ahead_price_de_lu/YYYY-MM.parquet`
 
 Day-ahead prices from SMARD.de (Bundesnetzagentur | SMARD.de, CC BY 4.0). May be updated
@@ -63,6 +70,15 @@ Missing forecasts are kept as rows with `status = missed`.
 | pinball | float64 | Mean pinball loss over q10/q50/q90 |
 | in_band | bool | actual within [q10, q90] |
 | scored_at_utc | timestamp (UTC) | When the row was computed |
+
+## `scores/cheapest/YYYY/MM/<target_date>.parquet`
+
+One row per model version and horizon that was due: `status` (`scored`/`missed`), the
+recommended window (`window_start_utc`, `window_start_local`, `expected_mean_eur_mwh`,
+`p_cheapest`, `p_near`), and how it turned out: `actual_best_start_utc`,
+`actual_mean_recommended`, `actual_mean_best`, `actual_day_mean`, `hit` (was the cheapest),
+`near` (within 5 EUR/MWh), `regret_eur_mwh`. Summarised in `scores/summary.json` under
+`cheapest_windows` (hit rate vs. stated probability, Brier score, regret, saving vs. day mean).
 
 ## `backtest/<first>_<last>/`
 

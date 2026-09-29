@@ -14,7 +14,6 @@ from dataclasses import dataclass
 from datetime import date
 
 from prognosebuch.models.bands import PointModel
-from prognosebuch.models.base import Model
 from prognosebuch.models.lear import LEAR_V1
 from prognosebuch.models.naive import NAIVE_LAST_DAY, NAIVE_SIMILAR_DAY, NAIVE_WEEKLY
 
@@ -23,7 +22,7 @@ HORIZONS: tuple[int, ...] = (1, 2)
 
 @dataclass(frozen=True)
 class LiveModel:
-    model: Model
+    model: PointModel
     live_since: date
     retired_after: date | None = None
 

@@ -7,6 +7,7 @@ exist is recorded with status ``missed``; missed days are never dropped from the
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -15,14 +16,17 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from prognosebuch.cheapest import realized
 from prognosebuch.forecast import DEADLINE
 from prognosebuch.history import day_is_complete, load_actuals, update_actuals
 from prognosebuch.metrics import diebold_mariano, mae, mean_pinball, rmse, skill
 from prognosebuch.registry import HORIZONS, LIVE_MODELS, REFERENCE_MODEL_KEY, LiveModel
 from prognosebuch.smard import SmardClient
 from prognosebuch.storage import (
+    CHEAPEST_SCHEMA,
     SCORE_SCHEMA,
     SCORE_SCHEMA_VERSION,
+    cheapest_score_path,
     dump_json,
     forecast_paths,
     read_parquet,
@@ -142,6 +146,11 @@ def run_evaluate(
                 if df is not None:
                     write_once(path, to_parquet_bytes(df, SCORE_SCHEMA))
                     scored.append(d)
+                    cdf = score_cheapest_day(root, d, actuals, scored_at, models)
+                    if cdf is not None:
+                        write_once(
+                            cheapest_score_path(root, d), to_parquet_bytes(cdf, CHEAPEST_SCHEMA)
+                        )
             else:
                 pending.append(d)
         d += timedelta(days=1)
@@ -149,15 +158,138 @@ def run_evaluate(
     summary_path = None
     if not scores.empty:
         summary_path = root / "scores" / "summary.json"
-        summary_path.write_bytes(dump_json(summarize(scores, now_utc)))
+        summary = summarize(scores, now_utc)
+        summary["cheapest_windows"] = summarize_cheapest(load_cheapest_scores(root))
+        summary_path.write_bytes(dump_json(summary))
     return EvaluateResult(changed, scored, pending, summary_path)
 
 
 def load_scores(root: Path) -> pd.DataFrame:
-    files = sorted((root / "scores").glob("*/*/*.parquet"))
+    files = sorted((root / "scores").glob("[0-9]*/*/*.parquet"))
     if not files:
         return pd.DataFrame()
     return pd.concat([read_parquet(f) for f in files], ignore_index=True)
+
+
+def load_cheapest_scores(root: Path) -> pd.DataFrame:
+    files = sorted((root / "scores" / "cheapest").glob("*/*/*.parquet"))
+    if not files:
+        return pd.DataFrame()
+    return pd.concat([read_parquet(f) for f in files], ignore_index=True)
+
+
+def score_cheapest_day(
+    root: Path,
+    target: date,
+    actuals: pd.Series,
+    scored_at: pd.Timestamp,
+    models: tuple[LiveModel, ...] = LIVE_MODELS,
+) -> pd.DataFrame | None:
+    """Score the pre-registered cheapest 3-hour window of every due forecast."""
+    actual = actuals.reindex(day_slots_utc(target))
+    rows: list[dict[str, Any]] = []
+    for lm in models:
+        for h in HORIZONS:
+            issue = target - timedelta(days=h)
+            if not lm.expected_on(issue):
+                continue
+            base: dict[str, Any] = {
+                "schema_version": SCORE_SCHEMA_VERSION,
+                "target_date": target,
+                "model": lm.model.name,
+                "model_version": lm.model.version,
+                "horizon_days": h,
+                "issue_date": issue,
+                "scored_at_utc": scored_at,
+            }
+            js = forecast_paths(root, issue, lm.model.name, lm.model.version)[1]
+            rec = None
+            if js.exists():
+                manifest = json.loads(js.read_text())
+                rec = (
+                    manifest.get("cheapest_windows", {})
+                    .get("by_target", {})
+                    .get(target.isoformat())
+                )
+            if rec is None:
+                rows.append({**base, "status": "missed"})
+                continue
+            r = realized(actual, rec["start_utc"])
+            rows.append(
+                {
+                    **base,
+                    "status": "scored",
+                    "window_start_utc": pd.Timestamp(rec["start_utc"]),
+                    "window_start_local": rec["start_local"],
+                    "expected_mean_eur_mwh": rec["expected_mean_eur_mwh"],
+                    "p_cheapest": rec["p_cheapest"],
+                    "p_near": rec["p_near"],
+                    **{k: v for k, v in r.items() if k != "actual_best_start_utc"},
+                    "actual_best_start_utc": pd.Timestamp(r["actual_best_start_utc"]),
+                }
+            )
+    if not rows:
+        return None
+    df = pd.DataFrame(rows).reindex(columns=CHEAPEST_SCHEMA.names)
+    for col in ("window_start_utc", "actual_best_start_utc", "scored_at_utc"):
+        df[col] = pd.to_datetime(df[col], utc=True)
+    for col in ("hit", "near"):
+        df[col] = df[col].astype("boolean")
+    return df
+
+
+def summarize_cheapest(c: pd.DataFrame) -> dict[str, Any]:
+    """Hit rates, regret and calibration of the cheapest-window recommendations."""
+    out: dict[str, Any] = {
+        "definitions": {
+            "hit_rate": "share of days on which the recommended 3-hour window was the cheapest",
+            "near_rate": "share of days on which it was at most 5 EUR/MWh (0.5 ct/kWh) "
+            "more expensive than the cheapest window",
+            "mean_p_cheapest / mean_p_near": "average stated probability; compare with the "
+            "realised rate (calibration)",
+            "brier_*": "mean squared difference between stated probability and outcome (0/1)",
+            "regret_eur_mwh": "actual mean price in the recommended window minus the "
+            "cheapest window",
+            "saving_vs_day_mean_eur_mwh": "actual day mean minus actual mean price in the "
+            "recommended window",
+        },
+        "windows": {},
+    }
+    if c.empty:
+        return out
+    c = c.copy()
+    c["model_key"] = c["model"] + ".v" + c["model_version"]
+    c["target_date"] = pd.to_datetime(c["target_date"]).dt.date
+    latest = max(c["target_date"])
+    for wname, days in WINDOWS.items():
+        w = c if days is None else c[c["target_date"] > latest - timedelta(days=days)]
+        rows = []
+        for (key, h), g in w.groupby(["model_key", "horizon_days"]):
+            ok = g[g["status"] == "scored"]
+            row: dict[str, Any] = {
+                "model": str(key),
+                "horizon_days": int(str(h)),
+                "days_due": len(g),
+                "days_scored": len(ok),
+            }
+            if len(ok):
+                hit = ok["hit"].astype(float)
+                near = ok["near"].astype(float)
+                row |= {
+                    "hit_rate": round(float(hit.mean()), 3),
+                    "mean_p_cheapest": round(float(ok["p_cheapest"].mean()), 3),
+                    "brier_cheapest": round(float(((ok["p_cheapest"] - hit) ** 2).mean()), 4),
+                    "near_rate": round(float(near.mean()), 3),
+                    "mean_p_near": round(float(ok["p_near"].mean()), 3),
+                    "brier_near": round(float(((ok["p_near"] - near) ** 2).mean()), 4),
+                    "mean_regret_eur_mwh": round(float(ok["regret_eur_mwh"].mean()), 2),
+                    "saving_vs_day_mean_eur_mwh": round(
+                        float((ok["actual_day_mean"] - ok["actual_mean_recommended"]).mean()), 2
+                    ),
+                }
+            rows.append(row)
+        out["windows"][wname] = rows
+    return out
 
 
 # --------------------------------------------------------------------------- summary

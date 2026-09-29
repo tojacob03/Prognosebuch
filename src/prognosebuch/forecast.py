@@ -21,7 +21,10 @@ from typing import Any
 import pandas as pd
 
 from prognosebuch import __version__
+from prognosebuch.cheapest import METHOD as CHEAPEST_METHOD
+from prognosebuch.cheapest import NEAR_EUR_MWH, WINDOW_HOURS, cheapest_window
 from prognosebuch.history import load_actuals, price_history
+from prognosebuch.models.bands import predict_with_errors
 from prognosebuch.models.base import InfoSet
 from prognosebuch.registry import HORIZONS, LIVE_MODELS, LiveModel
 from prognosebuch.smard import ATTRIBUTION, PRICE_DE_LU, SmardClient
@@ -88,11 +91,16 @@ def check_issue_window(now_utc: datetime) -> date:
     return now_local.date()
 
 
-def build_forecast_frame(lm: LiveModel, info: InfoSet, issued_at_utc: pd.Timestamp) -> pd.DataFrame:
+def build_forecast_frame(
+    lm: LiveModel, info: InfoSet, issued_at_utc: pd.Timestamp
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Forecast rows for D+1 and D+2, and the cheapest 3-hour window of each target day."""
     parts = []
+    cheapest: dict[str, Any] = {}
     for h in HORIZONS:
         target = info.issue_date + timedelta(days=h)
-        pred = lm.model.predict(info, target)
+        pred, errors = predict_with_errors(lm.model, info, target)
+        cheapest[target.isoformat()] = cheapest_window(pred["q50"], errors)
         idx = pd.DatetimeIndex(pred.index)
         parts.append(
             pd.DataFrame(
@@ -118,7 +126,7 @@ def build_forecast_frame(lm: LiveModel, info: InfoSet, issued_at_utc: pd.Timesta
         raise ValueError(f"{lm.key}: forecast contains missing values")
     if not ((df["q10"] <= df["q50"]) & (df["q50"] <= df["q90"])).all():
         raise ValueError(f"{lm.key}: quantiles are not ordered")
-    return df
+    return df, cheapest
 
 
 def run_forecast(
@@ -158,13 +166,19 @@ def run_forecast(
     failed: dict[str, str] = {}
     for lm in todo:
         try:
-            df = build_forecast_frame(lm, info, issued_at)
+            df, cheapest = build_forecast_frame(lm, info, issued_at)
         except Exception as exc:  # one failing model must not block the others
             failed[lm.key] = f"{type(exc).__name__}: {exc}"
             continue
         pq_path, js_path = forecast_paths(root, issue_date, lm.model.name, lm.model.version)
         data = to_parquet_bytes(df, FORECAST_SCHEMA)
         manifest = build_manifest(lm, df, info, issued_at, fetched_at, fresh, archive, run, data)
+        manifest["cheapest_windows"] = {
+            "method": CHEAPEST_METHOD,
+            "window_hours": WINDOW_HOURS,
+            "near_eur_mwh": NEAR_EUR_MWH,
+            "by_target": cheapest,
+        }
         write_once(pq_path, data)
         write_once(js_path, dump_json(manifest))
         written += [pq_path, js_path]

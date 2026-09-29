@@ -53,6 +53,31 @@ ACTUALS_SCHEMA = pa.schema(
     ]
 )
 
+CHEAPEST_SCHEMA = pa.schema(
+    [
+        ("schema_version", pa.int16()),
+        ("target_date", pa.date32()),
+        ("model", pa.string()),
+        ("model_version", pa.string()),
+        ("horizon_days", pa.int8()),
+        ("issue_date", pa.date32()),
+        ("status", pa.string()),
+        ("window_start_utc", pa.timestamp("s", tz="UTC")),
+        ("window_start_local", pa.string()),
+        ("expected_mean_eur_mwh", pa.float64()),
+        ("p_cheapest", pa.float64()),
+        ("p_near", pa.float64()),
+        ("actual_best_start_utc", pa.timestamp("s", tz="UTC")),
+        ("actual_mean_recommended", pa.float64()),
+        ("actual_mean_best", pa.float64()),
+        ("actual_day_mean", pa.float64()),
+        ("hit", pa.bool_()),
+        ("near", pa.bool_()),
+        ("regret_eur_mwh", pa.float64()),
+        ("scored_at_utc", pa.timestamp("s", tz="UTC")),
+    ]
+)
+
 SCORE_SCHEMA = pa.schema(
     [
         ("schema_version", pa.int16()),
@@ -94,6 +119,11 @@ def actuals_path(root: Path, month: str) -> Path:
 
 def score_path(root: Path, target_date: date) -> Path:
     return root / "scores" / f"{target_date:%Y}" / f"{target_date:%m}" / f"{target_date}.parquet"
+
+
+def cheapest_score_path(root: Path, target_date: date) -> Path:
+    d = root / "scores" / "cheapest" / f"{target_date:%Y}" / f"{target_date:%m}"
+    return d / f"{target_date}.parquet"
 
 
 def to_parquet_bytes(df: pd.DataFrame, schema: pa.Schema) -> bytes:
