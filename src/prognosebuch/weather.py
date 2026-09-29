@@ -35,7 +35,7 @@ ATTRIBUTION = "Weather data by Open-Meteo.com (CC BY 4.0)"
 LEADS = (2, 3)
 PUBLICATION_DELAY_H = 6
 FIRST_DAY = date(2024, 2, 19)
-ARCHIVE = Path("inputs") / "weather" / "open_meteo_icon.parquet"
+ARCHIVE_DIR = Path("inputs") / "weather" / "open_meteo_icon"
 
 
 @dataclass(frozen=True)
@@ -160,34 +160,51 @@ def merge(old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
     return df.sort_values(["lead_days", "valid_utc"]).reset_index(drop=True)
 
 
-def load_weather(root: Path) -> pd.DataFrame:
-    path = root / ARCHIVE
-    if not path.exists():
-        return empty()
-    df = read_parquet(path)
-    for c in ("valid_utc", "available_at_utc"):
-        df[c] = pd.DatetimeIndex(df[c]).as_unit(TIME_UNIT)
-    return df
+def _month_path(root: Path, month: str) -> Path:
+    return root / ARCHIVE_DIR / f"{month}.parquet"
 
 
-def save_weather(root: Path, df: pd.DataFrame) -> Path:
-    path = root / ARCHIVE
-    path.parent.mkdir(parents=True, exist_ok=True)
+def _normalize(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
+    for c in ("valid_utc", "available_at_utc"):
+        out[c] = pd.DatetimeIndex(out[c]).as_unit(TIME_UNIT)
+    out["lead_days"] = out["lead_days"].astype("int64")
     for f in FEATURES:
-        out[f] = out[f].round(3)
-    out.to_parquet(path, index=False, compression="zstd")
-    return path
+        out[f] = out[f].astype(float).round(3)
+    return out.sort_values(["lead_days", "valid_utc"]).reset_index(drop=True)
+
+
+def load_weather(root: Path) -> pd.DataFrame:
+    files = sorted((root / ARCHIVE_DIR).glob("*.parquet"))
+    if not files:
+        return empty()
+    return _normalize(pd.concat([read_parquet(f) for f in files], ignore_index=True))
+
+
+def save_weather(root: Path, df: pd.DataFrame) -> list[Path]:
+    """Write one file per month of valid time; only files whose content changed are rewritten."""
+    df = _normalize(df)
+    months = pd.DatetimeIndex(df["valid_utc"]).strftime("%Y-%m")
+    changed = []
+    for month in sorted(set(months)):
+        part = df[months == month].reset_index(drop=True)
+        path = _month_path(root, month)
+        if path.exists() and _normalize(read_parquet(path)).equals(part):
+            continue
+        path.parent.mkdir(parents=True, exist_ok=True)
+        part.to_parquet(path, index=False, compression="zstd")
+        changed.append(path)
+    return changed
 
 
 def update_weather(
     root: Path, now_utc: datetime, get_json: JsonGetter = http_get_json, lookback_days: int = 14
-) -> Path | None:
+) -> list[Path]:
     """Merge recent values (including already available ones for the next days)."""
     today = local_date(pd.Timestamp(now_utc))
     new = fetch(today - timedelta(days=lookback_days), today + timedelta(days=2), get_json)
     if new.empty:
-        return None
+        return []
     return save_weather(root, merge(load_weather(root), new))
 
 

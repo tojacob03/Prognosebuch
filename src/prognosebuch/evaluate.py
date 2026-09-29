@@ -136,9 +136,7 @@ def run_evaluate(
     changed = update_actuals(root, client, now_utc) if client is not None else []
     if client is not None and update_weather_archive:
         try:
-            path = update_weather(root, now_utc)
-            if path is not None:
-                changed.append(path)
+            changed += update_weather(root, now_utc)
         except Exception as exc:  # scoring must not depend on the weather service
             print(f"::warning::weather archive not updated: {type(exc).__name__}: {exc}")
     actuals = load_actuals(root)
