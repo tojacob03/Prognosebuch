@@ -52,6 +52,14 @@ if SMARD revises a value.
 | delivery_start_local | string | Europe/Berlin, ISO 8601 with offset |
 | price_eur_mwh | float64 | Day-ahead price DE-LU |
 
+## `inputs/weather/open_meteo_icon/YYYY-MM.parquet`
+
+Weather forecast inputs (Open-Meteo Previous Runs, ICON; "Weather data by Open-Meteo.com",
+CC BY 4.0), one row per valid hour (UTC) and lead time: `valid_utc`, `lead_days` (2 or 3),
+`wind_power` (mean normalised turbine output 0–1 over wind points), `wind_speed` (m/s at 100 m),
+`solar` (mean shortwave radiation in W/m² for the hour starting at `valid_utc`), `temp` (°C at
+2 m), `available_at_utc` (valid time − lead + 6 h, used for the information cutoff).
+
 ## `scores/YYYY/MM/<target_date>.parquet`
 
 One row per model version, horizon and quarter-hour of the target day that was *due*.
