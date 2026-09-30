@@ -1,0 +1,1144 @@
+{
+  "generated_at_utc": "2026-09-30T15:40:15+00:00",
+  "latest_target_date": "2026-10-01",
+  "reference_model": "naive_similar_day.v1",
+  "definitions": {
+    "error": "actual - q50 (EUR/MWh)",
+    "pinball": "mean pinball loss over q10, q50, q90",
+    "coverage_80": "share of actual prices inside [q10, q90]",
+    "skill_mae": "1 - MAE(model) / MAE(reference) on the same scored quarter-hours",
+    "price_spike": "quarter-hours whose actual price is at or above the 90th percentile of all actual prices in the window",
+    "dm_test": "Diebold-Mariano (HLN-corrected, two-sided) on daily MAE, negative statistic = first model better"
+  },
+  "windows": {
+    "7d": {
+      "from": "2026-10-01",
+      "to": "2026-10-01",
+      "spike_threshold_eur_mwh": 261.57,
+      "models": [
+        {
+          "model": "gbm.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        }
+      ],
+      "dm_tests": []
+    },
+    "30d": {
+      "from": "2026-10-01",
+      "to": "2026-10-01",
+      "spike_threshold_eur_mwh": 261.57,
+      "models": [
+        {
+          "model": "gbm.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        }
+      ],
+      "dm_tests": []
+    },
+    "90d": {
+      "from": "2026-10-01",
+      "to": "2026-10-01",
+      "spike_threshold_eur_mwh": 261.57,
+      "models": [
+        {
+          "model": "gbm.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        }
+      ],
+      "dm_tests": []
+    },
+    "all": {
+      "from": "2026-10-01",
+      "to": "2026-10-01",
+      "spike_threshold_eur_mwh": 261.57,
+      "models": [
+        {
+          "model": "gbm.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_forecast": 0,
+          "all": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekday": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "weekend": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "negative_price": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          },
+          "price_spike": {
+            "n_slots": 0,
+            "mae": null,
+            "rmse": null,
+            "pinball": null,
+            "coverage_80": null,
+            "skill_mae": null
+          }
+        }
+      ],
+      "dm_tests": []
+    }
+  },
+  "missed": [
+    {
+      "model": "naive_last_day.v1",
+      "horizon_days": 1,
+      "target_date": "2026-10-01",
+      "issue_date": "2026-09-30",
+      "status": "missed"
+    },
+    {
+      "model": "naive_weekly.v1",
+      "horizon_days": 1,
+      "target_date": "2026-10-01",
+      "issue_date": "2026-09-30",
+      "status": "missed"
+    },
+    {
+      "model": "naive_similar_day.v1",
+      "horizon_days": 1,
+      "target_date": "2026-10-01",
+      "issue_date": "2026-09-30",
+      "status": "missed"
+    },
+    {
+      "model": "lear.v1",
+      "horizon_days": 1,
+      "target_date": "2026-10-01",
+      "issue_date": "2026-09-30",
+      "status": "missed"
+    },
+    {
+      "model": "gbm.v1",
+      "horizon_days": 1,
+      "target_date": "2026-10-01",
+      "issue_date": "2026-09-30",
+      "status": "missed"
+    }
+  ],
+  "cheapest_windows": {
+    "definitions": {
+      "hit_rate": "share of days on which the recommended 3-hour window was the cheapest",
+      "near_rate": "share of days on which it was at most 5 EUR/MWh (0.5 ct/kWh) more expensive than the cheapest window",
+      "mean_p_cheapest / mean_p_near": "average stated probability; compare with the realised rate (calibration)",
+      "brier_*": "mean squared difference between stated probability and outcome (0/1)",
+      "regret_eur_mwh": "actual mean price in the recommended window minus the cheapest window",
+      "saving_vs_day_mean_eur_mwh": "actual day mean minus actual mean price in the recommended window"
+    },
+    "windows": {
+      "7d": [
+        {
+          "model": "gbm.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        }
+      ],
+      "30d": [
+        {
+          "model": "gbm.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        }
+      ],
+      "90d": [
+        {
+          "model": "gbm.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        }
+      ],
+      "all": [
+        {
+          "model": "gbm.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 1,
+          "days_scored": 0
+        }
+      ]
+    }
+  }
+}
