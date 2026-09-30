@@ -1,0 +1,71 @@
+name: clock
+
+# GitHub's cron scheduler started this repository's scheduled runs up to six hours late or
+# dropped them (see INCIDENTS.md). Workflow dispatches start within seconds, and a workflow
+# may dispatch workflows with its own token. This job waits for the next entry of the
+# timetable in src/prognosebuch/clock.py (forecast 08:55/09:30/10:30, evaluate
+# 14:50/17:40/21:10 Berlin time, probe hourly), dispatches it, and hands over to a fresh
+# run of itself before the six-hour job limit. The cron entries below and in the other
+# workflows only restart things if this chain ever breaks.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/clock.yml
+      - src/prognosebuch/clock.py
+  schedule:
+    - cron: "7 */4 * * *"
+
+permissions:
+  contents: read
+  actions: write
+  issues: write
+
+concurrency:
+  group: clock
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --locked --no-dev
+      - name: Wait for timetable entries and dispatch them
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          since=$(( $(date +%s) - 600 ))       # catch up on anything due in the last 10 minutes
+          handover=$(( $(date +%s) + 330 * 60 ))
+          while :; do
+            read -r wf at <<< "$(uv run --no-dev prognosebuch clock-next --after "$since")"
+            if [ "$at" -gt "$handover" ]; then break; fi
+            now=$(date +%s)
+            if [ "$at" -gt "$now" ]; then
+              echo "next: $wf at $(date -u -d "@$at" +%FT%TZ), sleeping $(( at - now )) s"
+              sleep $(( at - now ))
+            fi
+            echo "dispatch $wf (due $(date -u -d "@$at" +%FT%TZ))"
+            gh workflow run "$wf.yml" --ref main --repo "$GITHUB_REPOSITORY" \
+              || echo "::warning::dispatch of $wf failed"
+            since=$at
+          done
+      - name: Hand over to the next clock run
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in 1 2 3; do
+            gh workflow run clock.yml --ref main --repo "$GITHUB_REPOSITORY" && exit 0
+            sleep 20
+          done
+          echo "::error::could not start the next clock run"; exit 1
+      - name: Open issue on failure
+        if: failure()
+        uses: ./.github/actions/failure-issue
+        with:
+          title: "Clock failed"
+          token: ${{ github.token }}

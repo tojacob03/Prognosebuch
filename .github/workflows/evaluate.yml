@@ -1,7 +1,8 @@
 name: evaluate
 
 # Day-ahead results for D+1 appear around 12:45 Europe/Berlin (10:45 UTC summer,
-# 11:45 UTC winter); SMARD can lag. Two runs per day; already scored days are skipped.
+# 11:45 UTC winter); SMARD can lag. The clock workflow dispatches this job at 14:50,
+# 17:40 and 21:10 Berlin time; the cron entries are a backup. Scored days are skipped.
 on:
   schedule:
     - cron: "40 12 * * *"

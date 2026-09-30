@@ -2,10 +2,11 @@ name: probe
 
 # Logs hourly how far each SMARD series reaches, to measure when grid-operator
 # forecasts for D+1 become available. Written to the separate `probe` branch so the
-# main history stays readable.
+# main history stays readable. Started hourly by the clock workflow; the cron entry is a
+# backup.
 on:
   schedule:
-    - cron: "17 * * * *"
+    - cron: "17 */6 * * *"
   workflow_dispatch:
 
 permissions:

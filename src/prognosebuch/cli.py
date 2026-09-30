@@ -189,6 +189,16 @@ def cmd_headline(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_clock_next(args: argparse.Namespace) -> int:
+    """Print '<workflow> <epoch seconds>' of the next timetable entry after --after."""
+    from prognosebuch.clock import UTC, next_event
+
+    after = datetime.fromtimestamp(args.after, tz=UTC) if args.after else utc_now()
+    ev = next_event(after)
+    print(f"{ev.workflow} {int(ev.at.timestamp())}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="prognosebuch")
     p.add_argument("--root", default=".", help="repository root (default: .)")
@@ -220,6 +230,9 @@ def main(argv: list[str] | None = None) -> int:
     st = sub.add_parser("site", help="build the static website and data exports")
     st.add_argument("--out", default="_site")
     st.set_defaults(func=cmd_site)
+    ck = sub.add_parser("clock-next", help="next entry of the clock workflow's timetable")
+    ck.add_argument("--after", type=int, help="epoch seconds (default: now)")
+    ck.set_defaults(func=cmd_clock_next)
     hl = sub.add_parser("headline", help="print live headline numbers (for README and posts)")
     hl.set_defaults(func=cmd_headline)
     rn = sub.add_parser("release-notes", help="print markdown notes for the weekly release")

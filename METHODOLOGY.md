@@ -39,9 +39,12 @@ Guards, all enforced in code and tested:
 - The LEAR model additionally cuts the data itself, and its features only use days `t-h` and
   earlier.
 
-GitHub cron runs in UTC and can be late, so the job is triggered four times
-(06:50, 07:50, 09:20, 09:40 UTC) and checks local time itself. Only the first successful run of a
-day writes; later runs only add models that are still missing.
+GitHub's cron scheduler proved unreliable for this repository (runs up to six hours late or
+dropped; the first issue day was missed because of it, see `INCIDENTS.md`). A `clock` workflow
+therefore waits for the timetable in `src/prognosebuch/clock.py` and dispatches the forecast job
+at 08:55, 09:30 and 10:30 Berlin time; it hands over to a fresh run of itself before GitHub's
+six-hour job limit. Cron entries remain as a backup. The job checks local time itself; only the
+first successful run of a day writes, later runs only add models that are still missing.
 
 ## 3. The book (live track record)
 

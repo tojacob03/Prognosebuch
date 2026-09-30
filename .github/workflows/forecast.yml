@@ -1,8 +1,9 @@
 name: forecast
 
 # Target issue time is about 09:00 Europe/Berlin, well before the auction gate closure
-# (12:00) and the publication of results (~12:45). Cron runs in UTC and can be delayed,
-# so there are several triggers; the script itself checks local time, issues only in
+# (12:00) and the publication of results (~12:45). The clock workflow dispatches this job
+# at 08:55, 09:30 and 10:30 Berlin time; the cron entries below are a backup (GitHub's
+# scheduler proved unreliable here). The script itself checks local time, issues only in
 # [08:45, 12:00) and exits without changes if today's forecasts already exist.
 #   06:50 UTC = 08:50 CEST (summer)  | 07:50 CET (winter, too early -> skip)
 #   07:50 UTC = 09:50 CEST (fallback) | 08:50 CET (winter)

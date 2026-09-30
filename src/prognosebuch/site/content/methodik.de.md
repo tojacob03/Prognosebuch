@@ -39,9 +39,13 @@ Diese Regeln sind im Code erzwungen und getestet:
   abschneidet. Ein Test setzt alle späteren Preise auf einen absurden Wert und prüft, dass jede
   Prognose bitgenau gleich bleibt.
 
-GitHub-Cron läuft in UTC und kann sich verspäten. Deshalb wird der Job viermal angestoßen
-(06:50, 07:50, 09:20, 09:40 UTC) und prüft die deutsche Uhrzeit selbst. Nur der erste
-erfolgreiche Lauf des Tages schreibt; spätere Läufe ergänzen nur fehlende Modelle.
+GitHubs Zeitplaner hat sich für dieses Repository als unzuverlässig erwiesen (Läufe bis zu sechs
+Stunden zu spät oder gar nicht; der erste Ausgabetag ging dadurch verloren, siehe
+`INCIDENTS.md`). Deshalb wartet ein Workflow `clock` auf die Termine in
+`src/prognosebuch/clock.py` und startet den Prognose-Job um 08:55, 09:30 und 10:30 deutscher
+Zeit; vor GitHubs Sechs-Stunden-Grenze übergibt er an einen neuen Lauf von sich selbst. Die
+Cron-Einträge bleiben als Reserve. Der Job prüft die deutsche Uhrzeit selbst; nur der erste
+erfolgreiche Lauf des Tages schreibt, spätere Läufe ergänzen nur fehlende Modelle.
 
 ## 3. Das Buch (Live-Bilanz)
 
