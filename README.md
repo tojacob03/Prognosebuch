@@ -95,6 +95,7 @@ with open data.
 
 - Forecasts, actuals and scores: see [`docs/DATA_FORMAT.md`](docs/DATA_FORMAT.md).
 - Sources, licenses and known limitations: [`DATA_SOURCES.md`](DATA_SOURCES.md).
+- Operational problems and missed days explained: [`INCIDENTS.md`](INCIDENTS.md).
 - Price data: Bundesnetzagentur | SMARD.de, CC BY 4.0.
 
 ## Run locally
