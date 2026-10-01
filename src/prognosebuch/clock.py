@@ -28,6 +28,9 @@ FORECAST_TIMES = (time(8, 55), time(9, 30), time(10, 30))
 EVALUATE_TIMES = (time(14, 50), time(17, 40), time(21, 10))
 # The availability probe runs every hour at this minute (UTC, so DST has no effect).
 PROBE_MINUTE = 17
+# Weekly release (archived with a DOI by Zenodo): Mondays, after the afternoon evaluation.
+RELEASE_WEEKDAY = 0
+RELEASE_TIME = time(18, 0)
 
 
 @dataclass(frozen=True, order=True)
@@ -46,6 +49,9 @@ def events_between(start: datetime, end: datetime) -> list[Event]:
             out.append(Event(datetime.combine(day, t, tzinfo=TZ).astimezone(UTC), "forecast"))
         for t in EVALUATE_TIMES:
             out.append(Event(datetime.combine(day, t, tzinfo=TZ).astimezone(UTC), "evaluate"))
+        if day.weekday() == RELEASE_WEEKDAY:
+            at = datetime.combine(day, RELEASE_TIME, tzinfo=TZ).astimezone(UTC)
+            out.append(Event(at, "release"))
         day += timedelta(days=1)
     hour = start.astimezone(UTC).replace(minute=PROBE_MINUTE, second=0, microsecond=0)
     hour -= timedelta(hours=1)

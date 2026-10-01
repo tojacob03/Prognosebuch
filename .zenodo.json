@@ -1,0 +1,36 @@
+{
+  "title": "Prognosebuch: day-ahead electricity price forecasts for DE-LU with a public, pre-registered track record",
+  "upload_type": "dataset",
+  "description": "<p>Prognosebuch (\"forecast ledger\") publishes a probabilistic forecast (P10/P50/P90, 15-minute resolution) of German day-ahead electricity prices (bidding zone DE-LU) for D+1 and D+2 every morning, before the auction results are published. Each forecast is committed as an immutable file with a manifest (issue time, data cutoffs, code commit, SHA-256), scored automatically against the real prices and compared with rules of thumb, including missed days and Diebold-Mariano tests.</p><p>This record is a weekly snapshot of the repository: forecasts, scores, actual prices, weather inputs, code and documentation. Prices: Bundesnetzagentur | SMARD.de (CC BY 4.0). Weather: Open-Meteo.com (CC BY 4.0). Data licensed CC BY 4.0, code MIT. Not investment advice, not a trading signal.</p>",
+  "creators": [
+    {"name": "Jacob, Till Oscar"}
+  ],
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "electricity price forecasting",
+    "day-ahead market",
+    "probabilistic forecasting",
+    "forecast evaluation",
+    "Germany",
+    "open data"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/tojacob03/Prognosebuch",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://tojacob03.github.io/Prognosebuch/",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    },
+    {
+      "identifier": "10.1016/j.apenergy.2021.116983",
+      "relation": "cites",
+      "scheme": "doi"
+    }
+  ]
+}

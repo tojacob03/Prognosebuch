@@ -124,6 +124,10 @@ def cmd_site(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cell(x: float | None) -> str:
+    return "\u2013" if x is None else str(x)
+
+
 def cmd_release_notes(args: argparse.Namespace) -> int:
     root = Path(args.root)
     files = sorted((root / "forecasts").rglob("*.parquet"))
@@ -147,7 +151,7 @@ def cmd_release_notes(args: argparse.Namespace) -> int:
             a = r["all"]
             lines.append(
                 f"| {r['model']} | D+{r['horizon_days']} | {r['days_due']} / {r['days_forecast']} "
-                f"| {a['mae']} | {a['skill_mae']} |"
+                f"| {_cell(a['mae'])} | {_cell(a['skill_mae'])} |"
             )
     lines += ["", "Data: CC BY 4.0. Prices: Bundesnetzagentur | SMARD.de. Not investment advice."]
     print("\n".join(lines))

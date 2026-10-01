@@ -48,6 +48,7 @@ Reproduce with `uv run prognosebuch backtest --first 2025-10-01 --last 2026-09-2
 | ~12:45 | — | Results for D+1 published by the exchange, then by SMARD.de |
 | afternoon | `evaluate` | Update `actuals/`, score every due forecast, record missed ones, update `scores/summary.json` |
 | hourly | `probe` | Log when SMARD forecast series become available (branch `probe`) |
+| Mondays 18:00 | `release` | Publish the weekly GitHub release (all forecast files, scores, actuals, SHA-256 list); Zenodo archives it and mints a DOI |
 | always | `clock` | Waits for the timetable and dispatches the jobs above on time (GitHub's cron proved unreliable, see [`INCIDENTS.md`](INCIDENTS.md)) |
 | every push + daily | `ci` | Lint, types, offline tests, audit: no forecast file was ever modified or deleted |
 

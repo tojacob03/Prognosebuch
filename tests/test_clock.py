@@ -53,3 +53,30 @@ def test_cli_prints_workflow_and_epoch(capsys) -> None:  # type: ignore[no-untyp
     wf, epoch = capsys.readouterr().out.split()
     assert wf == "evaluate"
     assert datetime.fromtimestamp(int(epoch), tz=BERLIN) == local(2026, 10, 1, 14, 50)
+
+
+def test_release_only_on_mondays_at_18_local() -> None:
+    start = local(2026, 10, 1, 0, 0)
+    events = events_between(start, start + timedelta(days=400))
+    releases = [e for e in events if e.workflow == "release"]
+    assert 56 <= len(releases) <= 58
+    for e in releases:
+        t = e.at.astimezone(BERLIN)
+        assert t.weekday() == 0 and t.strftime("%H:%M") == "18:00"
+    assert releases[0].at.astimezone(BERLIN) == local(2026, 10, 5, 18, 0)
+
+
+def test_release_comes_after_the_afternoon_evaluations() -> None:
+    day = local(2026, 10, 5, 0, 0)
+    evs = [e for e in events_between(day, day + timedelta(days=1)) if e.workflow != "probe"]
+    times = [(e.workflow, e.at.astimezone(BERLIN).strftime("%H:%M")) for e in evs]
+    assert times == [
+        ("forecast", "08:55"),
+        ("forecast", "09:30"),
+        ("forecast", "10:30"),
+        ("evaluate", "14:50"),
+        ("evaluate", "17:40"),
+        ("release", "18:00"),
+        ("evaluate", "21:10"),
+    ]
+    assert next_event(local(2026, 10, 5, 17, 45)).workflow == "release"

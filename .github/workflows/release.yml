@@ -1,15 +1,22 @@
 name: release
 
 # Weekly snapshot of the book as a GitHub release: all forecast files, scores and actuals
-# with a SHA-256 list. Connecting the repository to Zenodo archives every release with a DOI.
+# with a SHA-256 list. Zenodo archives the source of every published release (the tagged
+# repository, which contains the whole book) and mints a DOI. Dispatched by the clock
+# workflow on Mondays at 18:00 Berlin time; the cron entry is a backup. At most one release
+# per UTC day: a second run on the same day does nothing.
 on:
   schedule:
-    - cron: "15 14 * * 1" # Mondays, after the evaluate run
+    - cron: "15 16 * * 1"
   workflow_dispatch:
 
 permissions:
   contents: write
   issues: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -21,17 +28,29 @@ jobs:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v7
       - run: uv sync --locked --no-dev
-      - name: Audit before publishing
-        run: uv run --no-dev prognosebuch audit
-      - name: Build archive and notes
+      - name: Skip if today's release exists
+        id: exists
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           tag="book-$(date -u +%Y-%m-%d)"
           echo "TAG=$tag" >> "$GITHUB_ENV"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "release $tag already exists, nothing to do"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Audit before publishing
+        if: steps.exists.outputs.skip != 'true'
+        run: uv run --no-dev prognosebuch audit
+      - name: Build archive and notes
+        if: steps.exists.outputs.skip != 'true'
+        run: |
           mkdir -p dist
           find forecasts -type f | sort | xargs sha256sum > dist/SHA256SUMS.txt
-          zip -qr "dist/$tag.zip" forecasts scores actuals dist/SHA256SUMS.txt LICENSE LICENSE-DATA.md DATA_SOURCES.md docs/DATA_FORMAT.md
+          zip -qr "dist/$TAG.zip" forecasts scores actuals dist/SHA256SUMS.txt LICENSE LICENSE-DATA.md DATA_SOURCES.md docs/DATA_FORMAT.md
           uv run --no-dev prognosebuch release-notes > dist/notes.md
       - name: Publish release
+        if: steps.exists.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
