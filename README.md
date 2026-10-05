@@ -4,6 +4,8 @@
 the day after — and how reliable is a model compared with simple rules of thumb, measured
 on real days?**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23166781.svg)](https://doi.org/10.5281/zenodo.23166781)
+
 **Live:** https://tojacob03.github.io/Prognosebuch/ (Deutsch) · https://tojacob03.github.io/Prognosebuch/en/ (English)
 
 Prognosebuch ("forecast ledger") publishes a probabilistic forecast (P10/P50/P90, 15-minute

@@ -6,6 +6,11 @@ authors:
   - family-names: Jacob
     given-names: Till Oscar
     alias: tojacob03
+doi: "10.5281/zenodo.23166781"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23166781"
+    description: "Concept DOI: all weekly snapshots (Zenodo)"
 repository-code: "https://github.com/tojacob03/Prognosebuch"
 license: MIT
 version: 0.1.0
