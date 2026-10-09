@@ -2636,3 +2636,12 @@ probed_at_utc,series,description,last_value_start_utc,last_value_start_local
 2026-10-09T20:17:15+00:00,smard:125:DE:quarterhour,Forecast generation: photovoltaics (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
 2026-10-09T20:17:15+00:00,smard:5097:DE:quarterhour,Forecast generation: wind and PV (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
 2026-10-09T20:17:15+00:00,smard:715:DE:quarterhour,Forecast generation: other (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:4169:DE-LU:quarterhour,Day-ahead price DE-LU (EUR/MWh),2026-10-09T21:45:00+00:00,2026-10-09T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:411:DE:quarterhour,Forecast: total load (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:4362:DE:quarterhour,Forecast: residual load (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:122:DE:quarterhour,Forecast generation: total (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:123:DE:quarterhour,Forecast generation: wind onshore (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:3791:DE:quarterhour,Forecast generation: wind offshore (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:125:DE:quarterhour,Forecast generation: photovoltaics (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:5097:DE:quarterhour,Forecast generation: wind and PV (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
+2026-10-09T21:17:18+00:00,smard:715:DE:quarterhour,Forecast generation: other (MWh),2026-10-10T21:45:00+00:00,2026-10-10T23:45:00+02:00
