@@ -44,7 +44,9 @@ the number of error scenarios used, and the three most likely cheapest windows. 
 ## `actuals/day_ahead_price_de_lu/YYYY-MM.parquet`
 
 Day-ahead prices from SMARD.de (Bundesnetzagentur | SMARD.de, CC BY 4.0). May be updated
-if SMARD revises a value.
+if SMARD revises a value. Quarter-hours missing on SMARD are filled from Energy-Charts (the same
+series, republished by Fraunhofer ISE); `actuals/day_ahead_price_de_lu/fallback_log.csv` lists
+every filled delivery day with the number of quarter-hours and the fetch time.
 
 | Column | Type | Description |
 |---|---|---|

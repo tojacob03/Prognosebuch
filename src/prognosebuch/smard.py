@@ -66,7 +66,7 @@ def http_get_json(url: str, retries: int = 4) -> Any:
         except (httpx.HTTPError, ValueError) as exc:
             last = exc
             time.sleep(2**attempt)
-    raise RuntimeError(f"SMARD request failed after {retries} attempts: {url}") from last
+    raise RuntimeError(f"request failed after {retries} attempts: {url}") from last
 
 
 class SmardClient:

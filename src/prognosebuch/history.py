@@ -12,7 +12,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from prognosebuch.smard import PRICE_DE_LU, SmardClient
+from prognosebuch import energycharts
+from prognosebuch.smard import PRICE_DE_LU, JsonGetter, SmardClient, http_get_json
 from prognosebuch.storage import ACTUALS_SCHEMA, actuals_path, read_parquet, to_parquet_bytes
 from prognosebuch.timeutil import (
     TZ,
@@ -80,13 +81,50 @@ def merge_into_archive(root: Path, fresh: pd.Series) -> list[Path]:
     return changed
 
 
+FALLBACK_LOG = ACTUALS_DIR / "fallback_log.csv"
+
+
 def update_actuals(
-    root: Path, client: SmardClient, now_utc: datetime, lookback_days: int = 21
+    root: Path,
+    client: SmardClient,
+    now_utc: datetime,
+    lookback_days: int = 21,
+    fallback_get_json: JsonGetter | None = http_get_json,
 ) -> list[Path]:
+    """Merge recent SMARD prices; fill quarter-hours SMARD lacks from Energy-Charts."""
     today = local_date(pd.Timestamp(now_utc))
-    start = day_bounds_utc(today - timedelta(days=lookback_days))[0]
+    first = today - timedelta(days=lookback_days)
+    start = day_bounds_utc(first)[0]
     end = day_bounds_utc(today + timedelta(days=2))[1]
-    return merge_into_archive(root, client.fetch(PRICE_DE_LU, start, end))
+    changed = merge_into_archive(root, client.fetch(PRICE_DE_LU, start, end))
+    if fallback_get_json is None:
+        return changed
+    archive = load_actuals(root)
+    last = max(archive.index.max().tz_convert(TZ).date(), today) if len(archive) else today
+    _, gap = energycharts.fill_gaps(archive, first, last, fallback_get_json)
+    if gap.error:
+        print(f"::warning::Energy-Charts fallback failed: {gap.error}")
+    if not gap.filled.empty:
+        changed += merge_into_archive(root, gap.filled)
+        log_fallback(root, gap, pd.Timestamp(now_utc).floor("s"))
+    return changed
+
+
+def log_fallback(root: Path, gap: energycharts.GapFill, fetched_at: pd.Timestamp) -> Path:
+    """Append which delivery days were completed from Energy-Charts (and how many values)."""
+    path = root / FALLBACK_LOG
+    local = pd.DatetimeIndex(gap.filled.index).tz_convert(TZ)
+    counts = pd.Series(1, index=local.date).groupby(level=0).sum()
+    rows = pd.DataFrame(
+        {
+            "fetched_at_utc": fetched_at.isoformat(),
+            "delivery_date_local": [d.isoformat() for d in counts.index],
+            "quarter_hours_filled": counts.to_numpy(),
+            "source": energycharts.ATTRIBUTION,
+        }
+    )
+    rows.to_csv(path, mode="a", header=not path.exists(), index=False)
+    return path
 
 
 def backfill_actuals(root: Path, client: SmardClient, since: date, until: date) -> list[Path]:

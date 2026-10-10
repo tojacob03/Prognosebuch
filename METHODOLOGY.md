@@ -34,6 +34,8 @@ Guards, all enforced in code and tested:
 
 - The job only issues inside the window; after 12:00 it refuses and the day is recorded as missed.
 - If SMARD already shows any price for D+1, the job refuses.
+- If SMARD lacks quarter-hours, they are filled from Energy-Charts, which republishes the same
+  SMARD series (identical on every quarter-hour both have); the manifest records it.
 - Models receive an `InfoSet` that hard-cuts all prices after the cutoff. A test sets every later
   price to an absurd value and checks that every model's forecast is bit-for-bit unchanged.
 - The LEAR model additionally cuts the data itself, and its features only use days `t-h` and

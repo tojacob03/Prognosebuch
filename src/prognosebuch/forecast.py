@@ -21,7 +21,7 @@ from typing import Any
 
 import pandas as pd
 
-from prognosebuch import __version__
+from prognosebuch import __version__, energycharts
 from prognosebuch.cheapest import METHOD as CHEAPEST_METHOD
 from prognosebuch.cheapest import NEAR_EUR_MWH, WINDOW_HOURS, cheapest_window
 from prognosebuch.history import load_actuals, price_history
@@ -140,6 +140,7 @@ def run_forecast(
     run: RunInfo,
     models: tuple[LiveModel, ...] = LIVE_MODELS,
     weather_source: WeatherSource | None = None,
+    price_fallback: PriceFallback | None = None,
 ) -> ForecastResult:
     issue_date = now_utc.astimezone(TZ).date()
     todo = [
@@ -170,7 +171,10 @@ def run_forecast(
             weather = (weather_source or _live_weather)(root, issue_date)
         except Exception as exc:  # models that need weather fail; the others still run
             weather_error = f"{type(exc).__name__}: {exc}"
-    info = InfoSet.cut(issue_date, price_history(archive, fresh), weather)
+    prices, gap = (price_fallback or energycharts.fill_gaps)(
+        price_history(archive, fresh), issue_date - timedelta(days=GAP_FILL_DAYS), issue_date
+    )
+    info = InfoSet.cut(issue_date, prices, weather)
     issued_at = pd.Timestamp(now_utc).floor("s")
 
     written: list[Path] = []
@@ -186,6 +190,16 @@ def run_forecast(
         pq_path, js_path = forecast_paths(root, issue_date, lm.model.name, lm.model.version)
         data = to_parquet_bytes(df, FORECAST_SCHEMA)
         manifest = build_manifest(lm, df, info, issued_at, fetched_at, fresh, archive, run, data)
+        if not gap.filled.empty or gap.error:
+            manifest["data_cutoffs"][energycharts.KEY] = {
+                "description": "Fallback for quarter-hours missing on SMARD (same series, "
+                "republished by Energy-Charts); used only where SMARD had no value",
+                "fetched_at_utc": fetched_at.isoformat(),
+                "filled_values": len(gap.filled),
+                "filled_days_local": gap.days,
+                "error": gap.error,
+                "attribution": energycharts.ATTRIBUTION,
+            }
         if getattr(lm.model, "needs_weather", False) and info.weather is not None:
             manifest["data_cutoffs"][WEATHER_KEY] = weather_cutoff_meta(info, fetched_at)
         manifest["cheapest_windows"] = {
@@ -201,6 +215,8 @@ def run_forecast(
 
 
 WeatherSource = Callable[[Path, date], pd.DataFrame]
+PriceFallback = Callable[[pd.Series, date, date], tuple[pd.Series, energycharts.GapFill]]
+GAP_FILL_DAYS = 120  # SMARD gaps in this many days before the issue day are filled
 WEATHER_KEY = f"open-meteo:{WEATHER_MODEL}:previous-runs"
 
 
