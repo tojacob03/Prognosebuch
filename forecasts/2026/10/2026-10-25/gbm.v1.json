@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "model": "gbm",
+  "model_version": "1",
+  "model_description": "Gradient boosting with quantile loss (P10/P50/P90) on Open-Meteo weather forecasts (lead h+1 days), lagged prices and calendar; re-estimated weekly.",
+  "issue_date": "2026-10-25",
+  "issued_at_utc": "2026-10-25T07:55:16+00:00",
+  "issued_at_local": "2026-10-25T08:55:16+01:00",
+  "target_dates": [
+    "2026-10-26",
+    "2026-10-27"
+  ],
+  "n_rows": 192,
+  "data_cutoffs": {
+    "smard:4169:DE-LU:quarterhour": {
+      "description": "Day-ahead price DE-LU (EUR/MWh)",
+      "fetched_at_utc": "2026-10-25T07:55:16+00:00",
+      "information_cutoff_utc": "2026-10-25T23:00:00+00:00",
+      "last_value_used_utc": "2026-10-25T22:45:00+00:00",
+      "last_value_available_utc": "2026-10-25T22:45:00+00:00",
+      "first_value_used_utc": "2022-12-31T23:00:00+00:00",
+      "n_values_used": 133824,
+      "archive_last_value_utc": "2026-10-25T22:45:00+00:00",
+      "attribution": "Bundesnetzagentur | SMARD.de"
+    },
+    "open-meteo:icon_seamless:previous-runs": {
+      "description": "Weather forecasts (wind, solar, temperature), aggregated over 12 points; D+1 uses lead 2 days, D+2 lead 3 days",
+      "fetched_at_utc": "2026-10-25T07:55:16+00:00",
+      "information_cutoff_utc": "2026-10-25T07:45:00+00:00",
+      "last_available_at_utc": "2026-10-25T07:00:00+00:00",
+      "lead_2_days_last_valid_utc": "2026-10-27T01:00:00+00:00",
+      "lead_3_days_last_valid_utc": "2026-10-27T23:00:00+00:00",
+      "n_values_used": 47114,
+      "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+    }
+  },
+  "package_version": "0.1.0",
+  "code_commit": "09b8a99983752ca3d764ae9b80818210dc6632ca",
+  "workflow_run_url": "https://github.com/tojacob03/Prognosebuch/actions/runs/40174587606",
+  "parquet_sha256": "0c50721700c8bbe868dd4b98d39653f6da23d2e0cd4ae348153e12f484641c2d",
+  "cheapest_windows": {
+    "method": "scenario-errors.v1",
+    "window_hours": 3,
+    "near_eur_mwh": 5.0,
+    "by_target": {
+      "2026-10-26": {
+        "start_utc": "2026-10-25T23:30:00+00:00",
+        "end_utc": "2026-10-26T02:30:00+00:00",
+        "start_local": "2026-10-26T00:30:00+01:00",
+        "end_local": "2026-10-26T03:30:00+01:00",
+        "expected_mean_eur_mwh": 43.01,
+        "day_mean_eur_mwh": 88.41,
+        "p_cheapest": 0.033,
+        "p_near": 0.617,
+        "n_scenarios": 60,
+        "most_likely": [
+          {
+            "start_utc": "2026-10-25T23:00:00+00:00",
+            "end_utc": "2026-10-26T02:00:00+00:00",
+            "start_local": "2026-10-26T00:00:00+01:00",
+            "end_local": "2026-10-26T03:00:00+01:00",
+            "p_cheapest": 0.25
+          },
+          {
+            "start_utc": "2026-10-26T00:00:00+00:00",
+            "end_utc": "2026-10-26T03:00:00+00:00",
+            "start_local": "2026-10-26T01:00:00+01:00",
+            "end_local": "2026-10-26T04:00:00+01:00",
+            "p_cheapest": 0.15
+          },
+          {
+            "start_utc": "2026-10-26T01:00:00+00:00",
+            "end_utc": "2026-10-26T04:00:00+00:00",
+            "start_local": "2026-10-26T02:00:00+01:00",
+            "end_local": "2026-10-26T05:00:00+01:00",
+            "p_cheapest": 0.1
+          }
+        ]
+      },
+      "2026-10-27": {
+        "start_utc": "2026-10-27T10:15:00+00:00",
+        "end_utc": "2026-10-27T13:15:00+00:00",
+        "start_local": "2026-10-27T11:15:00+01:00",
+        "end_local": "2026-10-27T14:15:00+01:00",
+        "expected_mean_eur_mwh": 81.01,
+        "day_mean_eur_mwh": 121.24,
+        "p_cheapest": 0.017,
+        "p_near": 0.6,
+        "n_scenarios": 60,
+        "most_likely": [
+          {
+            "start_utc": "2026-10-27T10:30:00+00:00",
+            "end_utc": "2026-10-27T13:30:00+00:00",
+            "start_local": "2026-10-27T11:30:00+01:00",
+            "end_local": "2026-10-27T14:30:00+01:00",
+            "p_cheapest": 0.317
+          },
+          {
+            "start_utc": "2026-10-27T10:45:00+00:00",
+            "end_utc": "2026-10-27T13:45:00+00:00",
+            "start_local": "2026-10-27T11:45:00+01:00",
+            "end_local": "2026-10-27T14:45:00+01:00",
+            "p_cheapest": 0.133
+          },
+          {
+            "start_utc": "2026-10-27T10:00:00+00:00",
+            "end_utc": "2026-10-27T13:00:00+00:00",
+            "start_local": "2026-10-27T11:00:00+01:00",
+            "end_local": "2026-10-27T14:00:00+01:00",
+            "p_cheapest": 0.1
+          }
+        ]
+      }
+    }
+  }
+}
