@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "model": "naive_weekly",
+  "model_version": "1",
+  "model_description": "Same quarter-hour one week before the target day (seasonal naive).",
+  "issue_date": "2026-11-08",
+  "issued_at_utc": "2026-11-08T07:55:14+00:00",
+  "issued_at_local": "2026-11-08T08:55:14+01:00",
+  "target_dates": [
+    "2026-11-09",
+    "2026-11-10"
+  ],
+  "n_rows": 192,
+  "data_cutoffs": {
+    "smard:4169:DE-LU:quarterhour": {
+      "description": "Day-ahead price DE-LU (EUR/MWh)",
+      "fetched_at_utc": "2026-11-08T07:55:14+00:00",
+      "information_cutoff_utc": "2026-11-08T23:00:00+00:00",
+      "last_value_used_utc": "2026-11-08T22:45:00+00:00",
+      "last_value_available_utc": "2026-11-08T22:45:00+00:00",
+      "first_value_used_utc": "2022-12-31T23:00:00+00:00",
+      "n_values_used": 135168,
+      "archive_last_value_utc": "2026-11-08T22:45:00+00:00",
+      "attribution": "Bundesnetzagentur | SMARD.de"
+    }
+  },
+  "package_version": "0.1.0",
+  "code_commit": "8890de0f529a82fee855f90c76792ea9fe37d73a",
+  "workflow_run_url": "https://github.com/tojacob03/Prognosebuch/actions/runs/42460712932",
+  "parquet_sha256": "f9c3632091c5f1378bbf9eb921f606ecc2efcbed6b05fc4d7e14bc2aaf601f2b",
+  "cheapest_windows": {
+    "method": "scenario-errors.v1",
+    "window_hours": 3,
+    "near_eur_mwh": 5.0,
+    "by_target": {
+      "2026-11-09": {
+        "start_utc": "2026-11-09T10:45:00+00:00",
+        "end_utc": "2026-11-09T13:45:00+00:00",
+        "start_local": "2026-11-09T11:45:00+01:00",
+        "end_local": "2026-11-09T14:45:00+01:00",
+        "expected_mean_eur_mwh": 210.74,
+        "day_mean_eur_mwh": 259.31,
+        "p_cheapest": 0.2,
+        "p_near": 0.433,
+        "n_scenarios": 90,
+        "most_likely": [
+          {
+            "start_utc": "2026-11-09T10:45:00+00:00",
+            "end_utc": "2026-11-09T13:45:00+00:00",
+            "start_local": "2026-11-09T11:45:00+01:00",
+            "end_local": "2026-11-09T14:45:00+01:00",
+            "p_cheapest": 0.2
+          },
+          {
+            "start_utc": "2026-11-09T20:00:00+00:00",
+            "end_utc": "2026-11-09T23:00:00+00:00",
+            "start_local": "2026-11-09T21:00:00+01:00",
+            "end_local": "2026-11-10T00:00:00+01:00",
+            "p_cheapest": 0.122
+          },
+          {
+            "start_utc": "2026-11-09T11:30:00+00:00",
+            "end_utc": "2026-11-09T14:30:00+00:00",
+            "start_local": "2026-11-09T12:30:00+01:00",
+            "end_local": "2026-11-09T15:30:00+01:00",
+            "p_cheapest": 0.078
+          }
+        ]
+      },
+      "2026-11-10": {
+        "start_utc": "2026-11-09T23:00:00+00:00",
+        "end_utc": "2026-11-10T02:00:00+00:00",
+        "start_local": "2026-11-10T00:00:00+01:00",
+        "end_local": "2026-11-10T03:00:00+01:00",
+        "expected_mean_eur_mwh": 224.28,
+        "day_mean_eur_mwh": 252.85,
+        "p_cheapest": 0.167,
+        "p_near": 0.333,
+        "n_scenarios": 90,
+        "most_likely": [
+          {
+            "start_utc": "2026-11-09T23:00:00+00:00",
+            "end_utc": "2026-11-10T02:00:00+00:00",
+            "start_local": "2026-11-10T00:00:00+01:00",
+            "end_local": "2026-11-10T03:00:00+01:00",
+            "p_cheapest": 0.167
+          },
+          {
+            "start_utc": "2026-11-10T20:00:00+00:00",
+            "end_utc": "2026-11-10T23:00:00+00:00",
+            "start_local": "2026-11-10T21:00:00+01:00",
+            "end_local": "2026-11-11T00:00:00+01:00",
+            "p_cheapest": 0.122
+          },
+          {
+            "start_utc": "2026-11-10T02:15:00+00:00",
+            "end_utc": "2026-11-10T05:15:00+00:00",
+            "start_local": "2026-11-10T03:15:00+01:00",
+            "end_local": "2026-11-10T06:15:00+01:00",
+            "p_cheapest": 0.078
+          }
+        ]
+      }
+    }
+  }
+}
