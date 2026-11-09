@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-11-08T20:44:00+00:00",
-  "latest_target_date": "2026-11-09",
+  "generated_at_utc": "2026-11-09T13:50:17+00:00",
+  "latest_target_date": "2026-11-10",
   "reference_model": "naive_similar_day.v1",
   "definitions": {
     "error": "actual - q50 (EUR/MWh)",
@@ -12,9 +12,9 @@
   },
   "windows": {
     "7d": {
-      "from": "2026-11-03",
-      "to": "2026-11-09",
-      "spike_threshold_eur_mwh": 339.07,
+      "from": "2026-11-04",
+      "to": "2026-11-10",
+      "spike_threshold_eur_mwh": 377.01,
       "models": [
         {
           "model": "gbm.v1",
@@ -23,19 +23,19 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 61.428,
-            "rmse": 72.104,
-            "pinball": 19.277,
-            "coverage_80": 0.478,
-            "skill_mae": -1.275
+            "mae": 61.873,
+            "rmse": 73.297,
+            "pinball": 19.459,
+            "coverage_80": 0.565,
+            "skill_mae": -0.815
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 59.325,
-            "rmse": 72.319,
-            "pinball": 19.193,
-            "coverage_80": 0.515,
-            "skill_mae": -0.9007
+            "mae": 59.948,
+            "rmse": 73.979,
+            "pinball": 19.448,
+            "coverage_80": 0.637,
+            "skill_mae": -0.4573
           },
           "weekend": {
             "n_slots": 192,
@@ -55,11 +55,11 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 85.239,
-            "rmse": 111.394,
-            "pinball": 23.66,
-            "coverage_80": 0.676,
-            "skill_mae": 0.1761
+            "mae": 111.793,
+            "rmse": 126.229,
+            "pinball": 30.845,
+            "coverage_80": 0.809,
+            "skill_mae": 0.1461
           }
         },
         {
@@ -69,19 +69,19 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 49.436,
-            "rmse": 62.108,
-            "pinball": 18.9,
-            "coverage_80": 0.417,
-            "skill_mae": -0.6255
+            "mae": 57.476,
+            "rmse": 71.724,
+            "pinball": 20.647,
+            "coverage_80": 0.472,
+            "skill_mae": -0.3232
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 51.316,
-            "rmse": 66.564,
-            "pinball": 20.211,
-            "coverage_80": 0.429,
-            "skill_mae": -0.4259
+            "mae": 62.572,
+            "rmse": 78.946,
+            "pinball": 22.657,
+            "coverage_80": 0.506,
+            "skill_mae": -0.154
           },
           "weekend": {
             "n_slots": 192,
@@ -101,11 +101,11 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 68.74,
-            "rmse": 104.416,
-            "pinball": 19.595,
-            "coverage_80": 0.838,
-            "skill_mae": 0.3752
+            "mae": 130.045,
+            "rmse": 147.117,
+            "pinball": 32.308,
+            "coverage_80": 0.75,
+            "skill_mae": 0.2965
           }
         },
         {
@@ -115,19 +115,19 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 54.607,
-            "rmse": 72.063,
-            "pinball": 15.073,
-            "coverage_80": 0.756,
-            "skill_mae": -1.0224
+            "mae": 60.906,
+            "rmse": 78.486,
+            "pinball": 17.163,
+            "coverage_80": 0.676,
+            "skill_mae": -0.7866
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 54.91,
-            "rmse": 75.505,
-            "pinball": 15.649,
-            "coverage_80": 0.765,
-            "skill_mae": -0.7592
+            "mae": 63.729,
+            "rmse": 83.992,
+            "pinball": 18.575,
+            "coverage_80": 0.652,
+            "skill_mae": -0.5492
           },
           "weekend": {
             "n_slots": 192,
@@ -147,11 +147,11 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 135.797,
-            "rmse": 156.964,
-            "pinball": 43.048,
-            "coverage_80": 0.353,
-            "skill_mae": -0.3126
+            "mae": 143.202,
+            "rmse": 163.689,
+            "pinball": 49.47,
+            "coverage_80": 0.176,
+            "skill_mae": -0.0939
           }
         },
         {
@@ -161,19 +161,19 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 96.559,
-            "rmse": 109.607,
-            "pinball": 25.125,
-            "coverage_80": 0.71,
-            "skill_mae": -2.1749
+            "mae": 107.624,
+            "rmse": 121.697,
+            "pinball": 28.86,
+            "coverage_80": 0.638,
+            "skill_mae": -1.4777
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 96.187,
-            "rmse": 111.785,
-            "pinball": 25.625,
-            "coverage_80": 0.7,
-            "skill_mae": -1.6727
+            "mae": 111.678,
+            "rmse": 128.106,
+            "pinball": 30.855,
+            "coverage_80": 0.6,
+            "skill_mae": -1.0596
           },
           "weekend": {
             "n_slots": 192,
@@ -193,11 +193,11 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 187.931,
-            "rmse": 204.934,
-            "pinball": 57.626,
-            "coverage_80": 0.118,
-            "skill_mae": -0.7081
+            "mae": 214.401,
+            "rmse": 226.844,
+            "pinball": 69.934,
+            "coverage_80": 0.074,
+            "skill_mae": -0.1598
           }
         },
         {
@@ -207,19 +207,19 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 29.699,
-            "rmse": 55.611,
-            "pinball": 11.767,
-            "coverage_80": 0.9,
-            "skill_mae": -0.0999
+            "mae": 36.787,
+            "rmse": 62.239,
+            "pinball": 13.426,
+            "coverage_80": 0.874,
+            "skill_mae": -0.0791
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 33.715,
-            "rmse": 63.724,
-            "pinball": 13.302,
-            "coverage_80": 0.869,
-            "skill_mae": -0.0802
+            "mae": 43.638,
+            "rmse": 71.794,
+            "pinball": 15.625,
+            "coverage_80": 0.831,
+            "skill_mae": -0.0608
           },
           "weekend": {
             "n_slots": 192,
@@ -239,11 +239,11 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 119.995,
-            "rmse": 152.376,
-            "pinball": 44.52,
-            "coverage_80": 0.441,
-            "skill_mae": -0.1598
+            "mae": 139.987,
+            "rmse": 162.391,
+            "pinball": 50.136,
+            "coverage_80": 0.368,
+            "skill_mae": -0.0693
           }
         },
         {
@@ -253,19 +253,19 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 33.975,
-            "rmse": 54.545,
-            "pinball": 12.858,
-            "coverage_80": 0.952,
-            "skill_mae": -0.1171
+            "mae": 46.999,
+            "rmse": 75.203,
+            "pinball": 16.731,
+            "coverage_80": 0.881,
+            "skill_mae": -0.082
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 36.0,
-            "rmse": 60.228,
-            "pinball": 13.615,
-            "coverage_80": 0.933,
-            "skill_mae": -0.0003
+            "mae": 54.233,
+            "rmse": 85.906,
+            "pinball": 19.037,
+            "coverage_80": 0.833,
+            "skill_mae": -0.0002
           },
           "weekend": {
             "n_slots": 192,
@@ -285,11 +285,11 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 114.062,
-            "rmse": 141.024,
-            "pinball": 36.845,
-            "coverage_80": 0.544,
-            "skill_mae": -0.0367
+            "mae": 185.322,
+            "rmse": 197.972,
+            "pinball": 62.605,
+            "coverage_80": 0.162,
+            "skill_mae": -0.0025
           }
         },
         {
@@ -299,18 +299,18 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 27.001,
-            "rmse": 51.815,
-            "pinball": 12.061,
-            "coverage_80": 0.96,
+            "mae": 34.09,
+            "rmse": 58.872,
+            "pinball": 13.559,
+            "coverage_80": 0.943,
             "skill_mae": 0.0
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 31.212,
-            "rmse": 60.004,
-            "pinball": 13.276,
-            "coverage_80": 0.944,
+            "mae": 41.136,
+            "rmse": 68.513,
+            "pinball": 15.374,
+            "coverage_80": 0.921,
             "skill_mae": 0.0
           },
           "weekend": {
@@ -331,10 +331,10 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 103.46,
-            "rmse": 141.694,
-            "pinball": 36.457,
-            "coverage_80": 0.662,
+            "mae": 130.915,
+            "rmse": 156.763,
+            "pinball": 43.775,
+            "coverage_80": 0.544,
             "skill_mae": 0.0
           }
         },
@@ -345,18 +345,18 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 30.413,
-            "rmse": 53.373,
-            "pinball": 13.28,
-            "coverage_80": 0.967,
+            "mae": 43.437,
+            "rmse": 74.357,
+            "pinball": 16.765,
+            "coverage_80": 0.9,
             "skill_mae": 0.0
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 35.989,
-            "rmse": 61.885,
-            "pinball": 14.625,
-            "coverage_80": 0.954,
+            "mae": 54.222,
+            "rmse": 87.076,
+            "pinball": 19.504,
+            "coverage_80": 0.86,
             "skill_mae": 0.0
           },
           "weekend": {
@@ -377,10 +377,10 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 110.023,
-            "rmse": 143.151,
-            "pinball": 36.52,
-            "coverage_80": 0.706,
+            "mae": 184.858,
+            "rmse": 200.674,
+            "pinball": 59.93,
+            "coverage_80": 0.265,
             "skill_mae": 0.0
           }
         },
@@ -391,19 +391,19 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 45.117,
-            "rmse": 71.113,
-            "pinball": 16.309,
-            "coverage_80": 0.882,
-            "skill_mae": -0.6709
+            "mae": 45.35,
+            "rmse": 73.074,
+            "pinball": 16.617,
+            "coverage_80": 0.903,
+            "skill_mae": -0.3303
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 56.574,
-            "rmse": 83.195,
-            "pinball": 18.885,
-            "coverage_80": 0.835,
-            "skill_mae": -0.8126
+            "mae": 56.901,
+            "rmse": 85.542,
+            "pinball": 19.317,
+            "coverage_80": 0.865,
+            "skill_mae": -0.3832
           },
           "weekend": {
             "n_slots": 192,
@@ -423,11 +423,11 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 124.124,
-            "rmse": 155.104,
-            "pinball": 40.488,
-            "coverage_80": 0.618,
-            "skill_mae": -0.1997
+            "mae": 169.667,
+            "rmse": 183.549,
+            "pinball": 52.292,
+            "coverage_80": 0.353,
+            "skill_mae": -0.296
           }
         },
         {
@@ -437,19 +437,19 @@
           "days_forecast": 7,
           "all": {
             "n_slots": 672,
-            "mae": 45.117,
-            "rmse": 71.113,
-            "pinball": 16.57,
-            "coverage_80": 0.875,
-            "skill_mae": -0.4835
+            "mae": 45.35,
+            "rmse": 73.074,
+            "pinball": 16.638,
+            "coverage_80": 0.897,
+            "skill_mae": -0.044
           },
           "weekday": {
             "n_slots": 480,
-            "mae": 56.574,
-            "rmse": 83.195,
-            "pinball": 19.249,
-            "coverage_80": 0.825,
-            "skill_mae": -0.572
+            "mae": 56.901,
+            "rmse": 85.542,
+            "pinball": 19.344,
+            "coverage_80": 0.856,
+            "skill_mae": -0.0494
           },
           "weekend": {
             "n_slots": 192,
@@ -469,11 +469,11 @@
           },
           "price_spike": {
             "n_slots": 68,
-            "mae": 124.124,
-            "rmse": 155.104,
-            "pinball": 40.458,
-            "coverage_80": 0.618,
-            "skill_mae": -0.1282
+            "mae": 169.667,
+            "rmse": 183.549,
+            "pinball": 52.629,
+            "coverage_80": 0.309,
+            "skill_mae": 0.0822
           }
         }
       ],
@@ -621,30 +621,30 @@
       ]
     },
     "30d": {
-      "from": "2026-10-11",
-      "to": "2026-11-09",
-      "spike_threshold_eur_mwh": 303.0,
+      "from": "2026-10-12",
+      "to": "2026-11-10",
+      "spike_threshold_eur_mwh": 312.68,
       "models": [
         {
           "model": "gbm.v1",
           "horizon_days": 1,
           "days_due": 30,
-          "days_forecast": 29,
+          "days_forecast": 30,
           "all": {
-            "n_slots": 2788,
-            "mae": 46.872,
-            "rmse": 58.357,
-            "pinball": 14.758,
-            "coverage_80": 0.638,
-            "skill_mae": 0.3235
+            "n_slots": 2884,
+            "mae": 47.063,
+            "rmse": 58.565,
+            "pinball": 14.833,
+            "coverage_80": 0.65,
+            "skill_mae": 0.3186
           },
           "weekday": {
-            "n_slots": 2016,
-            "mae": 47.506,
-            "rmse": 60.13,
-            "pinball": 14.975,
-            "coverage_80": 0.638,
-            "skill_mae": 0.0311
+            "n_slots": 2112,
+            "mae": 47.739,
+            "rmse": 60.325,
+            "pinball": 15.067,
+            "coverage_80": 0.655,
+            "skill_mae": 0.0386
           },
           "weekend": {
             "n_slots": 772,
@@ -664,11 +664,11 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 71.687,
-            "rmse": 94.31,
-            "pinball": 20.244,
-            "coverage_80": 0.799,
-            "skill_mae": 0.1095
+            "mae": 77.531,
+            "rmse": 98.239,
+            "pinball": 22.049,
+            "coverage_80": 0.82,
+            "skill_mae": 0.0628
           }
         },
         {
@@ -678,27 +678,27 @@
           "days_forecast": 29,
           "all": {
             "n_slots": 2788,
-            "mae": 53.201,
-            "rmse": 66.924,
-            "pinball": 17.554,
+            "mae": 54.969,
+            "rmse": 69.079,
+            "pinball": 17.983,
             "coverage_80": 0.56,
-            "skill_mae": 0.3186
+            "skill_mae": 0.3151
           },
           "weekday": {
-            "n_slots": 1920,
-            "mae": 56.249,
-            "rmse": 71.117,
-            "pinball": 18.512,
-            "coverage_80": 0.602,
-            "skill_mae": 0.0916
+            "n_slots": 2016,
+            "mae": 57.26,
+            "rmse": 72.611,
+            "pinball": 18.614,
+            "coverage_80": 0.616,
+            "skill_mae": 0.1081
           },
           "weekend": {
-            "n_slots": 868,
-            "mae": 46.459,
-            "rmse": 56.554,
-            "pinball": 15.435,
-            "coverage_80": 0.468,
-            "skill_mae": 0.5918
+            "n_slots": 772,
+            "mae": 48.985,
+            "rmse": 58.867,
+            "pinball": 16.337,
+            "coverage_80": 0.413,
+            "skill_mae": 0.5991
           },
           "negative_price": {
             "n_slots": 6,
@@ -710,33 +710,33 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 77.083,
-            "rmse": 107.311,
-            "pinball": 24.886,
-            "coverage_80": 0.716,
-            "skill_mae": 0.1468
+            "mae": 90.349,
+            "rmse": 117.091,
+            "pinball": 27.088,
+            "coverage_80": 0.72,
+            "skill_mae": 0.1637
           }
         },
         {
           "model": "lear.v1",
           "horizon_days": 1,
           "days_due": 30,
-          "days_forecast": 29,
+          "days_forecast": 30,
           "all": {
-            "n_slots": 2788,
-            "mae": 43.898,
-            "rmse": 58.971,
-            "pinball": 13.109,
-            "coverage_80": 0.707,
-            "skill_mae": 0.3664
+            "n_slots": 2884,
+            "mae": 44.911,
+            "rmse": 60.219,
+            "pinball": 13.453,
+            "coverage_80": 0.693,
+            "skill_mae": 0.3498
           },
           "weekday": {
-            "n_slots": 2016,
-            "mae": 41.821,
-            "rmse": 58.765,
-            "pinball": 12.879,
-            "coverage_80": 0.734,
-            "skill_mae": 0.147
+            "n_slots": 2112,
+            "mae": 43.298,
+            "rmse": 60.479,
+            "pinball": 13.36,
+            "coverage_80": 0.714,
+            "skill_mae": 0.128
           },
           "weekend": {
             "n_slots": 772,
@@ -756,11 +756,11 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 96.229,
-            "rmse": 115.191,
-            "pinball": 28.919,
-            "coverage_80": 0.561,
-            "skill_mae": -0.1954
+            "mae": 103.677,
+            "rmse": 121.105,
+            "pinball": 31.861,
+            "coverage_80": 0.46,
+            "skill_mae": -0.2533
           }
         },
         {
@@ -770,27 +770,27 @@
           "days_forecast": 29,
           "all": {
             "n_slots": 2788,
-            "mae": 76.737,
-            "rmse": 91.957,
-            "pinball": 22.994,
-            "coverage_80": 0.571,
-            "skill_mae": 0.0172
+            "mae": 80.374,
+            "rmse": 95.932,
+            "pinball": 24.094,
+            "coverage_80": 0.558,
+            "skill_mae": -0.0015
           },
           "weekday": {
-            "n_slots": 1920,
-            "mae": 71.289,
-            "rmse": 88.567,
-            "pinball": 20.944,
-            "coverage_80": 0.642,
-            "skill_mae": -0.1513
+            "n_slots": 2016,
+            "mae": 74.582,
+            "rmse": 92.771,
+            "pinball": 21.955,
+            "coverage_80": 0.631,
+            "skill_mae": -0.1617
           },
           "weekend": {
-            "n_slots": 868,
-            "mae": 88.789,
-            "rmse": 99.046,
-            "pinball": 27.529,
-            "coverage_80": 0.415,
-            "skill_mae": 0.22
+            "n_slots": 772,
+            "mae": 95.499,
+            "rmse": 103.735,
+            "pinball": 29.681,
+            "coverage_80": 0.367,
+            "skill_mae": 0.2184
           },
           "negative_price": {
             "n_slots": 6,
@@ -802,33 +802,33 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 154.046,
-            "rmse": 166.759,
-            "pinball": 46.917,
-            "coverage_80": 0.273,
-            "skill_mae": -0.705
+            "mae": 168.029,
+            "rmse": 179.136,
+            "pinball": 52.319,
+            "coverage_80": 0.197,
+            "skill_mae": -0.5554
           }
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 1,
           "days_due": 30,
-          "days_forecast": 29,
+          "days_forecast": 30,
           "all": {
-            "n_slots": 2788,
-            "mae": 42.932,
-            "rmse": 62.033,
-            "pinball": 15.173,
-            "coverage_80": 0.76,
-            "skill_mae": 0.3803
+            "n_slots": 2884,
+            "mae": 43.595,
+            "rmse": 62.548,
+            "pinball": 15.285,
+            "coverage_80": 0.761,
+            "skill_mae": 0.3688
           },
           "weekday": {
-            "n_slots": 2016,
-            "mae": 46.911,
-            "rmse": 66.349,
-            "pinball": 16.34,
-            "coverage_80": 0.725,
-            "skill_mae": 0.0432
+            "n_slots": 2112,
+            "mae": 47.635,
+            "rmse": 66.818,
+            "pinball": 16.44,
+            "coverage_80": 0.729,
+            "skill_mae": 0.0407
           },
           "weekend": {
             "n_slots": 772,
@@ -848,11 +848,11 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 72.867,
-            "rmse": 101.042,
-            "pinball": 25.394,
-            "coverage_80": 0.651,
-            "skill_mae": 0.0948
+            "mae": 82.054,
+            "rmse": 107.174,
+            "pinball": 27.937,
+            "coverage_80": 0.623,
+            "skill_mae": 0.0081
           }
         },
         {
@@ -862,27 +862,27 @@
           "days_forecast": 29,
           "all": {
             "n_slots": 2788,
-            "mae": 56.484,
-            "rmse": 79.145,
-            "pinball": 19.758,
-            "coverage_80": 0.738,
-            "skill_mae": 0.2766
+            "mae": 58.586,
+            "rmse": 82.203,
+            "pinball": 20.372,
+            "coverage_80": 0.731,
+            "skill_mae": 0.27
           },
           "weekday": {
-            "n_slots": 1920,
-            "mae": 56.632,
-            "rmse": 79.683,
-            "pinball": 19.792,
-            "coverage_80": 0.734,
-            "skill_mae": 0.0854
+            "n_slots": 2016,
+            "mae": 59.164,
+            "rmse": 83.468,
+            "pinball": 20.583,
+            "coverage_80": 0.723,
+            "skill_mae": 0.0785
           },
           "weekend": {
-            "n_slots": 868,
-            "mae": 56.157,
-            "rmse": 77.941,
-            "pinball": 19.681,
-            "coverage_80": 0.748,
-            "skill_mae": 0.5066
+            "n_slots": 772,
+            "mae": 57.079,
+            "rmse": 78.803,
+            "pinball": 19.822,
+            "coverage_80": 0.751,
+            "skill_mae": 0.5328
           },
           "negative_price": {
             "n_slots": 6,
@@ -894,11 +894,11 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 80.262,
-            "rmse": 109.053,
-            "pinball": 27.247,
-            "coverage_80": 0.72,
-            "skill_mae": 0.1116
+            "mae": 104.281,
+            "rmse": 131.912,
+            "pinball": 34.916,
+            "coverage_80": 0.578,
+            "skill_mae": 0.0347
           }
         },
         {
@@ -908,26 +908,26 @@
           "days_forecast": 30,
           "all": {
             "n_slots": 2884,
-            "mae": 68.53,
-            "rmse": 97.263,
-            "pinball": 25.222,
-            "coverage_80": 0.647,
+            "mae": 69.069,
+            "rmse": 97.705,
+            "pinball": 25.316,
+            "coverage_80": 0.658,
             "skill_mae": 0.0
           },
           "weekday": {
-            "n_slots": 2016,
-            "mae": 49.028,
-            "rmse": 70.331,
-            "pinball": 17.158,
-            "coverage_80": 0.765,
+            "n_slots": 2112,
+            "mae": 49.656,
+            "rmse": 70.598,
+            "pinball": 17.242,
+            "coverage_80": 0.77,
             "skill_mae": 0.0
           },
           "weekend": {
-            "n_slots": 868,
-            "mae": 113.825,
-            "rmse": 141.22,
-            "pinball": 43.951,
-            "coverage_80": 0.372,
+            "n_slots": 772,
+            "mae": 122.177,
+            "rmse": 148.416,
+            "pinball": 47.404,
+            "coverage_80": 0.351,
             "skill_mae": 0.0
           },
           "negative_price": {
@@ -940,10 +940,10 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 80.503,
-            "rmse": 110.221,
-            "pinball": 27.427,
-            "coverage_80": 0.709,
+            "mae": 82.722,
+            "rmse": 107.929,
+            "pinball": 27.212,
+            "coverage_80": 0.706,
             "skill_mae": 0.0
           }
         },
@@ -954,26 +954,26 @@
           "days_forecast": 30,
           "all": {
             "n_slots": 2884,
-            "mae": 76.856,
-            "rmse": 105.17,
-            "pinball": 27.519,
-            "coverage_80": 0.615,
+            "mae": 78.958,
+            "rmse": 107.693,
+            "pinball": 28.111,
+            "coverage_80": 0.614,
             "skill_mae": 0.0
           },
           "weekday": {
-            "n_slots": 2016,
-            "mae": 60.939,
-            "rmse": 85.067,
-            "pinball": 21.187,
-            "coverage_80": 0.713,
+            "n_slots": 2112,
+            "mae": 63.16,
+            "rmse": 88.235,
+            "pinball": 21.795,
+            "coverage_80": 0.705,
             "skill_mae": 0.0
           },
           "weekend": {
-            "n_slots": 868,
-            "mae": 113.825,
-            "rmse": 141.22,
-            "pinball": 42.225,
-            "coverage_80": 0.388,
+            "n_slots": 772,
+            "mae": 122.177,
+            "rmse": 148.416,
+            "pinball": 45.39,
+            "coverage_80": 0.367,
             "skill_mae": 0.0
           },
           "negative_price": {
@@ -986,10 +986,10 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 90.349,
-            "rmse": 121.777,
-            "pinball": 31.064,
-            "coverage_80": 0.685,
+            "mae": 108.031,
+            "rmse": 136.467,
+            "pinball": 35.639,
+            "coverage_80": 0.574,
             "skill_mae": 0.0
           }
         },
@@ -1000,26 +1000,26 @@
           "days_forecast": 30,
           "all": {
             "n_slots": 2884,
-            "mae": 82.273,
-            "rmse": 108.554,
-            "pinball": 28.764,
-            "coverage_80": 0.583,
-            "skill_mae": -0.2005
+            "mae": 84.027,
+            "rmse": 110.22,
+            "pinball": 29.166,
+            "coverage_80": 0.586,
+            "skill_mae": -0.2166
           },
           "weekday": {
-            "n_slots": 2016,
-            "mae": 68.688,
-            "rmse": 90.946,
-            "pinball": 22.877,
-            "coverage_80": 0.664,
-            "skill_mae": -0.401
+            "n_slots": 2112,
+            "mae": 70.082,
+            "rmse": 92.398,
+            "pinball": 23.147,
+            "coverage_80": 0.662,
+            "skill_mae": -0.4114
           },
           "weekend": {
-            "n_slots": 868,
-            "mae": 113.825,
-            "rmse": 141.22,
-            "pinball": 42.438,
-            "coverage_80": 0.395,
+            "n_slots": 772,
+            "mae": 122.177,
+            "rmse": 148.416,
+            "pinball": 45.631,
+            "coverage_80": 0.377,
             "skill_mae": 0.0
           },
           "negative_price": {
@@ -1032,11 +1032,11 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 110.478,
-            "rmse": 140.232,
-            "pinball": 38.232,
-            "coverage_80": 0.585,
-            "skill_mae": -0.3724
+            "mae": 121.195,
+            "rmse": 145.53,
+            "pinball": 40.07,
+            "coverage_80": 0.519,
+            "skill_mae": -0.4651
           }
         },
         {
@@ -1046,26 +1046,26 @@
           "days_forecast": 30,
           "all": {
             "n_slots": 2884,
-            "mae": 82.273,
-            "rmse": 108.554,
-            "pinball": 29.268,
-            "coverage_80": 0.571,
-            "skill_mae": -0.0705
+            "mae": 84.027,
+            "rmse": 110.22,
+            "pinball": 29.677,
+            "coverage_80": 0.572,
+            "skill_mae": -0.0642
           },
           "weekday": {
-            "n_slots": 2016,
-            "mae": 68.688,
-            "rmse": 90.946,
-            "pinball": 23.19,
-            "coverage_80": 0.653,
-            "skill_mae": -0.1272
+            "n_slots": 2112,
+            "mae": 70.082,
+            "rmse": 92.398,
+            "pinball": 23.457,
+            "coverage_80": 0.65,
+            "skill_mae": -0.1096
           },
           "weekend": {
-            "n_slots": 868,
-            "mae": 113.825,
-            "rmse": 141.22,
-            "pinball": 43.385,
-            "coverage_80": 0.38,
+            "n_slots": 772,
+            "mae": 122.177,
+            "rmse": 148.416,
+            "pinball": 46.693,
+            "coverage_80": 0.36,
             "skill_mae": 0.0
           },
           "negative_price": {
@@ -1078,11 +1078,11 @@
           },
           "price_spike": {
             "n_slots": 289,
-            "mae": 110.478,
-            "rmse": 140.232,
-            "pinball": 38.631,
-            "coverage_80": 0.578,
-            "skill_mae": -0.2228
+            "mae": 121.195,
+            "rmse": 145.53,
+            "pinball": 40.455,
+            "coverage_80": 0.505,
+            "skill_mae": -0.1219
           }
         }
       ],
@@ -1091,209 +1091,209 @@
           "model_a": "gbm.v1",
           "model_b": "lear.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": 0.794,
-          "p_value": 0.434,
-          "mean_daily_mae_diff": 3.003
+          "n_days": 30,
+          "statistic": 0.582,
+          "p_value": 0.5652,
+          "mean_daily_mae_diff": 2.18
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": 0.622,
-          "p_value": 0.5389,
-          "mean_daily_mae_diff": 3.952
+          "n_days": 30,
+          "statistic": 0.565,
+          "p_value": 0.5761,
+          "mean_daily_mae_diff": 3.48
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": -1.773,
-          "p_value": 0.0872,
-          "mean_daily_mae_diff": -22.232
+          "n_days": 30,
+          "statistic": -1.801,
+          "p_value": 0.0821,
+          "mean_daily_mae_diff": -21.831
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": -3.085,
-          "p_value": 0.0045,
-          "mean_daily_mae_diff": -36.468
+          "n_days": 30,
+          "statistic": -3.222,
+          "p_value": 0.0031,
+          "mean_daily_mae_diff": -36.81
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": 0.157,
-          "p_value": 0.8761,
-          "mean_daily_mae_diff": 0.949
+          "n_days": 30,
+          "statistic": 0.223,
+          "p_value": 0.8252,
+          "mean_daily_mae_diff": 1.3
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": -2.363,
-          "p_value": 0.0253,
-          "mean_daily_mae_diff": -25.235
+          "n_days": 30,
+          "statistic": -2.311,
+          "p_value": 0.0281,
+          "mean_daily_mae_diff": -24.011
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": -3.754,
-          "p_value": 0.0008,
-          "mean_daily_mae_diff": -39.471
+          "n_days": 30,
+          "statistic": -3.835,
+          "p_value": 0.0006,
+          "mean_daily_mae_diff": -38.99
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": -2.163,
-          "p_value": 0.0392,
-          "mean_daily_mae_diff": -26.184
+          "n_days": 30,
+          "statistic": -2.158,
+          "p_value": 0.0393,
+          "mean_daily_mae_diff": -25.311
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 29,
-          "statistic": -3.145,
-          "p_value": 0.0039,
-          "mean_daily_mae_diff": -40.42
+          "n_days": 30,
+          "statistic": -3.244,
+          "p_value": 0.003,
+          "mean_daily_mae_diff": -40.29
         },
         {
           "model_a": "naive_similar_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
           "n_days": 30,
-          "statistic": -2.11,
-          "p_value": 0.0436,
-          "mean_daily_mae_diff": -13.762
+          "statistic": -2.288,
+          "p_value": 0.0296,
+          "mean_daily_mae_diff": -14.979
         },
         {
           "model_a": "gbm.v1",
           "model_b": "lear.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": -2.908,
-          "p_value": 0.007,
-          "mean_daily_mae_diff": -23.466
+          "statistic": -3.014,
+          "p_value": 0.0054,
+          "mean_daily_mae_diff": -25.337
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": -0.239,
-          "p_value": 0.8126,
-          "mean_daily_mae_diff": -3.142
+          "statistic": -0.264,
+          "p_value": 0.7934,
+          "mean_daily_mae_diff": -3.477
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": -1.527,
-          "p_value": 0.138,
-          "mean_daily_mae_diff": -24.718
+          "statistic": -1.552,
+          "p_value": 0.132,
+          "mean_daily_mae_diff": -25.125
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": -1.918,
-          "p_value": 0.0653,
-          "mean_daily_mae_diff": -30.329
+          "statistic": -1.923,
+          "p_value": 0.0647,
+          "mean_daily_mae_diff": -30.376
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": 1.456,
-          "p_value": 0.1565,
-          "mean_daily_mae_diff": 20.324
+          "statistic": 1.596,
+          "p_value": 0.1218,
+          "mean_daily_mae_diff": 21.86
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": -0.081,
-          "p_value": 0.9358,
-          "mean_daily_mae_diff": -1.252
+          "statistic": 0.014,
+          "p_value": 0.9892,
+          "mean_daily_mae_diff": 0.212
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": -0.441,
-          "p_value": 0.6628,
-          "mean_daily_mae_diff": -6.863
+          "statistic": -0.317,
+          "p_value": 0.7535,
+          "mean_daily_mae_diff": -5.039
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": -1.373,
-          "p_value": 0.1807,
-          "mean_daily_mae_diff": -21.576
+          "statistic": -1.378,
+          "p_value": 0.1791,
+          "mean_daily_mae_diff": -21.648
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
           "n_days": 29,
-          "statistic": -1.374,
-          "p_value": 0.1803,
-          "mean_daily_mae_diff": -27.187
+          "statistic": -1.361,
+          "p_value": 0.1845,
+          "mean_daily_mae_diff": -26.899
         },
         {
           "model_a": "naive_similar_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
           "n_days": 30,
-          "statistic": -0.617,
-          "p_value": 0.5422,
-          "mean_daily_mae_diff": -5.424
+          "statistic": -0.576,
+          "p_value": 0.5693,
+          "mean_daily_mae_diff": -5.076
         }
       ]
     },
     "90d": {
       "from": "2026-10-01",
-      "to": "2026-11-09",
-      "spike_threshold_eur_mwh": 296.05,
+      "to": "2026-11-10",
+      "spike_threshold_eur_mwh": 299.17,
       "models": [
         {
           "model": "gbm.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 38,
+          "days_due": 41,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 41.351,
-            "rmse": 53.143,
-            "pinball": 13.195,
-            "coverage_80": 0.685,
-            "skill_mae": 0.36
+            "n_slots": 3748,
+            "mae": 41.64,
+            "rmse": 53.458,
+            "pinball": 13.293,
+            "coverage_80": 0.693,
+            "skill_mae": 0.355
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 41.986,
-            "rmse": 54.837,
-            "pinball": 13.362,
-            "coverage_80": 0.687,
-            "skill_mae": 0.1136
+            "n_slots": 2688,
+            "mae": 42.366,
+            "rmse": 55.203,
+            "pinball": 13.492,
+            "coverage_80": 0.698,
+            "skill_mae": 0.1159
           },
           "weekend": {
             "n_slots": 1060,
@@ -1312,34 +1312,34 @@
             "skill_mae": 0.9365
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 68.37,
-            "rmse": 88.145,
-            "pinball": 19.577,
-            "coverage_80": 0.78,
-            "skill_mae": 0.179
+            "n_slots": 391,
+            "mae": 69.563,
+            "rmse": 89.08,
+            "pinball": 19.885,
+            "coverage_80": 0.836,
+            "skill_mae": 0.1528
           }
         },
         {
           "model": "gbm.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 37,
+          "days_due": 40,
+          "days_forecast": 38,
           "all": {
-            "n_slots": 3556,
-            "mae": 47.342,
-            "rmse": 61.224,
-            "pinball": 15.727,
-            "coverage_80": 0.627,
-            "skill_mae": 0.3675
+            "n_slots": 3652,
+            "mae": 48.135,
+            "rmse": 62.46,
+            "pinball": 15.857,
+            "coverage_80": 0.634,
+            "skill_mae": 0.3647
           },
           "weekday": {
-            "n_slots": 2400,
-            "mae": 50.551,
-            "rmse": 65.453,
-            "pinball": 16.716,
-            "coverage_80": 0.656,
-            "skill_mae": 0.1832
+            "n_slots": 2496,
+            "mae": 51.587,
+            "rmse": 66.987,
+            "pinball": 16.868,
+            "coverage_80": 0.665,
+            "skill_mae": 0.1905
           },
           "weekend": {
             "n_slots": 1156,
@@ -1358,34 +1358,34 @@
             "skill_mae": 0.8817
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 76.093,
-            "rmse": 102.812,
-            "pinball": 24.719,
-            "coverage_80": 0.678,
-            "skill_mae": 0.1822
+            "n_slots": 386,
+            "mae": 82.066,
+            "rmse": 107.892,
+            "pinball": 25.103,
+            "coverage_80": 0.723,
+            "skill_mae": 0.2072
           }
         },
         {
           "model": "lear.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 38,
+          "days_due": 41,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 40.427,
-            "rmse": 54.666,
-            "pinball": 12.141,
-            "coverage_80": 0.719,
-            "skill_mae": 0.3743
+            "n_slots": 3748,
+            "mae": 41.295,
+            "rmse": 55.816,
+            "pinball": 12.431,
+            "coverage_80": 0.708,
+            "skill_mae": 0.3604
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 39.409,
-            "rmse": 55.211,
-            "pinball": 12.168,
-            "coverage_80": 0.73,
-            "skill_mae": 0.168
+            "n_slots": 2688,
+            "mae": 40.656,
+            "rmse": 56.773,
+            "pinball": 12.572,
+            "coverage_80": 0.715,
+            "skill_mae": 0.1516
           },
           "weekend": {
             "n_slots": 1060,
@@ -1404,34 +1404,34 @@
             "skill_mae": 0.914
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 90.257,
-            "rmse": 107.695,
-            "pinball": 26.51,
-            "coverage_80": 0.585,
-            "skill_mae": -0.0838
+            "n_slots": 391,
+            "mae": 95.013,
+            "rmse": 111.536,
+            "pinball": 28.49,
+            "coverage_80": 0.529,
+            "skill_mae": -0.1572
           }
         },
         {
           "model": "lear.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 37,
+          "days_due": 40,
+          "days_forecast": 38,
           "all": {
-            "n_slots": 3556,
-            "mae": 70.196,
-            "rmse": 85.268,
-            "pinball": 21.177,
-            "coverage_80": 0.587,
-            "skill_mae": 0.0622
+            "n_slots": 3652,
+            "mae": 72.042,
+            "rmse": 87.787,
+            "pinball": 21.729,
+            "coverage_80": 0.583,
+            "skill_mae": 0.0492
           },
           "weekday": {
-            "n_slots": 2400,
-            "mae": 65.021,
-            "rmse": 82.208,
-            "pinball": 19.403,
-            "coverage_80": 0.652,
-            "skill_mae": -0.0506
+            "n_slots": 2496,
+            "mae": 67.922,
+            "rmse": 86.114,
+            "pinball": 20.279,
+            "coverage_80": 0.643,
+            "skill_mae": -0.0658
           },
           "weekend": {
             "n_slots": 1156,
@@ -1450,34 +1450,34 @@
             "skill_mae": 0.4746
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 144.722,
-            "rmse": 156.824,
-            "pinball": 43.36,
-            "coverage_80": 0.309,
-            "skill_mae": -0.5553
+            "n_slots": 386,
+            "mae": 154.826,
+            "rmse": 166.329,
+            "pinball": 47.201,
+            "coverage_80": 0.269,
+            "skill_mae": -0.4957
           }
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 38,
+          "days_due": 41,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 41.419,
-            "rmse": 59.035,
-            "pinball": 14.485,
-            "coverage_80": 0.743,
-            "skill_mae": 0.3589
+            "n_slots": 3748,
+            "mae": 41.967,
+            "rmse": 59.53,
+            "pinball": 14.589,
+            "coverage_80": 0.745,
+            "skill_mae": 0.35
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 45.004,
-            "rmse": 63.053,
-            "pinball": 15.52,
-            "coverage_80": 0.711,
-            "skill_mae": 0.0499
+            "n_slots": 2688,
+            "mae": 45.641,
+            "rmse": 63.561,
+            "pinball": 15.628,
+            "coverage_80": 0.714,
+            "skill_mae": 0.0476
           },
           "weekend": {
             "n_slots": 1060,
@@ -1496,34 +1496,34 @@
             "skill_mae": 0.9155
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 64.341,
-            "rmse": 92.511,
-            "pinball": 22.826,
-            "coverage_80": 0.688,
-            "skill_mae": 0.2274
+            "n_slots": 391,
+            "mae": 70.665,
+            "rmse": 96.525,
+            "pinball": 24.333,
+            "coverage_80": 0.675,
+            "skill_mae": 0.1393
           }
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 37,
+          "days_due": 40,
+          "days_forecast": 38,
           "all": {
-            "n_slots": 3556,
-            "mae": 56.582,
-            "rmse": 77.664,
-            "pinball": 19.472,
-            "coverage_80": 0.729,
-            "skill_mae": 0.2441
+            "n_slots": 3652,
+            "mae": 57.981,
+            "rmse": 79.881,
+            "pinball": 19.917,
+            "coverage_80": 0.723,
+            "skill_mae": 0.2348
           },
           "weekday": {
-            "n_slots": 2400,
-            "mae": 56.899,
-            "rmse": 78.479,
-            "pinball": 19.612,
-            "coverage_80": 0.722,
-            "skill_mae": 0.0806
+            "n_slots": 2496,
+            "mae": 58.933,
+            "rmse": 81.639,
+            "pinball": 20.258,
+            "coverage_80": 0.714,
+            "skill_mae": 0.0753
           },
           "weekend": {
             "n_slots": 1156,
@@ -1542,33 +1542,33 @@
             "skill_mae": 0.1197
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 77.024,
-            "rmse": 106.076,
-            "pinball": 26.683,
-            "coverage_80": 0.71,
-            "skill_mae": 0.1722
+            "n_slots": 386,
+            "mae": 90.92,
+            "rmse": 119.647,
+            "pinball": 30.817,
+            "coverage_80": 0.635,
+            "skill_mae": 0.1216
           }
         },
         {
           "model": "naive_similar_day.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 39,
+          "days_due": 41,
+          "days_forecast": 40,
           "all": {
-            "n_slots": 3748,
-            "mae": 64.147,
-            "rmse": 90.896,
-            "pinball": 23.238,
-            "coverage_80": 0.646,
+            "n_slots": 3844,
+            "mae": 64.114,
+            "rmse": 90.554,
+            "pinball": 23.132,
+            "coverage_80": 0.652,
             "skill_mae": 0.0
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 47.368,
-            "rmse": 66.972,
-            "pinball": 16.334,
-            "coverage_80": 0.747,
+            "n_slots": 2688,
+            "mae": 47.92,
+            "rmse": 67.316,
+            "pinball": 16.429,
+            "coverage_80": 0.751,
             "skill_mae": 0.0
           },
           "weekend": {
@@ -1588,33 +1588,33 @@
             "skill_mae": 0.0
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 83.278,
-            "rmse": 114.553,
-            "pinball": 29.431,
-            "coverage_80": 0.669,
+            "n_slots": 391,
+            "mae": 82.107,
+            "rmse": 110.007,
+            "pinball": 27.993,
+            "coverage_80": 0.701,
             "skill_mae": 0.0
           }
         },
         {
           "model": "naive_similar_day.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 38,
+          "days_due": 40,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 73.971,
-            "rmse": 100.296,
-            "pinball": 26.314,
-            "coverage_80": 0.617,
+            "n_slots": 3748,
+            "mae": 74.889,
+            "rmse": 101.472,
+            "pinball": 26.525,
+            "coverage_80": 0.615,
             "skill_mae": 0.0
           },
           "weekday": {
-            "n_slots": 2496,
-            "mae": 61.096,
-            "rmse": 83.485,
-            "pinball": 21.173,
-            "coverage_80": 0.696,
+            "n_slots": 2592,
+            "mae": 62.9,
+            "rmse": 86.181,
+            "pinball": 21.669,
+            "coverage_80": 0.689,
             "skill_mae": 0.0
           },
           "weekend": {
@@ -1634,34 +1634,34 @@
             "skill_mae": 0.0
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 93.05,
-            "rmse": 124.977,
-            "pinball": 32.581,
-            "coverage_80": 0.649,
+            "n_slots": 386,
+            "mae": 103.511,
+            "rmse": 133.432,
+            "pinball": 34.867,
+            "coverage_80": 0.588,
             "skill_mae": 0.0
           }
         },
         {
           "model": "naive_weekly.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 39,
+          "days_due": 41,
+          "days_forecast": 40,
           "all": {
-            "n_slots": 3748,
-            "mae": 77.385,
-            "rmse": 102.251,
-            "pinball": 26.938,
+            "n_slots": 3844,
+            "mae": 77.934,
+            "rmse": 102.699,
+            "pinball": 26.985,
             "coverage_80": 0.592,
-            "skill_mae": -0.2064
+            "skill_mae": -0.2156
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 66.51,
-            "rmse": 87.503,
-            "pinball": 22.207,
-            "coverage_80": 0.653,
-            "skill_mae": -0.4041
+            "n_slots": 2688,
+            "mae": 67.683,
+            "rmse": 88.814,
+            "pinball": 22.444,
+            "coverage_80": 0.652,
+            "skill_mae": -0.4124
           },
           "weekend": {
             "n_slots": 1156,
@@ -1680,34 +1680,34 @@
             "skill_mae": 0.0
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 110.109,
-            "rmse": 139.075,
-            "pinball": 37.934,
-            "coverage_80": 0.577,
-            "skill_mae": -0.3222
+            "n_slots": 391,
+            "mae": 115.229,
+            "rmse": 141.192,
+            "pinball": 38.358,
+            "coverage_80": 0.547,
+            "skill_mae": -0.4034
           }
         },
         {
           "model": "naive_weekly.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 38,
+          "days_due": 40,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 78.653,
-            "rmse": 103.341,
-            "pinball": 27.824,
+            "n_slots": 3748,
+            "mae": 79.184,
+            "rmse": 103.767,
+            "pinball": 27.856,
             "coverage_80": 0.573,
-            "skill_mae": -0.0633
+            "skill_mae": -0.0574
           },
           "weekday": {
-            "n_slots": 2496,
-            "mae": 67.947,
-            "rmse": 88.752,
-            "pinball": 22.954,
-            "coverage_80": 0.635,
-            "skill_mae": -0.1121
+            "n_slots": 2592,
+            "mae": 69.11,
+            "rmse": 90.047,
+            "pinball": 23.18,
+            "coverage_80": 0.633,
+            "skill_mae": -0.0987
           },
           "weekend": {
             "n_slots": 1156,
@@ -1726,12 +1726,12 @@
             "skill_mae": 0.0
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 111.356,
-            "rmse": 139.976,
-            "pinball": 38.892,
-            "coverage_80": 0.564,
-            "skill_mae": -0.1967
+            "n_slots": 386,
+            "mae": 116.51,
+            "rmse": 142.084,
+            "pinball": 39.261,
+            "coverage_80": 0.526,
+            "skill_mae": -0.1256
           }
         }
       ],
@@ -1740,209 +1740,209 @@
           "model_a": "gbm.v1",
           "model_b": "lear.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": 0.3,
-          "p_value": 0.766,
-          "mean_daily_mae_diff": 0.944
+          "n_days": 39,
+          "statistic": 0.116,
+          "p_value": 0.9079,
+          "mean_daily_mae_diff": 0.363
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -0.012,
-          "p_value": 0.9902,
-          "mean_daily_mae_diff": -0.063
+          "n_days": 39,
+          "statistic": -0.065,
+          "p_value": 0.9486,
+          "mean_daily_mae_diff": -0.323
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -2.379,
-          "p_value": 0.0226,
-          "mean_daily_mae_diff": -23.12
+          "n_days": 39,
+          "statistic": -2.406,
+          "p_value": 0.0211,
+          "mean_daily_mae_diff": -22.789
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -3.97,
-          "p_value": 0.0003,
-          "mean_daily_mae_diff": -36.721
+          "n_days": 39,
+          "statistic": -4.103,
+          "p_value": 0.0002,
+          "mean_daily_mae_diff": -36.978
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -0.207,
-          "p_value": 0.8375,
-          "mean_daily_mae_diff": -1.007
+          "n_days": 39,
+          "statistic": -0.144,
+          "p_value": 0.8861,
+          "mean_daily_mae_diff": -0.687
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -2.812,
-          "p_value": 0.0078,
-          "mean_daily_mae_diff": -24.064
+          "n_days": 39,
+          "statistic": -2.761,
+          "p_value": 0.0088,
+          "mean_daily_mae_diff": -23.152
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -4.404,
+          "n_days": 39,
+          "statistic": -4.479,
           "p_value": 0.0001,
-          "mean_daily_mae_diff": -37.665
+          "mean_daily_mae_diff": -37.341
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -2.438,
-          "p_value": 0.0197,
-          "mean_daily_mae_diff": -23.057
+          "n_days": 39,
+          "statistic": -2.434,
+          "p_value": 0.0198,
+          "mean_daily_mae_diff": -22.465
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -3.645,
-          "p_value": 0.0008,
-          "mean_daily_mae_diff": -36.658
+          "n_days": 39,
+          "statistic": -3.741,
+          "p_value": 0.0006,
+          "mean_daily_mae_diff": -36.654
         },
         {
           "model_a": "naive_similar_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 39,
-          "statistic": -2.535,
-          "p_value": 0.0155,
-          "mean_daily_mae_diff": -13.252
+          "n_days": 40,
+          "statistic": -2.697,
+          "p_value": 0.0103,
+          "mean_daily_mae_diff": -13.834
         },
         {
           "model_a": "gbm.v1",
           "model_b": "lear.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -3.556,
-          "p_value": 0.0011,
-          "mean_daily_mae_diff": -22.798
+          "n_days": 38,
+          "statistic": -3.627,
+          "p_value": 0.0009,
+          "mean_daily_mae_diff": -23.855
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -0.829,
-          "p_value": 0.4128,
-          "mean_daily_mae_diff": -9.136
+          "n_days": 38,
+          "statistic": -0.905,
+          "p_value": 0.3713,
+          "mean_daily_mae_diff": -9.746
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -2.121,
-          "p_value": 0.0409,
-          "mean_daily_mae_diff": -27.387
+          "n_days": 38,
+          "statistic": -2.191,
+          "p_value": 0.0348,
+          "mean_daily_mae_diff": -27.517
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -2.559,
-          "p_value": 0.0149,
-          "mean_daily_mae_diff": -32.201
+          "n_days": 38,
+          "statistic": -2.607,
+          "p_value": 0.0131,
+          "mean_daily_mae_diff": -31.929
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": 1.159,
-          "p_value": 0.2542,
-          "mean_daily_mae_diff": 13.662
+          "n_days": 38,
+          "statistic": 1.225,
+          "p_value": 0.2283,
+          "mean_daily_mae_diff": 14.109
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -0.369,
-          "p_value": 0.7142,
-          "mean_daily_mae_diff": -4.589
+          "n_days": 38,
+          "statistic": -0.299,
+          "p_value": 0.7667,
+          "mean_daily_mae_diff": -3.662
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -0.752,
-          "p_value": 0.4571,
-          "mean_daily_mae_diff": -9.403
+          "n_days": 38,
+          "statistic": -0.65,
+          "p_value": 0.5199,
+          "mean_daily_mae_diff": -8.075
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -1.479,
-          "p_value": 0.1477,
-          "mean_daily_mae_diff": -18.251
+          "n_days": 38,
+          "statistic": -1.477,
+          "p_value": 0.1481,
+          "mean_daily_mae_diff": -17.771
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -1.487,
-          "p_value": 0.1456,
-          "mean_daily_mae_diff": -23.065
+          "n_days": 38,
+          "statistic": -1.464,
+          "p_value": 0.1516,
+          "mean_daily_mae_diff": -22.183
         },
         {
           "model_a": "naive_similar_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
-          "n_days": 38,
-          "statistic": -0.682,
-          "p_value": 0.4995,
-          "mean_daily_mae_diff": -4.687
+          "n_days": 39,
+          "statistic": -0.641,
+          "p_value": 0.5255,
+          "mean_daily_mae_diff": -4.299
         }
       ]
     },
     "all": {
       "from": "2026-10-01",
-      "to": "2026-11-09",
-      "spike_threshold_eur_mwh": 296.05,
+      "to": "2026-11-10",
+      "spike_threshold_eur_mwh": 299.17,
       "models": [
         {
           "model": "gbm.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 38,
+          "days_due": 41,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 41.351,
-            "rmse": 53.143,
-            "pinball": 13.195,
-            "coverage_80": 0.685,
-            "skill_mae": 0.36
+            "n_slots": 3748,
+            "mae": 41.64,
+            "rmse": 53.458,
+            "pinball": 13.293,
+            "coverage_80": 0.693,
+            "skill_mae": 0.355
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 41.986,
-            "rmse": 54.837,
-            "pinball": 13.362,
-            "coverage_80": 0.687,
-            "skill_mae": 0.1136
+            "n_slots": 2688,
+            "mae": 42.366,
+            "rmse": 55.203,
+            "pinball": 13.492,
+            "coverage_80": 0.698,
+            "skill_mae": 0.1159
           },
           "weekend": {
             "n_slots": 1060,
@@ -1961,34 +1961,34 @@
             "skill_mae": 0.9365
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 68.37,
-            "rmse": 88.145,
-            "pinball": 19.577,
-            "coverage_80": 0.78,
-            "skill_mae": 0.179
+            "n_slots": 391,
+            "mae": 69.563,
+            "rmse": 89.08,
+            "pinball": 19.885,
+            "coverage_80": 0.836,
+            "skill_mae": 0.1528
           }
         },
         {
           "model": "gbm.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 37,
+          "days_due": 40,
+          "days_forecast": 38,
           "all": {
-            "n_slots": 3556,
-            "mae": 47.342,
-            "rmse": 61.224,
-            "pinball": 15.727,
-            "coverage_80": 0.627,
-            "skill_mae": 0.3675
+            "n_slots": 3652,
+            "mae": 48.135,
+            "rmse": 62.46,
+            "pinball": 15.857,
+            "coverage_80": 0.634,
+            "skill_mae": 0.3647
           },
           "weekday": {
-            "n_slots": 2400,
-            "mae": 50.551,
-            "rmse": 65.453,
-            "pinball": 16.716,
-            "coverage_80": 0.656,
-            "skill_mae": 0.1832
+            "n_slots": 2496,
+            "mae": 51.587,
+            "rmse": 66.987,
+            "pinball": 16.868,
+            "coverage_80": 0.665,
+            "skill_mae": 0.1905
           },
           "weekend": {
             "n_slots": 1156,
@@ -2007,34 +2007,34 @@
             "skill_mae": 0.8817
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 76.093,
-            "rmse": 102.812,
-            "pinball": 24.719,
-            "coverage_80": 0.678,
-            "skill_mae": 0.1822
+            "n_slots": 386,
+            "mae": 82.066,
+            "rmse": 107.892,
+            "pinball": 25.103,
+            "coverage_80": 0.723,
+            "skill_mae": 0.2072
           }
         },
         {
           "model": "lear.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 38,
+          "days_due": 41,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 40.427,
-            "rmse": 54.666,
-            "pinball": 12.141,
-            "coverage_80": 0.719,
-            "skill_mae": 0.3743
+            "n_slots": 3748,
+            "mae": 41.295,
+            "rmse": 55.816,
+            "pinball": 12.431,
+            "coverage_80": 0.708,
+            "skill_mae": 0.3604
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 39.409,
-            "rmse": 55.211,
-            "pinball": 12.168,
-            "coverage_80": 0.73,
-            "skill_mae": 0.168
+            "n_slots": 2688,
+            "mae": 40.656,
+            "rmse": 56.773,
+            "pinball": 12.572,
+            "coverage_80": 0.715,
+            "skill_mae": 0.1516
           },
           "weekend": {
             "n_slots": 1060,
@@ -2053,34 +2053,34 @@
             "skill_mae": 0.914
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 90.257,
-            "rmse": 107.695,
-            "pinball": 26.51,
-            "coverage_80": 0.585,
-            "skill_mae": -0.0838
+            "n_slots": 391,
+            "mae": 95.013,
+            "rmse": 111.536,
+            "pinball": 28.49,
+            "coverage_80": 0.529,
+            "skill_mae": -0.1572
           }
         },
         {
           "model": "lear.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 37,
+          "days_due": 40,
+          "days_forecast": 38,
           "all": {
-            "n_slots": 3556,
-            "mae": 70.196,
-            "rmse": 85.268,
-            "pinball": 21.177,
-            "coverage_80": 0.587,
-            "skill_mae": 0.0622
+            "n_slots": 3652,
+            "mae": 72.042,
+            "rmse": 87.787,
+            "pinball": 21.729,
+            "coverage_80": 0.583,
+            "skill_mae": 0.0492
           },
           "weekday": {
-            "n_slots": 2400,
-            "mae": 65.021,
-            "rmse": 82.208,
-            "pinball": 19.403,
-            "coverage_80": 0.652,
-            "skill_mae": -0.0506
+            "n_slots": 2496,
+            "mae": 67.922,
+            "rmse": 86.114,
+            "pinball": 20.279,
+            "coverage_80": 0.643,
+            "skill_mae": -0.0658
           },
           "weekend": {
             "n_slots": 1156,
@@ -2099,34 +2099,34 @@
             "skill_mae": 0.4746
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 144.722,
-            "rmse": 156.824,
-            "pinball": 43.36,
-            "coverage_80": 0.309,
-            "skill_mae": -0.5553
+            "n_slots": 386,
+            "mae": 154.826,
+            "rmse": 166.329,
+            "pinball": 47.201,
+            "coverage_80": 0.269,
+            "skill_mae": -0.4957
           }
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 38,
+          "days_due": 41,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 41.419,
-            "rmse": 59.035,
-            "pinball": 14.485,
-            "coverage_80": 0.743,
-            "skill_mae": 0.3589
+            "n_slots": 3748,
+            "mae": 41.967,
+            "rmse": 59.53,
+            "pinball": 14.589,
+            "coverage_80": 0.745,
+            "skill_mae": 0.35
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 45.004,
-            "rmse": 63.053,
-            "pinball": 15.52,
-            "coverage_80": 0.711,
-            "skill_mae": 0.0499
+            "n_slots": 2688,
+            "mae": 45.641,
+            "rmse": 63.561,
+            "pinball": 15.628,
+            "coverage_80": 0.714,
+            "skill_mae": 0.0476
           },
           "weekend": {
             "n_slots": 1060,
@@ -2145,34 +2145,34 @@
             "skill_mae": 0.9155
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 64.341,
-            "rmse": 92.511,
-            "pinball": 22.826,
-            "coverage_80": 0.688,
-            "skill_mae": 0.2274
+            "n_slots": 391,
+            "mae": 70.665,
+            "rmse": 96.525,
+            "pinball": 24.333,
+            "coverage_80": 0.675,
+            "skill_mae": 0.1393
           }
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 37,
+          "days_due": 40,
+          "days_forecast": 38,
           "all": {
-            "n_slots": 3556,
-            "mae": 56.582,
-            "rmse": 77.664,
-            "pinball": 19.472,
-            "coverage_80": 0.729,
-            "skill_mae": 0.2441
+            "n_slots": 3652,
+            "mae": 57.981,
+            "rmse": 79.881,
+            "pinball": 19.917,
+            "coverage_80": 0.723,
+            "skill_mae": 0.2348
           },
           "weekday": {
-            "n_slots": 2400,
-            "mae": 56.899,
-            "rmse": 78.479,
-            "pinball": 19.612,
-            "coverage_80": 0.722,
-            "skill_mae": 0.0806
+            "n_slots": 2496,
+            "mae": 58.933,
+            "rmse": 81.639,
+            "pinball": 20.258,
+            "coverage_80": 0.714,
+            "skill_mae": 0.0753
           },
           "weekend": {
             "n_slots": 1156,
@@ -2191,33 +2191,33 @@
             "skill_mae": 0.1197
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 77.024,
-            "rmse": 106.076,
-            "pinball": 26.683,
-            "coverage_80": 0.71,
-            "skill_mae": 0.1722
+            "n_slots": 386,
+            "mae": 90.92,
+            "rmse": 119.647,
+            "pinball": 30.817,
+            "coverage_80": 0.635,
+            "skill_mae": 0.1216
           }
         },
         {
           "model": "naive_similar_day.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 39,
+          "days_due": 41,
+          "days_forecast": 40,
           "all": {
-            "n_slots": 3748,
-            "mae": 64.147,
-            "rmse": 90.896,
-            "pinball": 23.238,
-            "coverage_80": 0.646,
+            "n_slots": 3844,
+            "mae": 64.114,
+            "rmse": 90.554,
+            "pinball": 23.132,
+            "coverage_80": 0.652,
             "skill_mae": 0.0
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 47.368,
-            "rmse": 66.972,
-            "pinball": 16.334,
-            "coverage_80": 0.747,
+            "n_slots": 2688,
+            "mae": 47.92,
+            "rmse": 67.316,
+            "pinball": 16.429,
+            "coverage_80": 0.751,
             "skill_mae": 0.0
           },
           "weekend": {
@@ -2237,33 +2237,33 @@
             "skill_mae": 0.0
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 83.278,
-            "rmse": 114.553,
-            "pinball": 29.431,
-            "coverage_80": 0.669,
+            "n_slots": 391,
+            "mae": 82.107,
+            "rmse": 110.007,
+            "pinball": 27.993,
+            "coverage_80": 0.701,
             "skill_mae": 0.0
           }
         },
         {
           "model": "naive_similar_day.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 38,
+          "days_due": 40,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 73.971,
-            "rmse": 100.296,
-            "pinball": 26.314,
-            "coverage_80": 0.617,
+            "n_slots": 3748,
+            "mae": 74.889,
+            "rmse": 101.472,
+            "pinball": 26.525,
+            "coverage_80": 0.615,
             "skill_mae": 0.0
           },
           "weekday": {
-            "n_slots": 2496,
-            "mae": 61.096,
-            "rmse": 83.485,
-            "pinball": 21.173,
-            "coverage_80": 0.696,
+            "n_slots": 2592,
+            "mae": 62.9,
+            "rmse": 86.181,
+            "pinball": 21.669,
+            "coverage_80": 0.689,
             "skill_mae": 0.0
           },
           "weekend": {
@@ -2283,34 +2283,34 @@
             "skill_mae": 0.0
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 93.05,
-            "rmse": 124.977,
-            "pinball": 32.581,
-            "coverage_80": 0.649,
+            "n_slots": 386,
+            "mae": 103.511,
+            "rmse": 133.432,
+            "pinball": 34.867,
+            "coverage_80": 0.588,
             "skill_mae": 0.0
           }
         },
         {
           "model": "naive_weekly.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_forecast": 39,
+          "days_due": 41,
+          "days_forecast": 40,
           "all": {
-            "n_slots": 3748,
-            "mae": 77.385,
-            "rmse": 102.251,
-            "pinball": 26.938,
+            "n_slots": 3844,
+            "mae": 77.934,
+            "rmse": 102.699,
+            "pinball": 26.985,
             "coverage_80": 0.592,
-            "skill_mae": -0.2064
+            "skill_mae": -0.2156
           },
           "weekday": {
-            "n_slots": 2592,
-            "mae": 66.51,
-            "rmse": 87.503,
-            "pinball": 22.207,
-            "coverage_80": 0.653,
-            "skill_mae": -0.4041
+            "n_slots": 2688,
+            "mae": 67.683,
+            "rmse": 88.814,
+            "pinball": 22.444,
+            "coverage_80": 0.652,
+            "skill_mae": -0.4124
           },
           "weekend": {
             "n_slots": 1156,
@@ -2329,34 +2329,34 @@
             "skill_mae": 0.0
           },
           "price_spike": {
-            "n_slots": 381,
-            "mae": 110.109,
-            "rmse": 139.075,
-            "pinball": 37.934,
-            "coverage_80": 0.577,
-            "skill_mae": -0.3222
+            "n_slots": 391,
+            "mae": 115.229,
+            "rmse": 141.192,
+            "pinball": 38.358,
+            "coverage_80": 0.547,
+            "skill_mae": -0.4034
           }
         },
         {
           "model": "naive_weekly.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_forecast": 38,
+          "days_due": 40,
+          "days_forecast": 39,
           "all": {
-            "n_slots": 3652,
-            "mae": 78.653,
-            "rmse": 103.341,
-            "pinball": 27.824,
+            "n_slots": 3748,
+            "mae": 79.184,
+            "rmse": 103.767,
+            "pinball": 27.856,
             "coverage_80": 0.573,
-            "skill_mae": -0.0633
+            "skill_mae": -0.0574
           },
           "weekday": {
-            "n_slots": 2496,
-            "mae": 67.947,
-            "rmse": 88.752,
-            "pinball": 22.954,
-            "coverage_80": 0.635,
-            "skill_mae": -0.1121
+            "n_slots": 2592,
+            "mae": 69.11,
+            "rmse": 90.047,
+            "pinball": 23.18,
+            "coverage_80": 0.633,
+            "skill_mae": -0.0987
           },
           "weekend": {
             "n_slots": 1156,
@@ -2375,12 +2375,12 @@
             "skill_mae": 0.0
           },
           "price_spike": {
-            "n_slots": 376,
-            "mae": 111.356,
-            "rmse": 139.976,
-            "pinball": 38.892,
-            "coverage_80": 0.564,
-            "skill_mae": -0.1967
+            "n_slots": 386,
+            "mae": 116.51,
+            "rmse": 142.084,
+            "pinball": 39.261,
+            "coverage_80": 0.526,
+            "skill_mae": -0.1256
           }
         }
       ],
@@ -2389,181 +2389,181 @@
           "model_a": "gbm.v1",
           "model_b": "lear.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": 0.3,
-          "p_value": 0.766,
-          "mean_daily_mae_diff": 0.944
+          "n_days": 39,
+          "statistic": 0.116,
+          "p_value": 0.9079,
+          "mean_daily_mae_diff": 0.363
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -0.012,
-          "p_value": 0.9902,
-          "mean_daily_mae_diff": -0.063
+          "n_days": 39,
+          "statistic": -0.065,
+          "p_value": 0.9486,
+          "mean_daily_mae_diff": -0.323
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -2.379,
-          "p_value": 0.0226,
-          "mean_daily_mae_diff": -23.12
+          "n_days": 39,
+          "statistic": -2.406,
+          "p_value": 0.0211,
+          "mean_daily_mae_diff": -22.789
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -3.97,
-          "p_value": 0.0003,
-          "mean_daily_mae_diff": -36.721
+          "n_days": 39,
+          "statistic": -4.103,
+          "p_value": 0.0002,
+          "mean_daily_mae_diff": -36.978
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -0.207,
-          "p_value": 0.8375,
-          "mean_daily_mae_diff": -1.007
+          "n_days": 39,
+          "statistic": -0.144,
+          "p_value": 0.8861,
+          "mean_daily_mae_diff": -0.687
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -2.812,
-          "p_value": 0.0078,
-          "mean_daily_mae_diff": -24.064
+          "n_days": 39,
+          "statistic": -2.761,
+          "p_value": 0.0088,
+          "mean_daily_mae_diff": -23.152
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -4.404,
+          "n_days": 39,
+          "statistic": -4.479,
           "p_value": 0.0001,
-          "mean_daily_mae_diff": -37.665
+          "mean_daily_mae_diff": -37.341
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -2.438,
-          "p_value": 0.0197,
-          "mean_daily_mae_diff": -23.057
+          "n_days": 39,
+          "statistic": -2.434,
+          "p_value": 0.0198,
+          "mean_daily_mae_diff": -22.465
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 38,
-          "statistic": -3.645,
-          "p_value": 0.0008,
-          "mean_daily_mae_diff": -36.658
+          "n_days": 39,
+          "statistic": -3.741,
+          "p_value": 0.0006,
+          "mean_daily_mae_diff": -36.654
         },
         {
           "model_a": "naive_similar_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 1,
-          "n_days": 39,
-          "statistic": -2.535,
-          "p_value": 0.0155,
-          "mean_daily_mae_diff": -13.252
+          "n_days": 40,
+          "statistic": -2.697,
+          "p_value": 0.0103,
+          "mean_daily_mae_diff": -13.834
         },
         {
           "model_a": "gbm.v1",
           "model_b": "lear.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -3.556,
-          "p_value": 0.0011,
-          "mean_daily_mae_diff": -22.798
+          "n_days": 38,
+          "statistic": -3.627,
+          "p_value": 0.0009,
+          "mean_daily_mae_diff": -23.855
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -0.829,
-          "p_value": 0.4128,
-          "mean_daily_mae_diff": -9.136
+          "n_days": 38,
+          "statistic": -0.905,
+          "p_value": 0.3713,
+          "mean_daily_mae_diff": -9.746
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -2.121,
-          "p_value": 0.0409,
-          "mean_daily_mae_diff": -27.387
+          "n_days": 38,
+          "statistic": -2.191,
+          "p_value": 0.0348,
+          "mean_daily_mae_diff": -27.517
         },
         {
           "model_a": "gbm.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -2.559,
-          "p_value": 0.0149,
-          "mean_daily_mae_diff": -32.201
+          "n_days": 38,
+          "statistic": -2.607,
+          "p_value": 0.0131,
+          "mean_daily_mae_diff": -31.929
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_last_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": 1.159,
-          "p_value": 0.2542,
-          "mean_daily_mae_diff": 13.662
+          "n_days": 38,
+          "statistic": 1.225,
+          "p_value": 0.2283,
+          "mean_daily_mae_diff": 14.109
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -0.369,
-          "p_value": 0.7142,
-          "mean_daily_mae_diff": -4.589
+          "n_days": 38,
+          "statistic": -0.299,
+          "p_value": 0.7667,
+          "mean_daily_mae_diff": -3.662
         },
         {
           "model_a": "lear.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -0.752,
-          "p_value": 0.4571,
-          "mean_daily_mae_diff": -9.403
+          "n_days": 38,
+          "statistic": -0.65,
+          "p_value": 0.5199,
+          "mean_daily_mae_diff": -8.075
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_similar_day.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -1.479,
-          "p_value": 0.1477,
-          "mean_daily_mae_diff": -18.251
+          "n_days": 38,
+          "statistic": -1.477,
+          "p_value": 0.1481,
+          "mean_daily_mae_diff": -17.771
         },
         {
           "model_a": "naive_last_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
-          "n_days": 37,
-          "statistic": -1.487,
-          "p_value": 0.1456,
-          "mean_daily_mae_diff": -23.065
+          "n_days": 38,
+          "statistic": -1.464,
+          "p_value": 0.1516,
+          "mean_daily_mae_diff": -22.183
         },
         {
           "model_a": "naive_similar_day.v1",
           "model_b": "naive_weekly.v1",
           "horizon_days": 2,
-          "n_days": 38,
-          "statistic": -0.682,
-          "p_value": 0.4995,
-          "mean_daily_mae_diff": -4.687
+          "n_days": 39,
+          "statistic": -0.641,
+          "p_value": 0.5255,
+          "mean_daily_mae_diff": -4.299
         }
       ]
     }
@@ -2699,13 +2699,13 @@
           "days_due": 7,
           "days_scored": 7,
           "hit_rate": 0.0,
-          "mean_p_cheapest": 0.057,
-          "brier_cheapest": 0.0066,
-          "near_rate": 0.571,
-          "mean_p_near": 0.355,
-          "brier_near": 0.2717,
-          "mean_regret_eur_mwh": 14.32,
-          "saving_vs_day_mean_eur_mwh": 36.72
+          "mean_p_cheapest": 0.067,
+          "brier_cheapest": 0.0079,
+          "near_rate": 0.429,
+          "mean_p_near": 0.441,
+          "brier_near": 0.3024,
+          "mean_regret_eur_mwh": 14.98,
+          "saving_vs_day_mean_eur_mwh": 46.36
         },
         {
           "model": "gbm.v1",
@@ -2713,13 +2713,13 @@
           "days_due": 7,
           "days_scored": 7,
           "hit_rate": 0.0,
-          "mean_p_cheapest": 0.062,
-          "brier_cheapest": 0.0049,
-          "near_rate": 0.714,
-          "mean_p_near": 0.326,
+          "mean_p_cheapest": 0.06,
+          "brier_cheapest": 0.0047,
+          "near_rate": 0.571,
+          "mean_p_near": 0.374,
           "brier_near": 0.3109,
-          "mean_regret_eur_mwh": 3.93,
-          "saving_vs_day_mean_eur_mwh": 47.12
+          "mean_regret_eur_mwh": 4.89,
+          "saving_vs_day_mean_eur_mwh": 56.44
         },
         {
           "model": "lear.v1",
@@ -2727,27 +2727,27 @@
           "days_due": 7,
           "days_scored": 7,
           "hit_rate": 0.143,
-          "mean_p_cheapest": 0.126,
-          "brier_cheapest": 0.1375,
-          "near_rate": 0.571,
-          "mean_p_near": 0.531,
-          "brier_near": 0.2317,
-          "mean_regret_eur_mwh": 4.38,
-          "saving_vs_day_mean_eur_mwh": 46.66
-        },
-        {
-          "model": "lear.v1",
-          "horizon_days": 2,
-          "days_due": 7,
-          "days_scored": 7,
-          "hit_rate": 0.0,
-          "mean_p_cheapest": 0.124,
-          "brier_cheapest": 0.0201,
+          "mean_p_cheapest": 0.14,
+          "brier_cheapest": 0.1413,
           "near_rate": 0.429,
-          "mean_p_near": 0.564,
-          "brier_near": 0.2749,
-          "mean_regret_eur_mwh": 19.82,
-          "saving_vs_day_mean_eur_mwh": 31.23
+          "mean_p_near": 0.576,
+          "brier_near": 0.2537,
+          "mean_regret_eur_mwh": 6.05,
+          "saving_vs_day_mean_eur_mwh": 55.28
+        },
+        {
+          "model": "lear.v1",
+          "horizon_days": 2,
+          "days_due": 7,
+          "days_scored": 7,
+          "hit_rate": 0.0,
+          "mean_p_cheapest": 0.129,
+          "brier_cheapest": 0.0211,
+          "near_rate": 0.286,
+          "mean_p_near": 0.545,
+          "brier_near": 0.2666,
+          "mean_regret_eur_mwh": 35.4,
+          "saving_vs_day_mean_eur_mwh": 25.94
         },
         {
           "model": "naive_last_day.v1",
@@ -2755,69 +2755,69 @@
           "days_due": 7,
           "days_scored": 7,
           "hit_rate": 0.0,
-          "mean_p_cheapest": 0.135,
-          "brier_cheapest": 0.0288,
-          "near_rate": 0.571,
-          "mean_p_near": 0.357,
-          "brier_near": 0.3417,
-          "mean_regret_eur_mwh": 16.24,
-          "saving_vs_day_mean_eur_mwh": 34.8
-        },
-        {
-          "model": "naive_last_day.v1",
-          "horizon_days": 2,
-          "days_due": 7,
-          "days_scored": 7,
-          "hit_rate": 0.143,
-          "mean_p_cheapest": 0.124,
-          "brier_cheapest": 0.1152,
-          "near_rate": 0.571,
-          "mean_p_near": 0.337,
-          "brier_near": 0.3365,
-          "mean_regret_eur_mwh": 18.82,
-          "saving_vs_day_mean_eur_mwh": 32.22
-        },
-        {
-          "model": "naive_similar_day.v1",
-          "horizon_days": 1,
-          "days_due": 7,
-          "days_scored": 7,
-          "hit_rate": 0.0,
-          "mean_p_cheapest": 0.147,
-          "brier_cheapest": 0.0352,
-          "near_rate": 0.714,
-          "mean_p_near": 0.343,
-          "brier_near": 0.4145,
-          "mean_regret_eur_mwh": 15.89,
-          "saving_vs_day_mean_eur_mwh": 35.15
-        },
-        {
-          "model": "naive_similar_day.v1",
-          "horizon_days": 2,
-          "days_due": 7,
-          "days_scored": 7,
-          "hit_rate": 0.143,
-          "mean_p_cheapest": 0.108,
-          "brier_cheapest": 0.1088,
-          "near_rate": 0.714,
-          "mean_p_near": 0.357,
-          "brier_near": 0.3833,
-          "mean_regret_eur_mwh": 16.22,
-          "saving_vs_day_mean_eur_mwh": 34.82
-        },
-        {
-          "model": "naive_weekly.v1",
-          "horizon_days": 1,
-          "days_due": 7,
-          "days_scored": 7,
-          "hit_rate": 0.0,
-          "mean_p_cheapest": 0.146,
-          "brier_cheapest": 0.0266,
-          "near_rate": 0.571,
+          "mean_p_cheapest": 0.125,
+          "brier_cheapest": 0.0265,
+          "near_rate": 0.429,
           "mean_p_near": 0.399,
-          "brier_near": 0.3049,
-          "mean_regret_eur_mwh": 17.72,
-          "saving_vs_day_mean_eur_mwh": 33.32
+          "brier_near": 0.354,
+          "mean_regret_eur_mwh": 17.65,
+          "saving_vs_day_mean_eur_mwh": 43.69
+        },
+        {
+          "model": "naive_last_day.v1",
+          "horizon_days": 2,
+          "days_due": 7,
+          "days_scored": 7,
+          "hit_rate": 0.143,
+          "mean_p_cheapest": 0.125,
+          "brier_cheapest": 0.1154,
+          "near_rate": 0.429,
+          "mean_p_near": 0.349,
+          "brier_near": 0.2604,
+          "mean_regret_eur_mwh": 34.7,
+          "saving_vs_day_mean_eur_mwh": 26.63
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 7,
+          "days_scored": 7,
+          "hit_rate": 0.0,
+          "mean_p_cheapest": 0.128,
+          "brier_cheapest": 0.0297,
+          "near_rate": 0.571,
+          "mean_p_near": 0.387,
+          "brier_near": 0.4188,
+          "mean_regret_eur_mwh": 17.3,
+          "saving_vs_day_mean_eur_mwh": 44.04
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 2,
+          "days_due": 7,
+          "days_scored": 7,
+          "hit_rate": 0.143,
+          "mean_p_cheapest": 0.114,
+          "brier_cheapest": 0.1095,
+          "near_rate": 0.571,
+          "mean_p_near": 0.356,
+          "brier_near": 0.3376,
+          "mean_regret_eur_mwh": 32.1,
+          "saving_vs_day_mean_eur_mwh": 29.23
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 7,
+          "days_scored": 7,
+          "hit_rate": 0.0,
+          "mean_p_cheapest": 0.144,
+          "brier_cheapest": 0.026,
+          "near_rate": 0.429,
+          "mean_p_near": 0.368,
+          "brier_near": 0.2936,
+          "mean_regret_eur_mwh": 18.93,
+          "saving_vs_day_mean_eur_mwh": 42.41
         },
         {
           "model": "naive_weekly.v1",
@@ -2825,13 +2825,13 @@
           "days_due": 7,
           "days_scored": 7,
           "hit_rate": 0.0,
-          "mean_p_cheapest": 0.146,
-          "brier_cheapest": 0.0266,
-          "near_rate": 0.571,
-          "mean_p_near": 0.4,
-          "brier_near": 0.3029,
-          "mean_regret_eur_mwh": 17.72,
-          "saving_vs_day_mean_eur_mwh": 33.32
+          "mean_p_cheapest": 0.143,
+          "brier_cheapest": 0.0255,
+          "near_rate": 0.429,
+          "mean_p_near": 0.368,
+          "brier_near": 0.2906,
+          "mean_regret_eur_mwh": 18.93,
+          "saving_vs_day_mean_eur_mwh": 42.41
         }
       ],
       "30d": [
@@ -2839,15 +2839,15 @@
           "model": "gbm.v1",
           "horizon_days": 1,
           "days_due": 30,
-          "days_scored": 29,
-          "hit_rate": 0.069,
-          "mean_p_cheapest": 0.145,
-          "brier_cheapest": 0.0714,
-          "near_rate": 0.724,
-          "mean_p_near": 0.55,
-          "brier_near": 0.2616,
-          "mean_regret_eur_mwh": 7.77,
-          "saving_vs_day_mean_eur_mwh": 44.87
+          "days_scored": 30,
+          "hit_rate": 0.067,
+          "mean_p_cheapest": 0.144,
+          "brier_cheapest": 0.0694,
+          "near_rate": 0.7,
+          "mean_p_near": 0.561,
+          "brier_near": 0.2779,
+          "mean_regret_eur_mwh": 7.8,
+          "saving_vs_day_mean_eur_mwh": 46.45
         },
         {
           "model": "gbm.v1",
@@ -2855,27 +2855,27 @@
           "days_due": 30,
           "days_scored": 29,
           "hit_rate": 0.103,
-          "mean_p_cheapest": 0.141,
-          "brier_cheapest": 0.0908,
-          "near_rate": 0.724,
-          "mean_p_near": 0.487,
-          "brier_near": 0.2512,
-          "mean_regret_eur_mwh": 5.45,
-          "saving_vs_day_mean_eur_mwh": 48.89
+          "mean_p_cheapest": 0.134,
+          "brier_cheapest": 0.0887,
+          "near_rate": 0.69,
+          "mean_p_near": 0.483,
+          "brier_near": 0.2649,
+          "mean_regret_eur_mwh": 5.61,
+          "saving_vs_day_mean_eur_mwh": 48.7
         },
         {
           "model": "lear.v1",
           "horizon_days": 1,
           "days_due": 30,
-          "days_scored": 29,
-          "hit_rate": 0.138,
-          "mean_p_cheapest": 0.158,
-          "brier_cheapest": 0.119,
-          "near_rate": 0.621,
-          "mean_p_near": 0.602,
-          "brier_near": 0.218,
-          "mean_regret_eur_mwh": 9.34,
-          "saving_vs_day_mean_eur_mwh": 43.3
+          "days_scored": 30,
+          "hit_rate": 0.133,
+          "mean_p_cheapest": 0.159,
+          "brier_cheapest": 0.1161,
+          "near_rate": 0.6,
+          "mean_p_near": 0.606,
+          "brier_near": 0.2279,
+          "mean_regret_eur_mwh": 9.44,
+          "saving_vs_day_mean_eur_mwh": 44.81
         },
         {
           "model": "lear.v1",
@@ -2883,27 +2883,27 @@
           "days_due": 30,
           "days_scored": 29,
           "hit_rate": 0.069,
-          "mean_p_cheapest": 0.146,
-          "brier_cheapest": 0.0729,
+          "mean_p_cheapest": 0.142,
+          "brier_cheapest": 0.0715,
           "near_rate": 0.586,
-          "mean_p_near": 0.614,
-          "brier_near": 0.2796,
-          "mean_regret_eur_mwh": 12.97,
-          "saving_vs_day_mean_eur_mwh": 41.37
+          "mean_p_near": 0.601,
+          "brier_near": 0.264,
+          "mean_regret_eur_mwh": 16.55,
+          "saving_vs_day_mean_eur_mwh": 37.75
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 1,
           "days_due": 30,
-          "days_scored": 29,
-          "hit_rate": 0.034,
-          "mean_p_cheapest": 0.159,
-          "brier_cheapest": 0.0531,
-          "near_rate": 0.483,
-          "mean_p_near": 0.438,
-          "brier_near": 0.2835,
-          "mean_regret_eur_mwh": 14.59,
-          "saving_vs_day_mean_eur_mwh": 38.06
+          "days_scored": 30,
+          "hit_rate": 0.033,
+          "mean_p_cheapest": 0.157,
+          "brier_cheapest": 0.0516,
+          "near_rate": 0.467,
+          "mean_p_near": 0.446,
+          "brier_near": 0.2894,
+          "mean_regret_eur_mwh": 14.46,
+          "saving_vs_day_mean_eur_mwh": 39.79
         },
         {
           "model": "naive_last_day.v1",
@@ -2911,13 +2911,13 @@
           "days_due": 30,
           "days_scored": 29,
           "hit_rate": 0.103,
-          "mean_p_cheapest": 0.166,
-          "brier_cheapest": 0.1077,
-          "near_rate": 0.517,
-          "mean_p_near": 0.432,
-          "brier_near": 0.2566,
-          "mean_regret_eur_mwh": 18.58,
-          "saving_vs_day_mean_eur_mwh": 35.77
+          "mean_p_cheapest": 0.156,
+          "brier_cheapest": 0.104,
+          "near_rate": 0.483,
+          "mean_p_near": 0.421,
+          "brier_near": 0.255,
+          "mean_regret_eur_mwh": 22.41,
+          "saving_vs_day_mean_eur_mwh": 31.9
         },
         {
           "model": "naive_similar_day.v1",
@@ -2925,13 +2925,13 @@
           "days_due": 30,
           "days_scored": 30,
           "hit_rate": 0.033,
-          "mean_p_cheapest": 0.193,
-          "brier_cheapest": 0.0648,
-          "near_rate": 0.567,
-          "mean_p_near": 0.474,
-          "brier_near": 0.3242,
-          "mean_regret_eur_mwh": 15.32,
-          "saving_vs_day_mean_eur_mwh": 38.95
+          "mean_p_cheapest": 0.182,
+          "brier_cheapest": 0.0593,
+          "near_rate": 0.533,
+          "mean_p_near": 0.467,
+          "brier_near": 0.3387,
+          "mean_regret_eur_mwh": 15.58,
+          "saving_vs_day_mean_eur_mwh": 38.67
         },
         {
           "model": "naive_similar_day.v1",
@@ -2939,13 +2939,13 @@
           "days_due": 30,
           "days_scored": 30,
           "hit_rate": 0.067,
-          "mean_p_cheapest": 0.176,
-          "brier_cheapest": 0.0828,
-          "near_rate": 0.567,
-          "mean_p_near": 0.464,
-          "brier_near": 0.297,
-          "mean_regret_eur_mwh": 16.86,
-          "saving_vs_day_mean_eur_mwh": 37.41
+          "mean_p_cheapest": 0.162,
+          "brier_cheapest": 0.0743,
+          "near_rate": 0.533,
+          "mean_p_near": 0.444,
+          "brier_near": 0.3006,
+          "mean_regret_eur_mwh": 20.49,
+          "saving_vs_day_mean_eur_mwh": 33.76
         },
         {
           "model": "naive_weekly.v1",
@@ -2953,13 +2953,13 @@
           "days_due": 30,
           "days_scored": 30,
           "hit_rate": 0.0,
-          "mean_p_cheapest": 0.188,
-          "brier_cheapest": 0.0515,
-          "near_rate": 0.5,
-          "mean_p_near": 0.476,
-          "brier_near": 0.2957,
-          "mean_regret_eur_mwh": 14.74,
-          "saving_vs_day_mean_eur_mwh": 39.54
+          "mean_p_cheapest": 0.178,
+          "brier_cheapest": 0.0448,
+          "near_rate": 0.467,
+          "mean_p_near": 0.459,
+          "brier_near": 0.2987,
+          "mean_regret_eur_mwh": 14.96,
+          "saving_vs_day_mean_eur_mwh": 39.28
         },
         {
           "model": "naive_weekly.v1",
@@ -2967,297 +2967,297 @@
           "days_due": 30,
           "days_scored": 30,
           "hit_rate": 0.0,
-          "mean_p_cheapest": 0.189,
-          "brier_cheapest": 0.0518,
-          "near_rate": 0.5,
-          "mean_p_near": 0.477,
-          "brier_near": 0.2946,
-          "mean_regret_eur_mwh": 14.74,
-          "saving_vs_day_mean_eur_mwh": 39.54
+          "mean_p_cheapest": 0.178,
+          "brier_cheapest": 0.0448,
+          "near_rate": 0.467,
+          "mean_p_near": 0.461,
+          "brier_near": 0.2974,
+          "mean_regret_eur_mwh": 14.96,
+          "saving_vs_day_mean_eur_mwh": 39.28
         }
       ],
       "90d": [
         {
           "model": "gbm.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_scored": 38,
-          "hit_rate": 0.158,
-          "mean_p_cheapest": 0.186,
-          "brier_cheapest": 0.1214,
-          "near_rate": 0.763,
-          "mean_p_near": 0.634,
-          "brier_near": 0.218,
-          "mean_regret_eur_mwh": 6.21,
-          "saving_vs_day_mean_eur_mwh": 52.0
+          "days_due": 41,
+          "days_scored": 39,
+          "hit_rate": 0.154,
+          "mean_p_cheapest": 0.184,
+          "brier_cheapest": 0.1186,
+          "near_rate": 0.744,
+          "mean_p_near": 0.64,
+          "brier_near": 0.2317,
+          "mean_regret_eur_mwh": 6.27,
+          "saving_vs_day_mean_eur_mwh": 53.03
         },
         {
           "model": "gbm.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_scored": 37,
-          "hit_rate": 0.081,
-          "mean_p_cheapest": 0.165,
-          "brier_cheapest": 0.0855,
-          "near_rate": 0.757,
-          "mean_p_near": 0.549,
-          "brier_near": 0.2337,
-          "mean_regret_eur_mwh": 4.6,
-          "saving_vs_day_mean_eur_mwh": 54.96
+          "days_due": 40,
+          "days_scored": 38,
+          "hit_rate": 0.079,
+          "mean_p_cheapest": 0.161,
+          "brier_cheapest": 0.0833,
+          "near_rate": 0.737,
+          "mean_p_near": 0.552,
+          "brier_near": 0.2392,
+          "mean_regret_eur_mwh": 4.69,
+          "saving_vs_day_mean_eur_mwh": 55.95
         },
         {
           "model": "lear.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_scored": 38,
-          "hit_rate": 0.132,
+          "days_due": 41,
+          "days_scored": 39,
+          "hit_rate": 0.128,
           "mean_p_cheapest": 0.182,
-          "brier_cheapest": 0.1167,
-          "near_rate": 0.711,
-          "mean_p_near": 0.644,
-          "brier_near": 0.1827,
-          "mean_regret_eur_mwh": 7.44,
-          "saving_vs_day_mean_eur_mwh": 50.77
+          "brier_cheapest": 0.1146,
+          "near_rate": 0.692,
+          "mean_p_near": 0.646,
+          "brier_near": 0.1912,
+          "mean_regret_eur_mwh": 7.57,
+          "saving_vs_day_mean_eur_mwh": 51.73
         },
         {
           "model": "lear.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_scored": 37,
-          "hit_rate": 0.108,
-          "mean_p_cheapest": 0.17,
-          "brier_cheapest": 0.0938,
-          "near_rate": 0.676,
-          "mean_p_near": 0.664,
-          "brier_near": 0.226,
-          "mean_regret_eur_mwh": 10.36,
-          "saving_vs_day_mean_eur_mwh": 49.2
+          "days_due": 40,
+          "days_scored": 38,
+          "hit_rate": 0.105,
+          "mean_p_cheapest": 0.168,
+          "brier_cheapest": 0.0917,
+          "near_rate": 0.658,
+          "mean_p_near": 0.657,
+          "brier_near": 0.2243,
+          "mean_regret_eur_mwh": 12.98,
+          "saving_vs_day_mean_eur_mwh": 47.67
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_scored": 38,
+          "days_due": 41,
+          "days_scored": 39,
           "hit_rate": 0.026,
-          "mean_p_cheapest": 0.177,
-          "brier_cheapest": 0.0569,
-          "near_rate": 0.579,
-          "mean_p_near": 0.48,
-          "brier_near": 0.2542,
-          "mean_regret_eur_mwh": 11.93,
-          "saving_vs_day_mean_eur_mwh": 46.27
+          "mean_p_cheapest": 0.174,
+          "brier_cheapest": 0.0557,
+          "near_rate": 0.564,
+          "mean_p_near": 0.485,
+          "brier_near": 0.2594,
+          "mean_regret_eur_mwh": 11.9,
+          "saving_vs_day_mean_eur_mwh": 47.39
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_scored": 37,
-          "hit_rate": 0.081,
-          "mean_p_cheapest": 0.17,
-          "brier_cheapest": 0.0965,
-          "near_rate": 0.595,
-          "mean_p_near": 0.462,
-          "brier_near": 0.2496,
-          "mean_regret_eur_mwh": 15.2,
-          "saving_vs_day_mean_eur_mwh": 44.37
-        },
-        {
-          "model": "naive_similar_day.v1",
-          "horizon_days": 1,
           "days_due": 40,
-          "days_scored": 39,
-          "hit_rate": 0.026,
-          "mean_p_cheapest": 0.193,
-          "brier_cheapest": 0.0614,
-          "near_rate": 0.641,
-          "mean_p_near": 0.507,
-          "brier_near": 0.2852,
-          "mean_regret_eur_mwh": 12.68,
-          "saving_vs_day_mean_eur_mwh": 46.64
-        },
-        {
-          "model": "naive_similar_day.v1",
-          "horizon_days": 2,
-          "days_due": 39,
           "days_scored": 38,
-          "hit_rate": 0.053,
-          "mean_p_cheapest": 0.199,
-          "brier_cheapest": 0.0871,
-          "near_rate": 0.632,
-          "mean_p_near": 0.521,
-          "brier_near": 0.2577,
-          "mean_regret_eur_mwh": 13.92,
-          "saving_vs_day_mean_eur_mwh": 45.45
-        },
-        {
-          "model": "naive_weekly.v1",
-          "horizon_days": 1,
-          "days_due": 40,
-          "days_scored": 39,
-          "hit_rate": 0.0,
-          "mean_p_cheapest": 0.217,
-          "brier_cheapest": 0.0718,
-          "near_rate": 0.59,
-          "mean_p_near": 0.518,
-          "brier_near": 0.2615,
-          "mean_regret_eur_mwh": 11.8,
-          "saving_vs_day_mean_eur_mwh": 47.52
-        },
-        {
-          "model": "naive_weekly.v1",
-          "horizon_days": 2,
-          "days_due": 39,
-          "days_scored": 38,
-          "hit_rate": 0.0,
-          "mean_p_cheapest": 0.206,
-          "brier_cheapest": 0.0624,
+          "hit_rate": 0.079,
+          "mean_p_cheapest": 0.166,
+          "brier_cheapest": 0.094,
           "near_rate": 0.579,
-          "mean_p_near": 0.508,
-          "brier_near": 0.2673,
-          "mean_regret_eur_mwh": 12.09,
-          "saving_vs_day_mean_eur_mwh": 47.28
+          "mean_p_near": 0.458,
+          "brier_near": 0.2454,
+          "mean_regret_eur_mwh": 17.74,
+          "saving_vs_day_mean_eur_mwh": 42.9
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 41,
+          "days_scored": 40,
+          "hit_rate": 0.025,
+          "mean_p_cheapest": 0.191,
+          "brier_cheapest": 0.0601,
+          "near_rate": 0.625,
+          "mean_p_near": 0.511,
+          "brier_near": 0.2892,
+          "mean_regret_eur_mwh": 12.63,
+          "saving_vs_day_mean_eur_mwh": 47.72
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 2,
+          "days_due": 40,
+          "days_scored": 39,
+          "hit_rate": 0.051,
+          "mean_p_cheapest": 0.195,
+          "brier_cheapest": 0.085,
+          "near_rate": 0.615,
+          "mean_p_near": 0.516,
+          "brier_near": 0.2539,
+          "mean_regret_eur_mwh": 16.43,
+          "saving_vs_day_mean_eur_mwh": 44.0
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 41,
+          "days_scored": 40,
+          "hit_rate": 0.0,
+          "mean_p_cheapest": 0.216,
+          "brier_cheapest": 0.0708,
+          "near_rate": 0.575,
+          "mean_p_near": 0.513,
+          "brier_near": 0.258,
+          "mean_regret_eur_mwh": 11.75,
+          "saving_vs_day_mean_eur_mwh": 48.6
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 2,
+          "days_due": 40,
+          "days_scored": 39,
+          "hit_rate": 0.0,
+          "mean_p_cheapest": 0.205,
+          "brier_cheapest": 0.0616,
+          "near_rate": 0.564,
+          "mean_p_near": 0.504,
+          "brier_near": 0.2633,
+          "mean_regret_eur_mwh": 12.03,
+          "saving_vs_day_mean_eur_mwh": 48.4
         }
       ],
       "all": [
         {
           "model": "gbm.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_scored": 38,
-          "hit_rate": 0.158,
-          "mean_p_cheapest": 0.186,
-          "brier_cheapest": 0.1214,
-          "near_rate": 0.763,
-          "mean_p_near": 0.634,
-          "brier_near": 0.218,
-          "mean_regret_eur_mwh": 6.21,
-          "saving_vs_day_mean_eur_mwh": 52.0
+          "days_due": 41,
+          "days_scored": 39,
+          "hit_rate": 0.154,
+          "mean_p_cheapest": 0.184,
+          "brier_cheapest": 0.1186,
+          "near_rate": 0.744,
+          "mean_p_near": 0.64,
+          "brier_near": 0.2317,
+          "mean_regret_eur_mwh": 6.27,
+          "saving_vs_day_mean_eur_mwh": 53.03
         },
         {
           "model": "gbm.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_scored": 37,
-          "hit_rate": 0.081,
-          "mean_p_cheapest": 0.165,
-          "brier_cheapest": 0.0855,
-          "near_rate": 0.757,
-          "mean_p_near": 0.549,
-          "brier_near": 0.2337,
-          "mean_regret_eur_mwh": 4.6,
-          "saving_vs_day_mean_eur_mwh": 54.96
+          "days_due": 40,
+          "days_scored": 38,
+          "hit_rate": 0.079,
+          "mean_p_cheapest": 0.161,
+          "brier_cheapest": 0.0833,
+          "near_rate": 0.737,
+          "mean_p_near": 0.552,
+          "brier_near": 0.2392,
+          "mean_regret_eur_mwh": 4.69,
+          "saving_vs_day_mean_eur_mwh": 55.95
         },
         {
           "model": "lear.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_scored": 38,
-          "hit_rate": 0.132,
+          "days_due": 41,
+          "days_scored": 39,
+          "hit_rate": 0.128,
           "mean_p_cheapest": 0.182,
-          "brier_cheapest": 0.1167,
-          "near_rate": 0.711,
-          "mean_p_near": 0.644,
-          "brier_near": 0.1827,
-          "mean_regret_eur_mwh": 7.44,
-          "saving_vs_day_mean_eur_mwh": 50.77
+          "brier_cheapest": 0.1146,
+          "near_rate": 0.692,
+          "mean_p_near": 0.646,
+          "brier_near": 0.1912,
+          "mean_regret_eur_mwh": 7.57,
+          "saving_vs_day_mean_eur_mwh": 51.73
         },
         {
           "model": "lear.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_scored": 37,
-          "hit_rate": 0.108,
-          "mean_p_cheapest": 0.17,
-          "brier_cheapest": 0.0938,
-          "near_rate": 0.676,
-          "mean_p_near": 0.664,
-          "brier_near": 0.226,
-          "mean_regret_eur_mwh": 10.36,
-          "saving_vs_day_mean_eur_mwh": 49.2
+          "days_due": 40,
+          "days_scored": 38,
+          "hit_rate": 0.105,
+          "mean_p_cheapest": 0.168,
+          "brier_cheapest": 0.0917,
+          "near_rate": 0.658,
+          "mean_p_near": 0.657,
+          "brier_near": 0.2243,
+          "mean_regret_eur_mwh": 12.98,
+          "saving_vs_day_mean_eur_mwh": 47.67
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 1,
-          "days_due": 40,
-          "days_scored": 38,
+          "days_due": 41,
+          "days_scored": 39,
           "hit_rate": 0.026,
-          "mean_p_cheapest": 0.177,
-          "brier_cheapest": 0.0569,
-          "near_rate": 0.579,
-          "mean_p_near": 0.48,
-          "brier_near": 0.2542,
-          "mean_regret_eur_mwh": 11.93,
-          "saving_vs_day_mean_eur_mwh": 46.27
+          "mean_p_cheapest": 0.174,
+          "brier_cheapest": 0.0557,
+          "near_rate": 0.564,
+          "mean_p_near": 0.485,
+          "brier_near": 0.2594,
+          "mean_regret_eur_mwh": 11.9,
+          "saving_vs_day_mean_eur_mwh": 47.39
         },
         {
           "model": "naive_last_day.v1",
           "horizon_days": 2,
-          "days_due": 39,
-          "days_scored": 37,
-          "hit_rate": 0.081,
-          "mean_p_cheapest": 0.17,
-          "brier_cheapest": 0.0965,
-          "near_rate": 0.595,
-          "mean_p_near": 0.462,
-          "brier_near": 0.2496,
-          "mean_regret_eur_mwh": 15.2,
-          "saving_vs_day_mean_eur_mwh": 44.37
-        },
-        {
-          "model": "naive_similar_day.v1",
-          "horizon_days": 1,
           "days_due": 40,
-          "days_scored": 39,
-          "hit_rate": 0.026,
-          "mean_p_cheapest": 0.193,
-          "brier_cheapest": 0.0614,
-          "near_rate": 0.641,
-          "mean_p_near": 0.507,
-          "brier_near": 0.2852,
-          "mean_regret_eur_mwh": 12.68,
-          "saving_vs_day_mean_eur_mwh": 46.64
-        },
-        {
-          "model": "naive_similar_day.v1",
-          "horizon_days": 2,
-          "days_due": 39,
           "days_scored": 38,
-          "hit_rate": 0.053,
-          "mean_p_cheapest": 0.199,
-          "brier_cheapest": 0.0871,
-          "near_rate": 0.632,
-          "mean_p_near": 0.521,
-          "brier_near": 0.2577,
-          "mean_regret_eur_mwh": 13.92,
-          "saving_vs_day_mean_eur_mwh": 45.45
-        },
-        {
-          "model": "naive_weekly.v1",
-          "horizon_days": 1,
-          "days_due": 40,
-          "days_scored": 39,
-          "hit_rate": 0.0,
-          "mean_p_cheapest": 0.217,
-          "brier_cheapest": 0.0718,
-          "near_rate": 0.59,
-          "mean_p_near": 0.518,
-          "brier_near": 0.2615,
-          "mean_regret_eur_mwh": 11.8,
-          "saving_vs_day_mean_eur_mwh": 47.52
-        },
-        {
-          "model": "naive_weekly.v1",
-          "horizon_days": 2,
-          "days_due": 39,
-          "days_scored": 38,
-          "hit_rate": 0.0,
-          "mean_p_cheapest": 0.206,
-          "brier_cheapest": 0.0624,
+          "hit_rate": 0.079,
+          "mean_p_cheapest": 0.166,
+          "brier_cheapest": 0.094,
           "near_rate": 0.579,
-          "mean_p_near": 0.508,
-          "brier_near": 0.2673,
-          "mean_regret_eur_mwh": 12.09,
-          "saving_vs_day_mean_eur_mwh": 47.28
+          "mean_p_near": 0.458,
+          "brier_near": 0.2454,
+          "mean_regret_eur_mwh": 17.74,
+          "saving_vs_day_mean_eur_mwh": 42.9
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 1,
+          "days_due": 41,
+          "days_scored": 40,
+          "hit_rate": 0.025,
+          "mean_p_cheapest": 0.191,
+          "brier_cheapest": 0.0601,
+          "near_rate": 0.625,
+          "mean_p_near": 0.511,
+          "brier_near": 0.2892,
+          "mean_regret_eur_mwh": 12.63,
+          "saving_vs_day_mean_eur_mwh": 47.72
+        },
+        {
+          "model": "naive_similar_day.v1",
+          "horizon_days": 2,
+          "days_due": 40,
+          "days_scored": 39,
+          "hit_rate": 0.051,
+          "mean_p_cheapest": 0.195,
+          "brier_cheapest": 0.085,
+          "near_rate": 0.615,
+          "mean_p_near": 0.516,
+          "brier_near": 0.2539,
+          "mean_regret_eur_mwh": 16.43,
+          "saving_vs_day_mean_eur_mwh": 44.0
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 1,
+          "days_due": 41,
+          "days_scored": 40,
+          "hit_rate": 0.0,
+          "mean_p_cheapest": 0.216,
+          "brier_cheapest": 0.0708,
+          "near_rate": 0.575,
+          "mean_p_near": 0.513,
+          "brier_near": 0.258,
+          "mean_regret_eur_mwh": 11.75,
+          "saving_vs_day_mean_eur_mwh": 48.6
+        },
+        {
+          "model": "naive_weekly.v1",
+          "horizon_days": 2,
+          "days_due": 40,
+          "days_scored": 39,
+          "hit_rate": 0.0,
+          "mean_p_cheapest": 0.205,
+          "brier_cheapest": 0.0616,
+          "near_rate": 0.564,
+          "mean_p_near": 0.504,
+          "brier_near": 0.2633,
+          "mean_regret_eur_mwh": 12.03,
+          "saving_vs_day_mean_eur_mwh": 48.4
         }
       ]
     }
